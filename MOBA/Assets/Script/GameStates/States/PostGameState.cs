@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoadingState : MonoBehaviour
+public class PostGameState : GameState
 {
     // Start is called before the first frame update
     void Start()
