@@ -5,6 +5,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
+using Entities.Champion;
 
 namespace Controllers.Inputs
 {
