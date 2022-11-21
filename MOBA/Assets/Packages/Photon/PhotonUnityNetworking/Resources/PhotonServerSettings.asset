@@ -48,6 +48,7 @@ MonoBehaviour:
   - SetCanRemovePassiveCapacityRPC
   - SyncSetCanAddPassiveCapacityRPC
   - SyncSetCanRemovePassiveCapacityRPC
+  - SyncRenderFogRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

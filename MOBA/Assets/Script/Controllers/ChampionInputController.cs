@@ -115,6 +115,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         void OnMove(InputAction.CallbackContext ctx)
         {
+            
         }
 
         protected override void Link()
