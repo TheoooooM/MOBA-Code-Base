@@ -613,6 +613,36 @@ namespace Entities.Champion
             return viewRange;
         }
 
+        public bool CanView()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public float GetFOWViewRange()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public float GetFOWBaseViewRange()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RequestSetCanView()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SyncSetCanViewRPC()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetCanViewRPC()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void RequestSetViewRange(float value)
         {
             
@@ -626,6 +656,51 @@ namespace Entities.Champion
         [PunRPC] public void SetViewRangeRPC(float value)
         {
             
+        }
+
+        public void RequestSetBaseViewRange(float value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SyncSetBaseViewRangeRPC(float value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetBaseViewRangeRPC(float value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RequestAddFOWSeeable(uint FOWSeeableIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SyncAddFOWSeeableRPC(uint FOWSeeableIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void AddFOWSeeableRPC(uint FOWSeeableIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RequestRemoveFOWSeeable(uint FOWSeeableIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SyncRemoveFOWSeeableRPC(uint FOWSeeableIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RemoveFOWSeeableRPC(uint FOWSeeableIndex)
+        {
+            throw new System.NotImplementedException();
         }
 
         public Item[] GetItems()
@@ -722,6 +797,26 @@ namespace Entities.Champion
         [PunRPC] public void OnUntargetedRPC()
         {
             
+        }
+
+        public void TryAddFOWViewable(IFOWViewable FOWWhichSee)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void TryRemoveFOWViewable(IFOWViewable FOWWhichSee)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ShowElementsRPC()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void HideElementsRPC()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
