@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Entities;
 
-public class Champion : MonoBehaviour
+public class Champion : Entity
 {
-    // Start is called before the first frame update
-    void Start()
+    public ChampionSO championSo;
+    
+    protected override void OnStart()
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    protected override void OnUpdate()
     {
         
     }
