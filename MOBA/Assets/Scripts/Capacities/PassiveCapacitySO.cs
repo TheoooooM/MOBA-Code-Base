@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Capacities
+namespace Entities.Capacities
 {
 //Asset Menu Synthax :
 //[CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO", fileName = "new PassiveCapacitySO")]
@@ -13,7 +13,7 @@ namespace Capacities
 
         [Tooltip("GD Name")] public string descriptionName;
 
-        [Tooltip("Description of the capacity")]
+        [TextArea(4, 4)] [Tooltip("Description of the capacity")]
         public string description;
 
         /// <summary>
@@ -23,7 +23,5 @@ namespace Capacities
         public static Type type;
 
         [Tooltip("All types of the capacity")] public List<Enums.CapacityType> types;
-
-
     }
 }

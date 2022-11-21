@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Capacities
+namespace Entities.Capacities
 {
     public class CapacitySOCollectionManager : MonoBehaviour
     {
