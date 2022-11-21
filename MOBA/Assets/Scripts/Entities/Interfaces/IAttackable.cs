@@ -4,6 +4,7 @@ namespace Entities
 {
     public interface IAttackable
     {
+        
         /// <returns>true if the entity can attack, false if not</returns>
         public bool CanAttack();
         /// <summary>
@@ -18,6 +19,8 @@ namespace Entities
         /// Sets if the entity can attack.
         /// </summary>
         public void SetCanAttackRPC(bool value);
+
+        public event GlobalDelegates.BoolDelegate OnSetCanAttack;
         
         /// <summary>
         /// Sends an RPC to the master to Attack.
@@ -40,5 +43,7 @@ namespace Entities
         /// <param name="targetedEntities">the entities targeted by the activeCapacity</param>
         /// <param name="targetedPositions">the positions targeted by  the activeCapacities</param>
         public void AttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions);
+
+        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnAttack;
     }
 }

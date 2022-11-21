@@ -17,6 +17,8 @@ namespace Entities
         /// Sets if the entity can be targeted.
         /// </summary>
         public void SetCanBeTargetedRPC(bool value);
+
+        public event GlobalDelegates.BoolDelegate OnSetCanBeTargeted;
         
         /// <summary>
         /// Sends an RPC to the master that the entity has been targeted.
@@ -30,6 +32,8 @@ namespace Entities
         /// What happens when the entity has been targeted.
         /// </summary>
         public void OnTargetedRPC();
+
+        public event GlobalDelegates.NoParameterDelegate OnOnTargeted;
         
         /// <summary>
         /// Sends an RPC to the master that the entity has been untargeted.
@@ -43,6 +47,8 @@ namespace Entities
         /// What happens when the entity has been untargeted.
         /// </summary>
         public void OnUntargetedRPC();
+
+        public event GlobalDelegates.NoParameterDelegate OnOnUntargeted;
     }
 }
 
