@@ -24,6 +24,8 @@ namespace Entities.Inventory
         /// </summary>
         /// <param name="index">the index of the item on the ItemCollectionManager</param>
         public void AddItemRPC(byte index);
+
+        public event GlobalDelegates.ByteDelegate OnAddItem;
         
         /// <summary>
         /// Sends an RPC to the master to remove an item from the entity's inventory.
@@ -48,6 +50,8 @@ namespace Entities.Inventory
         /// </summary>
         /// <param name="index">the index of the item on the entity's item list</param>
         public void RemoveItemRPC(byte index);
+
+        public event GlobalDelegates.ByteDelegate OnRemoveItem;
 
     }
 }

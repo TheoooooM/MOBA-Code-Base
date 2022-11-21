@@ -707,6 +707,8 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        public event GlobalDelegates.NoParameterDelegate OnSetCanView;
+
         public void RequestSetViewRange(float value)
         {
             
@@ -721,6 +723,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.FloatDelegate OnSetViewRange;
 
         public void RequestSetBaseViewRange(float value)
         {
@@ -737,6 +741,8 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        public event GlobalDelegates.FloatDelegate OnSetBaseViewRange;
+
         public void RequestAddFOWSeeable(uint FOWSeeableIndex)
         {
             throw new System.NotImplementedException();
@@ -752,6 +758,8 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        public event GlobalDelegates.UintDelegate OnAddFOWSeeable;
+
         public void RequestRemoveFOWSeeable(uint FOWSeeableIndex)
         {
             throw new System.NotImplementedException();
@@ -766,6 +774,8 @@ namespace Entities.Champion
         {
             throw new System.NotImplementedException();
         }
+
+        public event GlobalDelegates.UintDelegate OnRemoveFOWSeeable;
 
         public Item[] GetItems()
         {
@@ -793,6 +803,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.ByteDelegate OnAddItem;
+
         public void RequestRemoveItem(byte index)
         {
             
@@ -812,6 +824,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.ByteDelegate OnRemoveItem;
 
         public bool CanBeTargeted()
         {
