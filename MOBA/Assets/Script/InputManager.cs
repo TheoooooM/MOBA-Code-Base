@@ -1,18 +1,41 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static PlayerInputs PlayerMap;
+    
+    public static PlayerInputs PlayerUIMap;
+
+    private void Awake()
     {
-        
+        if (PlayerMap != null)
+        {
+            DestroyImmediate(gameObject);
+            return;
+        }
+        PlayerMap = new PlayerInputs();
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Toggle PlayerMap
+    /// </summary>
+    /// <param name="value">State : true or false</param>
+    public static void TogglePlayerMap(bool value)
     {
-        
+        if(value) PlayerMap.Enable();
+        else PlayerMap.Disable();
+    }
+    
+    /// <summary>
+    /// Toggle PlayerUIMap
+    /// </summary>
+    /// <param name="value">State : true or false</param>
+    public static void TogglePlayerUIMap(bool value)
+    {
+        if(value) PlayerUIMap.Enable();
+        else PlayerUIMap.Disable();
     }
 }
