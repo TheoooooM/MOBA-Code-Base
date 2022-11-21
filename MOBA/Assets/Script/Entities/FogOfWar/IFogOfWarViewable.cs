@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Photon.Pun;
 
-public class IFogOfWarViewable : MonoBehaviour
+public interface IFogOfWarViewable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    /// <summary>
+    /// Get the render range of the Entity
+    /// </summary>
+    /// <returns></returns>
+    float GetViewRange();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void RequestSetViewRange(float value);
+
+    [PunRPC]void SetViewRangeRPC(float value);
+    [PunRPC]void SyncSetViewRangeRPC(float value);
 }
