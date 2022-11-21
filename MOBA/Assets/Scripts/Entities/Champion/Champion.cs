@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace Entities.Champion
 {
-    public class Champion : Entity, IActiveLifeable, IAttackable, ICastable, IDeadable, ITargetable, IDisplaceable, IMoveable,
+    public class Champion : Entity, IActiveLifeable, IAttackable, ICastable, IDeadable, ITargetable, IDisplaceable,
+        IMoveable,
         IRessourceable, ITeamable, IFOWViewable, IFOWShowable, IInventoryable
     {
         public ChampionSO championSo;
@@ -21,26 +22,24 @@ namespace Entities.Champion
         public byte attackAbilityIndex;
         public byte[] abilitiesIndexes = new byte[2];
         public byte ultimateAbilityIndex;
-        
+
         public bool canAttack;
         public bool canCast;
         public bool canDie;
         public bool canMove;
         public bool canBeDisplaced;
         public bool canChangeTeam;
-        
+
         public Enums.Team team;
 
         public Item[] items = new Item[3];
-        
+
         protected override void OnStart()
         {
-            
         }
 
         protected override void OnUpdate()
         {
-            
         }
 
         public float GetMaxHp()
@@ -60,124 +59,132 @@ namespace Entities.Champion
 
         public void RequestSetMaxHp(float value)
         {
-            photonView.RPC("SetMaxHpRPC",RpcTarget.MasterClient,value);
+            photonView.RPC("SetMaxHpRPC", RpcTarget.MasterClient, value);
         }
 
-        [PunRPC] public void SyncSetMaxHpRPC(float value)
+        [PunRPC]
+        public void SyncSetMaxHpRPC(float value)
         {
             maxHp = value;
         }
 
-        [PunRPC] public void SetMaxHpRPC(float value)
+        [PunRPC]
+        public void SetMaxHpRPC(float value)
         {
             maxHp = value;
-            photonView.RPC("SyncSetMaxHpRPC",RpcTarget.All,maxHp);
+            photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, maxHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnSetMaxHp;
 
         public void RequestIncreaseMaxHp(float amount)
         {
-            photonView.RPC("IncreaseMaxHpRPC",RpcTarget.MasterClient,amount);
+            photonView.RPC("IncreaseMaxHpRPC", RpcTarget.MasterClient, amount);
         }
 
-        [PunRPC] public void SyncIncreaseMaxHpRPC(float amount)
+        [PunRPC]
+        public void SyncIncreaseMaxHpRPC(float amount)
         {
             maxHp = amount;
         }
 
-        [PunRPC] public void IncreaseMaxHpRPC(float amount)
+        [PunRPC]
+        public void IncreaseMaxHpRPC(float amount)
         {
             maxHp -= amount;
-            photonView.RPC("SyncSetMaxHpRPC",RpcTarget.MasterClient,maxHp);
+            photonView.RPC("SyncSetMaxHpRPC", RpcTarget.MasterClient, maxHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
 
         public void RequestDecreaseMaxHp(float amount)
         {
-            photonView.RPC("DecreaseMaxHpRPC",RpcTarget.MasterClient,amount);
+            photonView.RPC("DecreaseMaxHpRPC", RpcTarget.MasterClient, amount);
         }
 
-        [PunRPC] public void SyncDecreaseMaxHpRPC(float amount)
+        [PunRPC]
+        public void SyncDecreaseMaxHpRPC(float amount)
         {
             maxHp = amount;
         }
 
-        [PunRPC] public void DecreaseMaxHpRPC(float amount)
+        [PunRPC]
+        public void DecreaseMaxHpRPC(float amount)
         {
             maxHp -= amount;
-            photonView.RPC("SyncDecreaseMaxHpRPC",RpcTarget.MasterClient,maxHp);
+            photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.MasterClient, maxHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
 
         public void RequestSetCurrentHp(float value)
         {
-            photonView.RPC("SetCurrentHpRPC",RpcTarget.MasterClient,value);
+            photonView.RPC("SetCurrentHpRPC", RpcTarget.MasterClient, value);
         }
 
-        [PunRPC] public void SyncSetCurrentHpRPC(float value)
+        [PunRPC]
+        public void SyncSetCurrentHpRPC(float value)
         {
             currentHp = value;
         }
 
-        [PunRPC] public void SetCurrentHpRPC(float value)
+        [PunRPC]
+        public void SetCurrentHpRPC(float value)
         {
             currentHp = value;
-            photonView.RPC("SyncSetCurrentHpRPC",RpcTarget.All,value);
+            photonView.RPC("SyncSetCurrentHpRPC", RpcTarget.All, value);
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentHp;
 
         public void RequestSetCurrentHpPercent(float value)
         {
-            photonView.RPC("SetCurrentHpPercentRPC",RpcTarget.All,value);
+            photonView.RPC("SetCurrentHpPercentRPC", RpcTarget.All, value);
         }
 
-        [PunRPC] public void SyncSetCurrentHpPercentRPC(float value)
+        [PunRPC]
+        public void SyncSetCurrentHpPercentRPC(float value)
         {
             currentHp = value;
         }
 
-        [PunRPC] public void SetCurrentHpPercentRPC(float value)
+        [PunRPC]
+        public void SetCurrentHpPercentRPC(float value)
         {
             currentHp = value * maxHp;
-            photonView.RPC("SetCurrentHpPercentRPC",RpcTarget.All,value);
+            photonView.RPC("SetCurrentHpPercentRPC", RpcTarget.All, value);
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
 
         public void RequestIncreaseCurrentHp(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncIncreaseCurrentHpRPC(float amount)
+        [PunRPC]
+        public void SyncIncreaseCurrentHpRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void IncreaseCurrentHpRPC(float amount)
+        [PunRPC]
+        public void IncreaseCurrentHpRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
 
         public void RequestDecreaseCurrentHp(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncDecreaseCurrentHpRPC(float amount)
+        [PunRPC]
+        public void SyncDecreaseCurrentHpRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void DecreaseCurrentHpRPC(float amount)
+        [PunRPC]
+        public void DecreaseCurrentHpRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
@@ -189,34 +196,32 @@ namespace Entities.Champion
 
         public void RequestSetCanAttack(bool value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetCanAttackRPC(bool value)
+        [PunRPC]
+        public void SyncSetCanAttackRPC(bool value)
         {
-            
         }
 
-        [PunRPC] public void SetCanAttackRPC(bool value)
+        [PunRPC]
+        public void SetCanAttackRPC(bool value)
         {
-            
         }
 
         public event GlobalDelegates.BoolDelegate OnSetCanAttack;
 
         public void RequestAttack(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
-            
         }
 
-        [PunRPC] public void SyncAttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        [PunRPC]
+        public void SyncAttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
-            
         }
 
-        [PunRPC] public void AttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        [PunRPC]
+        public void AttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
-            
         }
 
         public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnAttack;
@@ -228,34 +233,32 @@ namespace Entities.Champion
 
         public void RequestSetCanCast(bool value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetCanCastRPC(bool value)
+        [PunRPC]
+        public void SyncSetCanCastRPC(bool value)
         {
-            
         }
 
-        [PunRPC] public void SetCanCastRPC(bool value)
+        [PunRPC]
+        public void SetCanCastRPC(bool value)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCanCast;
 
         public void RequestCast(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
-            
         }
 
-        [PunRPC] public void SyncCastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        [PunRPC]
+        public void SyncCastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
-            
         }
 
-        [PunRPC] public void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        [PunRPC]
+        public void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
-            
         }
 
         public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCast;
@@ -272,51 +275,48 @@ namespace Entities.Champion
 
         public void RequestSetCanDie(bool value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetCanDieRPC(bool value)
+        [PunRPC]
+        public void SyncSetCanDieRPC(bool value)
         {
-            
         }
 
-        [PunRPC] public void SetCanDieRPC(bool value)
+        [PunRPC]
+        public void SetCanDieRPC(bool value)
         {
-            
         }
 
         public event GlobalDelegates.BoolDelegate OnSetCanDie;
 
         public void RequestDie()
         {
-            
         }
 
-        [PunRPC] public void SyncDieRPC()
+        [PunRPC]
+        public void SyncDieRPC()
         {
-            
         }
 
-        [PunRPC] public void DieRPC()
+        [PunRPC]
+        public void DieRPC()
         {
-            
         }
 
         public event GlobalDelegates.NoParameterDelegate OnDie;
 
         public void RequestRevive()
         {
-            
         }
 
-        [PunRPC] public void SyncReviveRPC()
+        [PunRPC]
+        public void SyncReviveRPC()
         {
-            
         }
 
-        [PunRPC] public void ReviveRPC()
+        [PunRPC]
+        public void ReviveRPC()
         {
-            
         }
 
         public event GlobalDelegates.NoParameterDelegate OnRevive;
@@ -328,34 +328,32 @@ namespace Entities.Champion
 
         public void RequestSetCanBeDisplaced(bool value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetCanBeDisplacedRPC(bool value)
+        [PunRPC]
+        public void SyncSetCanBeDisplacedRPC(bool value)
         {
-            
         }
 
-        [PunRPC] public void SetCanBeDisplacedRPC(bool value)
+        [PunRPC]
+        public void SetCanBeDisplacedRPC(bool value)
         {
-            
         }
 
         public event GlobalDelegates.BoolDelegate OnSetCanBeDisplaced;
 
         public void RequestDisplace()
         {
-            
         }
 
-        [PunRPC] public void SyncDisplaceRPC()
+        [PunRPC]
+        public void SyncDisplaceRPC()
         {
-            
         }
 
-        [PunRPC] public void DisplaceRPC()
+        [PunRPC]
+        public void DisplaceRPC()
         {
-            
         }
 
         public event GlobalDelegates.NoParameterDelegate OnDisplace;
@@ -377,136 +375,128 @@ namespace Entities.Champion
 
         public void RequestSetCanMove(bool value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetCanMoveRPC(bool value)
+        [PunRPC]
+        public void SyncSetCanMoveRPC(bool value)
         {
-            
         }
 
-        [PunRPC] public void SetCanMoveRPC(bool value)
+        [PunRPC]
+        public void SetCanMoveRPC(bool value)
         {
-            
         }
 
         public event GlobalDelegates.BoolDelegate OnSetCanMove;
 
         public void RequestSetReferenceMoveSpeed(float value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetReferenceMoveSpeedRPC(float value)
+        [PunRPC]
+        public void SyncSetReferenceMoveSpeedRPC(float value)
         {
-            
         }
 
-        [PunRPC] public void SetReferenceMoveSpeedRPC(float value)
+        [PunRPC]
+        public void SetReferenceMoveSpeedRPC(float value)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeed;
 
         public void RequestIncreaseReferenceMoveSpeed(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncIncreaseReferenceMoveSpeedRPC(float amount)
+        [PunRPC]
+        public void SyncIncreaseReferenceMoveSpeedRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void IncreaseReferenceMoveSpeedRPC(float amount)
+        [PunRPC]
+        public void IncreaseReferenceMoveSpeedRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeed;
 
         public void RequestDecreaseReferenceMoveSpeed(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncDecreaseReferenceMoveSpeedRPC(float amount)
+        [PunRPC]
+        public void SyncDecreaseReferenceMoveSpeedRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void DecreaseReferenceMoveSpeedRPC(float amount)
+        [PunRPC]
+        public void DecreaseReferenceMoveSpeedRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeed;
 
         public void RequestSetCurrentMoveSpeed(float value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetCurrentMoveSpeedRPC(float value)
+        [PunRPC]
+        public void SyncSetCurrentMoveSpeedRPC(float value)
         {
-            
         }
 
-        [PunRPC] public void SetCurrentMoveSpeedRPC(float value)
+        [PunRPC]
+        public void SetCurrentMoveSpeedRPC(float value)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeed;
 
         public void RequestIncreaseCurrentMoveSpeed(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncIncreaseCurrentMoveSpeedRPC(float amount)
+        [PunRPC]
+        public void SyncIncreaseCurrentMoveSpeedRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void IncreaseCurrentMoveSpeedRPC(float amount)
+        [PunRPC]
+        public void IncreaseCurrentMoveSpeedRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeed;
 
         public void RequestDecreaseCurrentMoveSpeed(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncDecreaseCurrentMoveSpeedRPC(float amount)
+        [PunRPC]
+        public void SyncDecreaseCurrentMoveSpeedRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void DecreaseCurrentMoveSpeedRPC(float amount)
+        [PunRPC]
+        public void DecreaseCurrentMoveSpeedRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
 
         public void RequestMove(Vector3 position)
         {
-            
         }
 
-        [PunRPC] public void SyncMoveRPC(Vector3 position)
+        [PunRPC]
+        public void SyncMoveRPC(Vector3 position)
         {
-            
         }
 
-        [PunRPC] public void MoveRPC(Vector3 position)
+        [PunRPC]
+        public void MoveRPC(Vector3 position)
         {
-            
         }
 
         public event GlobalDelegates.Vector3Delegate OnMove;
@@ -528,119 +518,112 @@ namespace Entities.Champion
 
         public void RequestSetMaxRessource(float value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetMaxRessourceRPC(float value)
+        [PunRPC]
+        public void SyncSetMaxRessourceRPC(float value)
         {
-            
         }
 
-        [PunRPC] public void SetMaxRessourceRPC(float value)
+        [PunRPC]
+        public void SetMaxRessourceRPC(float value)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnSetMaxResource;
 
         public void RequestIncreaseMaxRessource(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncIncreaseMaxRessourceRPC(float amount)
+        [PunRPC]
+        public void SyncIncreaseMaxRessourceRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void IncreaseMaxRessourceRPC(float amount)
+        [PunRPC]
+        public void IncreaseMaxRessourceRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxResource;
 
         public void RequestDecreaseMaxRessource(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncDecreaseMaxRessourceRPC(float amount)
+        [PunRPC]
+        public void SyncDecreaseMaxRessourceRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void DecreaseMaxRessourceRPC(float amount)
+        [PunRPC]
+        public void DecreaseMaxRessourceRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxResource;
 
         public void RequestSetCurrentRessource(float value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetCurrentRessourceRPC(float value)
+        [PunRPC]
+        public void SyncSetCurrentRessourceRPC(float value)
         {
-            
         }
 
-        [PunRPC] public void SetCurrentRessourceRPC(float value)
+        [PunRPC]
+        public void SetCurrentRessourceRPC(float value)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentResource;
 
         public void RequestSetCurrentRessourcePercent(float value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetCurrentRessourcePercentRPC(float value)
+        [PunRPC]
+        public void SyncSetCurrentRessourcePercentRPC(float value)
         {
-            
         }
 
-        [PunRPC] public void SetCurrentRessourcePercentRPC(float value)
+        [PunRPC]
+        public void SetCurrentRessourcePercentRPC(float value)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentResourcePercent;
 
         public void RequestIncreaseCurrentRessource(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncIncreaseCurrentRessourceRPC(float amount)
+        [PunRPC]
+        public void SyncIncreaseCurrentRessourceRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void IncreaseCurrentRessourceRPC(float amount)
+        [PunRPC]
+        public void IncreaseCurrentRessourceRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentResource;
 
         public void RequestDecreaseCurrentRessource(float amount)
         {
-            
         }
 
-        [PunRPC] public void SyncDecreaseCurrentRessourceRPC(float amount)
+        [PunRPC]
+        public void SyncDecreaseCurrentRessourceRPC(float amount)
         {
-            
         }
 
-        [PunRPC] public void DecreaseCurrentRessourceRPC(float amount)
+        [PunRPC]
+        public void DecreaseCurrentRessourceRPC(float amount)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentResource;
@@ -657,17 +640,16 @@ namespace Entities.Champion
 
         public void RequestChangeTeam(bool value)
         {
-            
         }
 
-        [PunRPC] public void SyncChangeTeamRPC(bool value)
+        [PunRPC]
+        public void SyncChangeTeamRPC(bool value)
         {
-            
         }
 
-        [PunRPC] public void ChangeTeamRPC(bool value)
+        [PunRPC]
+        public void ChangeTeamRPC(bool value)
         {
-            
         }
 
         public event GlobalDelegates.BoolDelegate OnChangeTeam;
@@ -697,11 +679,13 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        [PunRPC]
         public void SyncSetCanViewRPC()
         {
             throw new System.NotImplementedException();
         }
 
+        [PunRPC]
         public void SetCanViewRPC()
         {
             throw new System.NotImplementedException();
@@ -711,17 +695,16 @@ namespace Entities.Champion
 
         public void RequestSetViewRange(float value)
         {
-            
         }
 
-        [PunRPC] public void SyncSetViewRangeRPC(float value)
+        [PunRPC]
+        public void SyncSetViewRangeRPC(float value)
         {
-            
         }
 
-        [PunRPC] public void SetViewRangeRPC(float value)
+        [PunRPC]
+        public void SetViewRangeRPC(float value)
         {
-            
         }
 
         public event GlobalDelegates.FloatDelegate OnSetViewRange;
@@ -731,11 +714,13 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        [PunRPC]
         public void SyncSetBaseViewRangeRPC(float value)
         {
             throw new System.NotImplementedException();
         }
 
+        [PunRPC]
         public void SetBaseViewRangeRPC(float value)
         {
             throw new System.NotImplementedException();
@@ -748,11 +733,13 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        [PunRPC]
         public void SyncAddFOWSeeableRPC(uint FOWSeeableIndex)
         {
             throw new System.NotImplementedException();
         }
 
+        [PunRPC]
         public void AddFOWSeeableRPC(uint FOWSeeableIndex)
         {
             throw new System.NotImplementedException();
@@ -765,11 +752,13 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        [PunRPC]
         public void SyncRemoveFOWSeeableRPC(uint FOWSeeableIndex)
         {
             throw new System.NotImplementedException();
         }
 
+        [PunRPC]
         public void RemoveFOWSeeableRPC(uint FOWSeeableIndex)
         {
             throw new System.NotImplementedException();
@@ -790,39 +779,36 @@ namespace Entities.Champion
 
         public void RequestAddItem(byte index)
         {
-            
         }
 
-        [PunRPC] public void SyncAddItemRPC(byte index)
+        [PunRPC]
+        public void SyncAddItemRPC(byte index)
         {
-            
         }
 
-        [PunRPC] public void AddItemRPC(byte index)
+        [PunRPC]
+        public void AddItemRPC(byte index)
         {
-            
         }
 
         public event GlobalDelegates.ByteDelegate OnAddItem;
 
         public void RequestRemoveItem(byte index)
         {
-            
         }
 
         public void RequestRemoveItem(Item item)
         {
-            
         }
 
-        [PunRPC] public void SyncRemoveItemRPC(byte index)
+        [PunRPC]
+        public void SyncRemoveItemRPC(byte index)
         {
-            
         }
 
-        [PunRPC] public void RemoveItemRPC(byte index)
+        [PunRPC]
+        public void RemoveItemRPC(byte index)
         {
-            
         }
 
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
@@ -837,12 +823,14 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
-        [PunRPC] public void SyncSetCanBeTargetedRPC(bool value)
+        [PunRPC]
+        public void SyncSetCanBeTargetedRPC(bool value)
         {
             throw new System.NotImplementedException();
         }
 
-        [PunRPC] public void SetCanBeTargetedRPC(bool value)
+        [PunRPC]
+        public void SetCanBeTargetedRPC(bool value)
         {
             throw new System.NotImplementedException();
         }
@@ -854,12 +842,14 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
-        [PunRPC] public void SyncOnTargetedRPC()
+        [PunRPC]
+        public void SyncOnTargetedRPC()
         {
             throw new System.NotImplementedException();
         }
 
-        [PunRPC] public void OnTargetedRPC()
+        [PunRPC]
+        public void OnTargetedRPC()
         {
             throw new System.NotImplementedException();
         }
@@ -868,17 +858,16 @@ namespace Entities.Champion
 
         public void RequestOnUntargeted()
         {
-            
         }
 
-        [PunRPC] public void SyncOnUntargetedRPC()
+        [PunRPC]
+        public void SyncOnUntargetedRPC()
         {
-            
         }
 
-        [PunRPC] public void OnUntargetedRPC()
+        [PunRPC]
+        public void OnUntargetedRPC()
         {
-            
         }
 
         public event GlobalDelegates.NoParameterDelegate OnOnUntargeted;
@@ -893,15 +882,78 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        public bool CanShow()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool CanHide()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RequestSetCanShow(bool value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC]
+        public void SyncSetCanShowRPC(bool value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC]
+        public void SetCanShowRPC(bool value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public event GlobalDelegates.BoolDelegate OnSetCanShow;
+
+        public void RequestSetCanHide(bool value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC]
+        public void SyncSetCanHideRPC(bool value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC]
+        public void SetCanHideRPC(bool value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public event GlobalDelegates.BoolDelegate OnSetCanHide;
+
+        public void TryAddFOWViewable(uint viewableIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC]
         public void ShowElementsRPC()
         {
             throw new System.NotImplementedException();
         }
 
+        public event GlobalDelegates.NoParameterDelegate ShowElement;
+
+        public void TryRemoveFOWViewable(uint viewableIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC]
         public void HideElementsRPC()
         {
             throw new System.NotImplementedException();
         }
+
+        public event GlobalDelegates.NoParameterDelegate HideElement;
     }
 }
-
