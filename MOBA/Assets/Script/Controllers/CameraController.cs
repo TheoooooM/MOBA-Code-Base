@@ -8,12 +8,11 @@ namespace Controllers
 {
     public class CameraController : MonoBehaviour
     {
-        private PlayerInputs inputMap;
 
         private void Awake()
         {
             SetupInputMap();
-            inputMap.Camera.LockToggle.performed += OnToggleCameraLock;
+            InputManager.PlayerMap.Camera.LockToggle.performed += OnToggleCameraLock;
         }
 
         /// <summary>
@@ -21,8 +20,8 @@ namespace Controllers
         /// </summary>
         void SetupInputMap()
         {
-            inputMap = new PlayerInputs();
-            inputMap.Enable();
+            InputManager.PlayerMap = new PlayerInputs();
+            InputManager.PlayerMap.Enable();
         }
 
         /// <summary>
