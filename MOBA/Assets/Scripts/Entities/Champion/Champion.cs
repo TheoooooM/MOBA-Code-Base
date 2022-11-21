@@ -74,6 +74,8 @@ namespace Entities.Champion
             photonView.RPC("SyncSetMaxHpRPC",RpcTarget.All,maxHp);
         }
 
+        public event GlobalDelegates.FloatDelegate OnSetMaxHp;
+
         public void RequestIncreaseMaxHp(float amount)
         {
             photonView.RPC("IncreaseMaxHpRPC",RpcTarget.MasterClient,amount);
@@ -89,6 +91,8 @@ namespace Entities.Champion
             maxHp -= amount;
             photonView.RPC("SyncSetMaxHpRPC",RpcTarget.MasterClient,maxHp);
         }
+
+        public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
 
         public void RequestDecreaseMaxHp(float amount)
         {
@@ -106,6 +110,8 @@ namespace Entities.Champion
             photonView.RPC("SyncDecreaseMaxHpRPC",RpcTarget.MasterClient,maxHp);
         }
 
+        public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
+
         public void RequestSetCurrentHp(float value)
         {
             photonView.RPC("SetCurrentHpRPC",RpcTarget.MasterClient,value);
@@ -121,6 +127,8 @@ namespace Entities.Champion
             currentHp = value;
             photonView.RPC("SyncSetCurrentHpRPC",RpcTarget.All,value);
         }
+
+        public event GlobalDelegates.FloatDelegate OnSetCurrentHp;
 
         public void RequestSetCurrentHpPercent(float value)
         {
@@ -138,6 +146,8 @@ namespace Entities.Champion
             photonView.RPC("SetCurrentHpPercentRPC",RpcTarget.All,value);
         }
 
+        public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
+
         public void RequestIncreaseCurrentHp(float amount)
         {
             
@@ -153,6 +163,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
+
         public void RequestDecreaseCurrentHp(float amount)
         {
             
@@ -167,6 +179,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
 
         public bool CanAttack()
         {
@@ -188,6 +202,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.BoolDelegate OnSetCanAttack;
+
         public void RequestAttack(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
             
@@ -202,6 +218,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnAttack;
 
         public bool CanCast()
         {
@@ -223,6 +241,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.FloatDelegate OnSetCanCast;
+
         public void RequestCast(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
             
@@ -237,6 +257,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCast;
 
         public bool IsAlive()
         {
@@ -263,6 +285,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.BoolDelegate OnSetCanDie;
+
         public void RequestDie()
         {
             
@@ -278,6 +302,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.NoParameterDelegate OnDie;
+
         public void RequestRevive()
         {
             
@@ -292,6 +318,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.NoParameterDelegate OnRevive;
 
         public bool CanBeDisplaced()
         {
@@ -313,6 +341,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.BoolDelegate OnSetCanBeDisplaced;
+
         public void RequestDisplace()
         {
             
@@ -327,6 +357,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.NoParameterDelegate OnDisplace;
 
         public bool CanMove()
         {
@@ -358,6 +390,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.BoolDelegate OnSetCanMove;
+
         public void RequestSetReferenceMoveSpeed(float value)
         {
             
@@ -372,6 +406,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeed;
 
         public void RequestIncreaseReferenceMoveSpeed(float amount)
         {
@@ -388,6 +424,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeed;
+
         public void RequestDecreaseReferenceMoveSpeed(float amount)
         {
             
@@ -402,6 +440,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeed;
 
         public void RequestSetCurrentMoveSpeed(float value)
         {
@@ -418,6 +458,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeed;
+
         public void RequestIncreaseCurrentMoveSpeed(float amount)
         {
             
@@ -432,6 +474,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeed;
 
         public void RequestDecreaseCurrentMoveSpeed(float amount)
         {
@@ -448,6 +492,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
+
         public void RequestMove(Vector3 position)
         {
             
@@ -462,6 +508,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.Vector3Delegate OnMove;
 
         public float GetMaxRessource()
         {
@@ -493,6 +541,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.FloatDelegate OnSetMaxResource;
+
         public void RequestIncreaseMaxRessource(float amount)
         {
             
@@ -507,6 +557,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.FloatDelegate OnIncreaseMaxResource;
 
         public void RequestDecreaseMaxRessource(float amount)
         {
@@ -523,6 +575,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.FloatDelegate OnDecreaseMaxResource;
+
         public void RequestSetCurrentRessource(float value)
         {
             
@@ -537,6 +591,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.FloatDelegate OnSetCurrentResource;
 
         public void RequestSetCurrentRessourcePercent(float value)
         {
@@ -553,6 +609,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.FloatDelegate OnSetCurrentResourcePercent;
+
         public void RequestIncreaseCurrentRessource(float amount)
         {
             
@@ -568,6 +626,8 @@ namespace Entities.Champion
             
         }
 
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentResource;
+
         public void RequestDecreaseCurrentRessource(float amount)
         {
             
@@ -582,6 +642,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentResource;
 
         public Enums.Team GetTeam()
         {
@@ -607,6 +669,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.BoolDelegate OnChangeTeam;
 
         public float GetViewRange()
         {
@@ -769,6 +833,8 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        public event GlobalDelegates.BoolDelegate OnSetCanBeTargeted;
+
         public void RequestOnTargeted()
         {
             throw new System.NotImplementedException();
@@ -784,6 +850,8 @@ namespace Entities.Champion
             throw new System.NotImplementedException();
         }
 
+        public event GlobalDelegates.NoParameterDelegate OnOnTargeted;
+
         public void RequestOnUntargeted()
         {
             
@@ -798,6 +866,8 @@ namespace Entities.Champion
         {
             
         }
+
+        public event GlobalDelegates.NoParameterDelegate OnOnUntargeted;
 
         public void TryAddFOWViewable(IFOWViewable FOWWhichSee)
         {
