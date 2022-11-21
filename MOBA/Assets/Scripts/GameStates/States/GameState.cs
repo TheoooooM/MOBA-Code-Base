@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class GameState : MonoBehaviour
+namespace GameStates.States
 {
-    // Start is called before the first frame update
-    void Start()
+    public abstract class GameState
     {
-        
-    }
+        public abstract void StartState();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public abstract void UpdateState();
+
+        public abstract void ExitState();
     }
 }

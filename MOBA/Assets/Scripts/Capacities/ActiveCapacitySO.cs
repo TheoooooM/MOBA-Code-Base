@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Capacities
+namespace Entities.Capacities
 {
-
 //Asset Menu Synthax :
 //[CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO", fileName = "new ActiveCapacitySO")]
     public abstract class ActiveCapacitySO : ScriptableObject
@@ -13,7 +11,7 @@ namespace Capacities
 
         [Tooltip("GD Name")] public string descriptionName;
 
-        [Tooltip("Description of the capacity")]
+        [TextArea(4, 4)] [Tooltip("Description of the capacity")]
         public string description;
 
         [Tooltip("Cooldown in second")] public float cooldown;

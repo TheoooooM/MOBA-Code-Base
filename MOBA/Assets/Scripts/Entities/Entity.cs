@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Capacities;
+using Entities.Capacities;
 using Photon.Pun;
 using UnityEngine;
 

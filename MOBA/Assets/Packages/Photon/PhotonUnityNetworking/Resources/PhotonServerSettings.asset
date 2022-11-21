@@ -49,6 +49,76 @@ MonoBehaviour:
   - SyncSetCanAddPassiveCapacityRPC
   - SyncSetCanRemovePassiveCapacityRPC
   - SyncRenderFogRPC
+  - AddItemRPC
+  - AttackRPC
+  - CastRPC
+  - ChangeTeamRPC
+  - DecreaseCurrentHpRPC
+  - DecreaseCurrentMoveSpeedRPC
+  - DecreaseCurrentRessourceRPC
+  - DecreaseMaxHpRPC
+  - DecreaseMaxRessourceRPC
+  - DecreaseReferenceMoveSpeedRPC
+  - DieRPC
+  - DisplaceRPC
+  - IncreaseCurrentHpRPC
+  - IncreaseCurrentMoveSpeedRPC
+  - IncreaseCurrentRessourceRPC
+  - IncreaseMaxHpRPC
+  - IncreaseMaxRessourceRPC
+  - IncreaseReferenceMoveSpeedRPC
+  - MoveRPC
+  - RemoveItemRPC
+  - ReviveRPC
+  - SetCanAttackRPC
+  - SetCanBeDisplacedRPC
+  - SetCanCastRPC
+  - SetCanDieRPC
+  - SetCanMoveRPC
+  - SetCurrentHpRPC
+  - SetCurrentMoveSpeedRPC
+  - SetCurrentRessourcePercentRPC
+  - SetCurrentRessourceRPC
+  - SetMaxHpRPC
+  - SetMaxRessourceRPC
+  - SetReferenceMoveSpeedRPC
+  - SetViewRangeRPC
+  - SyncAddItemRPC
+  - SyncAttackRPC
+  - SyncCastRPC
+  - SyncChangeTeamRPC
+  - SyncDecreaseCurrentHpRPC
+  - SyncDecreaseCurrentMoveSpeedRPC
+  - SyncDecreaseCurrentRessourceRPC
+  - SyncDecreaseMaxHpRPC
+  - SyncDecreaseMaxRessourceRPC
+  - SyncDecreaseReferenceMoveSpeedRPC
+  - SyncDieRPC
+  - SyncDisplaceRPC
+  - SyncIncreaseCurrentHpRPC
+  - SyncIncreaseCurrentMoveSpeedRPC
+  - SyncIncreaseCurrentRessourceRPC
+  - SyncIncreaseMaxHpRPC
+  - SyncIncreaseMaxRessourceRPC
+  - SyncIncreaseReferenceMoveSpeedRPC
+  - SyncMoveRPC
+  - SyncRemoveItemRPC
+  - SyncReviveRPC
+  - SyncSetCanAttackRPC
+  - SyncSetCanBeDisplacedRPC
+  - SyncSetCanCastRPC
+  - SyncSetCanDieRPC
+  - SyncSetCanMoveRPC
+  - SyncSetCurrentHpPercentRPC
+  - SyncSetCurrentHpRPC
+  - SyncSetCurrentMoveSpeedRPC
+  - SyncSetCurrentRessourcePercentRPC
+  - SyncSetCurrentRessourceRPC
+  - SyncSetMaxHpRPC
+  - SyncSetMaxRessourceRPC
+  - SyncSetReferenceMoveSpeedRPC
+  - SyncSetViewRangeRPC
+  - SyncStatesRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -1,14 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace Capacities
+namespace Entities.Capacities
 {
     public abstract class PassiveCapacity
     {
         private int referenceIndex; //Index Reference in CapacitySOCollectionManager
 
-        private PassiveCapacitySO so; //Reference to his Scriptable Object
+        private PassiveCapacitySO so; //Reference to its Scriptable Object
 
         private int count; //Amount of Stacks
 
@@ -29,7 +27,7 @@ namespace Capacities
         }
 
         /// <summary>
-        /// Call when a Stack of the capicity is Removed
+        /// Call when a Stack of the capacity is Removed
         /// </summary>
         public virtual void OnRemoved()
         {

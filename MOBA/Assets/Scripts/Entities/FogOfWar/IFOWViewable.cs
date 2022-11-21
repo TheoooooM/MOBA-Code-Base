@@ -2,9 +2,16 @@ namespace Entities.FogOfWar
 {
     public interface IFOWViewable
     {
-        /// <returns>The view range of the entity</returns>
-        public float GetViewRange();
+        public bool CanView();
 
+        /// <returns>The view range of the entity</returns>
+        public float GetFOWViewRange();
+        public float GetFOWBaseViewRange();
+
+        public void RequestSetCanView();
+        public void SyncSetCanViewRPC();
+        public void SetCanViewRPC();
+        
         /// <summary>
         /// Sends an RPC to the master to set the entity's view range.
         /// </summary>
@@ -22,5 +29,17 @@ namespace Entities.FogOfWar
         /// </summary>
         /// <param name="value">the value to set it to</param>
         public void SetViewRangeRPC(float value);
+
+        public void RequestSetBaseViewRange(float value);
+        public void SyncSetBaseViewRangeRPC(float value);
+        public void SetBaseViewRangeRPC(float value);
+
+        public void RequestAddFOWSeeable(uint FOWSeeableIndex);
+        public void SyncAddFOWSeeableRPC(uint FOWSeeableIndex);
+        public void AddFOWSeeableRPC(uint FOWSeeableIndex);
+        
+        public void RequestRemoveFOWSeeable(uint FOWSeeableIndex);
+        public void SyncRemoveFOWSeeableRPC(uint FOWSeeableIndex);
+        public void RemoveFOWSeeableRPC(uint FOWSeeableIndex);
     }
 }
