@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Entities.FogOfWar;
 using Entities.Inventory;
-using UnityEditor.Searcher;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Entities.Champion
 {
-    public class Champion : Entity, IActiveLifeable, IAttackable, ICastable, IDeadable, IDisplaceable, IMoveable,
-        IRessourceable, ITeamable, IFogOfWarViewable, IInventoryable
+    public class Champion : Entity, IActiveLifeable, IAttackable, ICastable, IDeadable, ITargetable, IDisplaceable, IMoveable,
+        IRessourceable, ITeamable, IFOWViewable, IFOWShowable, IInventoryable
     {
         public ChampionSO championSo;
 
@@ -20,6 +20,9 @@ namespace Entities.Champion
         public bool isAlive;
         public float referenceMoveSpeed;
         public float currentMoveSpeed;
+        public byte attackAbilityIndex;
+        public byte[] abilitiesIndexes = new byte[2];
+        public byte ultimateAbilityIndex;
         
         public bool canAttack;
         public bool canCast;
@@ -59,62 +62,66 @@ namespace Entities.Champion
 
         public void RequestSetMaxHp(float value)
         {
-            
+            photonView.RPC("SetMaxHpRPC",RpcTarget.MasterClient,value);
         }
 
-        public void SyncSetMaxHpRPC(float value)
+        [PunRPC] public void SyncSetMaxHpRPC(float value)
         {
-            
+            maxHp = value;
         }
 
-        public void SetMaxHpRPC(float value)
+        [PunRPC] public void SetMaxHpRPC(float value)
         {
-            
+            maxHp = value;
+            photonView.RPC("SyncSetMaxHpRPC",RpcTarget.All,maxHp);
         }
 
         public void RequestIncreaseMaxHp(float amount)
         {
-            
+            photonView.RPC("IncreaseMaxHpRPC",RpcTarget.MasterClient,amount);
         }
 
-        public void SyncIncreaseMaxHpRPC(float amount)
+        [PunRPC] public void SyncIncreaseMaxHpRPC(float amount)
         {
-            
+            if (!PhotonNetwork.IsMasterClient) maxHp += amount;
         }
 
-        public void IncreaseMaxHpRPC(float amount)
+        [PunRPC] public void IncreaseMaxHpRPC(float amount)
         {
-            
+            maxHp -= amount;
+            photonView.RPC("SyncSetMaxHpRPC",RpcTarget.MasterClient,maxHp);
         }
 
         public void RequestDecreaseMaxHp(float amount)
         {
-            
+            photonView.RPC("DecreaseMaxHpRPC",RpcTarget.MasterClient,amount);
         }
 
-        public void SyncDecreaseMaxHpRPC(float amount)
+        [PunRPC] public void SyncDecreaseMaxHpRPC(float amount)
         {
-            
+            if (!PhotonNetwork.IsMasterClient) maxHp -= amount;
         }
 
-        public void DecreaseMaxHpRPC(float amount)
+        [PunRPC] public void DecreaseMaxHpRPC(float amount)
         {
-            
+            maxHp -= amount;
+            photonView.RPC("SyncDecreaseMaxHpRPC",RpcTarget.MasterClient,maxHp);
         }
 
         public void RequestSetCurrentHp(float value)
         {
-            
+            photonView.RPC("SetCurrentHpRPC",RpcTarget.MasterClient,value);
         }
 
-        public void SyncSetCurrentHpRPC(float value)
+        [PunRPC] public void SyncSetCurrentHpRPC(float value)
         {
-            
+            currentHp = value;
         }
 
-        public void SetCurrentHpRPC(float value)
+        [PunRPC] public void SetCurrentHpRPC(float value)
         {
-            
+            currentHp = value;
+            photonView.RPC("SyncSetCurrentHpRPC",RpcTarget.All,value);
         }
 
         public void RequestSetCurrentHpPercent(float value)
@@ -122,12 +129,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetCurrentHpPercentRPC(float value)
+        [PunRPC] public void SyncSetCurrentHpPercentRPC(float value)
         {
             
         }
 
-        public void SetCurrentHpRPCPercent(float value)
+        public void SetCurrentHpPercentRPC(float value)
         {
             
         }
@@ -137,12 +144,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncIncreaseCurrentHpRPC(float amount)
+        [PunRPC] public void SyncIncreaseCurrentHpRPC(float amount)
         {
             
         }
 
-        public void IncreaseCurrentHpRPC(float amount)
+        [PunRPC] public void IncreaseCurrentHpRPC(float amount)
         {
             
         }
@@ -152,12 +159,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncDecreaseCurrentHpRPC(float amount)
+        [PunRPC] public void SyncDecreaseCurrentHpRPC(float amount)
         {
             
         }
 
-        public void DecreaseCurrentHpRPC(float amount)
+        [PunRPC] public void DecreaseCurrentHpRPC(float amount)
         {
             
         }
@@ -172,12 +179,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetCanAttackRPC(bool value)
+        [PunRPC] public void SyncSetCanAttackRPC(bool value)
         {
             
         }
 
-        public void SetCanAttackRPC(bool value)
+        [PunRPC] public void SetCanAttackRPC(bool value)
         {
             
         }
@@ -187,12 +194,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncAttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        [PunRPC] public void SyncAttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
             
         }
 
-        public void AttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        [PunRPC] public void AttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
             
         }
@@ -207,12 +214,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetCanCastRPC(bool value)
+        [PunRPC] public void SyncSetCanCastRPC(bool value)
         {
             
         }
 
-        public void SetCanCastRPC(bool value)
+        [PunRPC] public void SetCanCastRPC(bool value)
         {
             
         }
@@ -222,12 +229,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncCastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        [PunRPC] public void SyncCastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
             
         }
 
-        public void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        [PunRPC] public void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
         {
             
         }
@@ -247,12 +254,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetCanDieRPC(bool value)
+        [PunRPC] public void SyncSetCanDieRPC(bool value)
         {
             
         }
 
-        public void SetCanDieRPC(bool value)
+        [PunRPC] public void SetCanDieRPC(bool value)
         {
             
         }
@@ -262,12 +269,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncDieRPC()
+        [PunRPC] public void SyncDieRPC()
         {
             
         }
 
-        public void DieRPC()
+        [PunRPC] public void DieRPC()
         {
             
         }
@@ -277,12 +284,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncReviveRPC()
+        [PunRPC] public void SyncReviveRPC()
         {
             
         }
 
-        public void ReviveRPC()
+        [PunRPC] public void ReviveRPC()
         {
             
         }
@@ -297,12 +304,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetCanBeDisplacedRPC(bool value)
+        [PunRPC] public void SyncSetCanBeDisplacedRPC(bool value)
         {
             
         }
 
-        public void SetCanBeDisplacedRPC(bool value)
+        [PunRPC] public void SetCanBeDisplacedRPC(bool value)
         {
             
         }
@@ -312,12 +319,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncDisplaceRPC()
+        [PunRPC] public void SyncDisplaceRPC()
         {
             
         }
 
-        public void DisplaceRPC()
+        [PunRPC] public void DisplaceRPC()
         {
             
         }
@@ -342,12 +349,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetCanMoveRPC(bool value)
+        [PunRPC] public void SyncSetCanMoveRPC(bool value)
         {
             
         }
 
-        public void SetCanMoveRPC(bool value)
+        [PunRPC] public void SetCanMoveRPC(bool value)
         {
             
         }
@@ -357,12 +364,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetReferenceMoveSpeedRPC(float value)
+        [PunRPC] public void SyncSetReferenceMoveSpeedRPC(float value)
         {
             
         }
 
-        public void SetReferenceMoveSpeedRPC(float value)
+        [PunRPC] public void SetReferenceMoveSpeedRPC(float value)
         {
             
         }
@@ -372,12 +379,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncIncreaseReferenceMoveSpeedRPC(float amount)
+        [PunRPC] public void SyncIncreaseReferenceMoveSpeedRPC(float amount)
         {
             
         }
 
-        public void IncreaseReferenceMoveSpeedRPC(float amount)
+        [PunRPC] public void IncreaseReferenceMoveSpeedRPC(float amount)
         {
             
         }
@@ -387,12 +394,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncDecreaseReferenceMoveSpeedRPC(float amount)
+        [PunRPC] public void SyncDecreaseReferenceMoveSpeedRPC(float amount)
         {
             
         }
 
-        public void DecreaseReferenceMoveSpeedRPC(float amount)
+        [PunRPC] public void DecreaseReferenceMoveSpeedRPC(float amount)
         {
             
         }
@@ -402,12 +409,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetCurrentMoveSpeedRPC(float value)
+        [PunRPC] public void SyncSetCurrentMoveSpeedRPC(float value)
         {
             
         }
 
-        public void SetCurrentMoveSpeedRPC(float value)
+        [PunRPC] public void SetCurrentMoveSpeedRPC(float value)
         {
             
         }
@@ -417,12 +424,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncIncreaseCurrentMoveSpeedRPC(float amount)
+        [PunRPC] public void SyncIncreaseCurrentMoveSpeedRPC(float amount)
         {
             
         }
 
-        public void IncreaseCurrentMoveSpeedRPC(float amount)
+        [PunRPC] public void IncreaseCurrentMoveSpeedRPC(float amount)
         {
             
         }
@@ -432,12 +439,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncDecreaseCurrentMoveSpeedRPC(float amount)
+        [PunRPC] public void SyncDecreaseCurrentMoveSpeedRPC(float amount)
         {
             
         }
 
-        public void DecreaseCurrentMoveSpeedRPC(float amount)
+        [PunRPC] public void DecreaseCurrentMoveSpeedRPC(float amount)
         {
             
         }
@@ -447,12 +454,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncMoveRPC(Vector3 position)
+        [PunRPC] public void SyncMoveRPC(Vector3 position)
         {
             
         }
 
-        public void MoveRPC(Vector3 position)
+        [PunRPC] public void MoveRPC(Vector3 position)
         {
             
         }
@@ -477,12 +484,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetMaxRessourceRPC(float value)
+        [PunRPC] public void SyncSetMaxRessourceRPC(float value)
         {
             
         }
 
-        public void SetMaxRessourceRPC(float value)
+        [PunRPC] public void SetMaxRessourceRPC(float value)
         {
             
         }
@@ -492,12 +499,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncIncreaseMaxRessourceRPC(float amount)
+        [PunRPC] public void SyncIncreaseMaxRessourceRPC(float amount)
         {
             
         }
 
-        public void IncreaseMaxRessourceRPC(float amount)
+        [PunRPC] public void IncreaseMaxRessourceRPC(float amount)
         {
             
         }
@@ -507,12 +514,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncDecreaseMaxRessourceRPC(float amount)
+        [PunRPC] public void SyncDecreaseMaxRessourceRPC(float amount)
         {
             
         }
 
-        public void DecreaseMaxRessourceRPC(float amount)
+        [PunRPC] public void DecreaseMaxRessourceRPC(float amount)
         {
             
         }
@@ -522,12 +529,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetCurrentRessourceRPC(float value)
+        [PunRPC] public void SyncSetCurrentRessourceRPC(float value)
         {
             
         }
 
-        public void SetCurrentRessourceRPC(float value)
+        [PunRPC] public void SetCurrentRessourceRPC(float value)
         {
             
         }
@@ -537,12 +544,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetCurrentRessourcePercentRPC(float value)
+        [PunRPC] public void SyncSetCurrentRessourcePercentRPC(float value)
         {
             
         }
 
-        public void SetCurrentRessourceRPCPercent(float value)
+        [PunRPC] public void SetCurrentRessourcePercentRPC(float value)
         {
             
         }
@@ -552,12 +559,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncIncreaseCurrentRessourceRPC(float amount)
+        [PunRPC] public void SyncIncreaseCurrentRessourceRPC(float amount)
         {
             
         }
 
-        public void IncreaseCurrentRessourceRPC(float amount)
+        [PunRPC] public void IncreaseCurrentRessourceRPC(float amount)
         {
             
         }
@@ -567,12 +574,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncDecreaseCurrentRessourceRPC(float amount)
+        [PunRPC] public void SyncDecreaseCurrentRessourceRPC(float amount)
         {
             
         }
 
-        public void DecreaseCurrentRessourceRPC(float amount)
+        [PunRPC] public void DecreaseCurrentRessourceRPC(float amount)
         {
             
         }
@@ -592,12 +599,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncChangeTeamRPC(bool value)
+        [PunRPC] public void SyncChangeTeamRPC(bool value)
         {
             
         }
 
-        public void ChangeTeamRPC(bool value)
+        [PunRPC] public void ChangeTeamRPC(bool value)
         {
             
         }
@@ -612,12 +619,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncSetViewRangeRPC(float value)
+        [PunRPC] public void SyncSetViewRangeRPC(float value)
         {
             
         }
 
-        public void SetViewRangeRPC(float value)
+        [PunRPC] public void SetViewRangeRPC(float value)
         {
             
         }
@@ -638,12 +645,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncAddItemRPC(byte index)
+        [PunRPC] public void SyncAddItemRPC(byte index)
         {
             
         }
 
-        public void AddItemRPC(byte index)
+        [PunRPC] public void AddItemRPC(byte index)
         {
             
         }
@@ -658,12 +665,12 @@ namespace Entities.Champion
             
         }
 
-        public void SyncRemoveItemRPC(byte index)
+        [PunRPC] public void SyncRemoveItemRPC(byte index)
         {
             
         }
 
-        public void RemoveItemRPC(byte index)
+        [PunRPC] public void RemoveItemRPC(byte index)
         {
             
         }

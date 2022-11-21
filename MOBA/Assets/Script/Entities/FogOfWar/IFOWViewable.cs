@@ -1,6 +1,6 @@
 namespace Entities.FogOfWar
 {
-    public interface IFogOfWarViewable
+    public interface IFOWViewable
     {
         /// <returns>The view range of the entity</returns>
         public float GetViewRange();

@@ -11,7 +11,7 @@ namespace Entities.FogOfWar
         /// List Of all IFogOfWarViewable for Fog of War render
         /// </summary>
         /// <param name="IFogOfWarViewable"> Interface for Entity </param>
-        private List<IFogOfWarViewable> allViewable;
+        private List<IFOWViewable> allViewable;
 
         /// <summary>
         /// Call In Update
@@ -29,7 +29,7 @@ namespace Entities.FogOfWar
         /// Add Entity To the Fog Of War render
         /// </summary>
         /// <param name="viewable"></param>
-        public void AddViewable(IFogOfWarViewable viewable)
+        public void AddViewable(IFOWViewable viewable)
         {
             allViewable.Add(viewable);
         }
@@ -38,7 +38,7 @@ namespace Entities.FogOfWar
         /// Remove Entity To the Fog Of War render
         /// </summary>
         /// <param name="viewable"></param>
-        public void REmoveViewable(IFogOfWarViewable viewable)
+        public void REmoveViewable(IFOWViewable viewable)
         {
             allViewable.Remove(viewable);
         }

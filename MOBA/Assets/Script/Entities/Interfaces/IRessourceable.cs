@@ -87,7 +87,7 @@
         /// Sets the entity's currentRessource to a percentage of its maxRessource.
         /// </summary>
         /// <param name="value">the value to set it to</param>
-        public void SetCurrentRessourceRPCPercent(float value);
+        public void SetCurrentRessourcePercentRPC(float value);
         
         /// <summary>
         /// Sends an RPC to the master to increase the entity's currentRessource.

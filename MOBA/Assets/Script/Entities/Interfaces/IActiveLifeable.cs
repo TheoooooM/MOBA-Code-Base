@@ -87,7 +87,7 @@
         /// Sets the entity's currentHp to a percentage of its maxHp.
         /// </summary>
         /// <param name="value">the value to set it to</param>
-        public void SetCurrentHpRPCPercent(float value);
+        public void SetCurrentHpPercentRPC(float value);
         
         /// <summary>
         /// Sends an RPC to the master to increase the entity's currentHp.
