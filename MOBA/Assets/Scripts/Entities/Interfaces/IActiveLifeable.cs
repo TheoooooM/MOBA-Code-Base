@@ -24,6 +24,8 @@
         /// </summary>
         /// <param name="value">the value to set it to</param>
         public void SetMaxHpRPC(float value);
+
+        public event GlobalDelegates.FloatDelegate OnSetMaxHp;
         
         /// <summary>
         /// Sends an RPC to the master to increase the entity's maxHp.
@@ -40,6 +42,8 @@
         /// </summary>
         /// <param name="amount">the increase amount</param>
         public void IncreaseMaxHpRPC(float amount);
+
+        public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
         
         /// <summary>
         /// Sends an RPC to the master to decrease the entity's maxHp.
@@ -56,7 +60,9 @@
         /// </summary>
         /// <param name="amount">the increase amount</param>
         public void DecreaseMaxHpRPC(float amount);
-        
+
+        public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
+
         /// <summary>
         /// Sends an RPC to the master to set the entity's currentHp.
         /// </summary>
@@ -72,6 +78,8 @@
         /// </summary>
         /// <param name="value">the value to set it to</param>
         public void SetCurrentHpRPC(float value);
+
+        public event GlobalDelegates.FloatDelegate OnSetCurrentHp;
         
         /// <summary>
         /// Sends an RPC to the master to set the entity's currentHp to a percentage of  its maxHp.
@@ -88,6 +96,8 @@
         /// </summary>
         /// <param name="value">the value to set it to</param>
         public void SetCurrentHpPercentRPC(float value);
+
+        public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
         
         /// <summary>
         /// Sends an RPC to the master to increase the entity's currentHp.
@@ -104,6 +114,8 @@
         /// </summary>
         /// <param name="amount">the decrease amount</param>
         public void IncreaseCurrentHpRPC(float amount);
+
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
         
         /// <summary>
         /// Sends an RPC to the master to decrease the entity's currentHp.
@@ -120,6 +132,8 @@
         /// </summary>
         /// <param name="amount">the decrease amount</param>
         public void DecreaseCurrentHpRPC(float amount);
+
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
     }
 }
 

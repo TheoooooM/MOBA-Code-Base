@@ -19,5 +19,7 @@
         /// Sets if the entity can move.
         /// </summary>
         public void ChangeTeamRPC(bool value);
+
+        public event GlobalDelegates.BoolDelegate OnChangeTeam;
     }
 }

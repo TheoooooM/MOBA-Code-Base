@@ -2,6 +2,7 @@ using UnityEngine;
 
 public  class GlobalDelegates : MonoBehaviour
 {
+    public delegate void NoParameterDelegate();
     public delegate void BoolDelegate(bool b);
 
     public delegate void FloatDelegate(float f);

@@ -19,6 +19,8 @@
         /// Sets if the entity can die.
         /// </summary>
         public void SetCanDieRPC(bool value);
+
+        public event GlobalDelegates.BoolDelegate OnSetCanDie;
         
         /// <summary>
         /// Sends an RPC to the master to kill the entity.
@@ -32,6 +34,8 @@
         /// Kills the entity.
         /// </summary>
         public void DieRPC();
+
+        public event GlobalDelegates.NoParameterDelegate OnDie;
         
         /// <summary>
         /// Sends an RPC to the master to revive the entity.
@@ -45,5 +49,7 @@
         /// Revives the entity.
         /// </summary>
         public void ReviveRPC();
+
+        public event GlobalDelegates.NoParameterDelegate OnRevive;
     }
 }
