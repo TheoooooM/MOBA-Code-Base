@@ -7,7 +7,6 @@ namespace Controllers.Inputs
 {
     public abstract class PlayerInputController : Controller
     {
-        protected PlayerInputs inputMap;
 
         protected override void OnAwake()
         {
@@ -23,8 +22,8 @@ namespace Controllers.Inputs
         /// </summary>
         void SetupInputMap()
         {
-            inputMap = new PlayerInputs();
-            inputMap.Enable();
+            InputManager.PlayerMap = new PlayerInputs();
+            InputManager.PlayerMap.Enable();
         }
 
         /// <summary>

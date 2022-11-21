@@ -118,24 +118,24 @@ namespace Controllers.Inputs
 
         protected override void Link()
         {
-            inputMap.Attack.Attack.performed += OnAttack;
+            InputManager.PlayerMap.Attack.Attack.performed += OnAttack;
             
-            inputMap.Capacity.Capacity0.performed += OnActivateCapacity0;
-            inputMap.Capacity.Capacity1.performed += OnActivateCapacity1;
-            inputMap.Capacity.Capacity2.performed += OnActivateCapacity2;
+            InputManager.PlayerMap.Capacity.Capacity0.performed += OnActivateCapacity0;
+            InputManager.PlayerMap.Capacity.Capacity1.performed += OnActivateCapacity1;
+            InputManager.PlayerMap.Capacity.Capacity2.performed += OnActivateCapacity2;
             
-            inputMap.Movement.Move.performed += OnMove;
+            InputManager.PlayerMap.Movement.Move.performed += OnMove;
         }
         
         protected override void Unlink()
         {
-            inputMap.Attack.Attack.performed -= OnAttack;
+            InputManager.PlayerMap.Attack.Attack.performed -= OnAttack;
             
-            inputMap.Capacity.Capacity0.performed -= OnActivateCapacity0;
-            inputMap.Capacity.Capacity1.performed -= OnActivateCapacity1;
-            inputMap.Capacity.Capacity2.performed -= OnActivateCapacity2;
+            InputManager.PlayerMap.Capacity.Capacity0.performed -= OnActivateCapacity0;
+            InputManager.PlayerMap.Capacity.Capacity1.performed -= OnActivateCapacity1;
+            InputManager.PlayerMap.Capacity.Capacity2.performed -= OnActivateCapacity2;
             
-            inputMap.Movement.Move.performed -= OnMove;
+            InputManager.PlayerMap.Movement.Move.performed -= OnMove;
         }
     }
 }
