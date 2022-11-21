@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Entities
 {
+    [RequireComponent(typeof(PhotonView))]
     public abstract class Entity : MonoBehaviourPun
     {
         /// <summary>
