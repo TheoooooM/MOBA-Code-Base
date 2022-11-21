@@ -35,7 +35,7 @@ namespace Entities
         /// <param name="entity">The entity to add</param>
         public static void AddEntity(Entity entity)
         {
-            var index = (uint) entity.entityIndex;
+            var index = entity.entityIndex;
             if (allEntitiesDict.ContainsKey(index))
             {
                 allEntitiesDict[index] = entity;
@@ -63,7 +63,7 @@ namespace Entities
         /// <param name="entity">The entity to remove</param>
         public static void RemoveEntity(Entity entity)
         {
-            view.RPC("RemoveEntityByIndexRPC", RpcTarget.All, (uint) entity.entityIndex);
+            view.RPC("RemoveEntityByIndexRPC", RpcTarget.All, entity.entityIndex);
         }
 
         /// <summary>
