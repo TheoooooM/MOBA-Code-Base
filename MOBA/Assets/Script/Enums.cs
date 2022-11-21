@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Enums : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum Team
     {
-        
+        Neutral, Team1, Team2
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    /// <summary>
+    /// All type of a capacity that can define it
+    /// </summary>
+    public enum CapacityType
     {
-        
+        Kit, Item, Positive, Negative, Attack 
     }
 }
