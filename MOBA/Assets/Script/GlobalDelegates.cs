@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GlobalDelegates : MonoBehaviour
+public  class GlobalDelegates : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
+    public delegate void basicDelegate();//Example
+    
+    public delegate void IntIntDelegate(int a,int b);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
