@@ -6,14 +6,14 @@ using UnityEngine;
 public class Entity : MonoBehaviourPun
 {
 
-    public int entityIndex; // view ID of the entity
+    public uint entityIndex; // view ID of the entity
 
     private PhotonView view;
     
     void Start()
     {
         view = GetComponent<PhotonView>();
-        entityIndex = view.ViewID;
+        entityIndex = (uint)view.ViewID;
     }
 
     
