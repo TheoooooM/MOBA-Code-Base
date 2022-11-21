@@ -3,7 +3,7 @@
     public interface ITeamable
     {
         /// <returns>the team of the entity</returns>
-        //public Enums.Teams GetTeam();
+        public Enums.Team GetTeam();
         
         /// <returns>true if the entity can change team, false if not</returns>
         public bool CanChangeTeam();

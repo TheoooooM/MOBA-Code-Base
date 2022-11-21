@@ -1,12 +1,141 @@
 using System.Collections;
 using System.Collections.Generic;
+using Entities.FogOfWar;
+using Entities.Inventory;
 using UnityEngine;
-using Entities;
 
-public abstract class Champion : Entity, IActiveLifeable, IAttackable, ICastable, IDeadable, IDisplaceable, IMoveable,
-    IRessourceable, ITeamable
+namespace Entities.Champion
 {
-    public ChampionSO championSo;
-    
-    
+    public abstract class Champion : Entity, IActiveLifeable, IAttackable, ICastable, IDeadable, IDisplaceable, IMoveable,
+        IRessourceable, ITeamable, IFogOfWarViewable, IInventoryable
+    {
+        public ChampionSO championSo;
+
+        public abstract float GetMaxHp();
+        public abstract float GetCurrentHp();
+        public abstract float GetCurrentHpPercent();
+        public abstract void RequestSetMaxHp(float value);
+        public abstract void SyncSetMaxHpRPC(float value);
+        public abstract void SetMaxHpRPC(float value);
+        public abstract void RequestIncreaseMaxHp(float amount);
+        public abstract void SyncIncreaseMaxHpRPC(float amount);
+        public abstract void IncreaseMaxHpRPC(float amount);
+        public abstract void RequestDecreaseMaxHp(float amount);
+        public abstract void SyncDecreaseMaxHpRPC(float amount);
+        public abstract void DecreaseMaxHpRPC(float amount);
+        public abstract void RequestSetCurrentHp(float value);
+        public abstract void SyncSetCurrentHpRPC(float value);
+        public abstract void SetCurrentHpRPC(float value);
+        public abstract void RequestSetCurrentHpPercent(float value);
+        public abstract void SyncSetCurrentHpPercentRPC(float value);
+        public abstract void SetCurrentHpRPCPercent(float value);
+        public abstract void RequestIncreaseCurrentHp(float amount);
+        public abstract void SyncIncreaseCurrentHpRPC(float amount);
+        public abstract void IncreaseCurrentHpRPC(float amount);
+        public abstract void RequestDecreaseCurrentHp(float amount);
+        public abstract void SyncDecreaseCurrentHpRPC(float amount);
+        public abstract void DecreaseCurrentHpRPC(float amount);
+        public abstract bool CanAttack();
+        public abstract void RequestSetCanAttack(bool value);
+        public abstract void SyncSetCanAttackRPC(bool value);
+        public abstract void SetCanAttackRPC(bool value);
+        public abstract void RequestAttack(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions);
+        public abstract void SyncAttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions);
+        public abstract void AttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions);
+        public abstract bool CanCast();
+        public abstract void RequestSetCanCast(bool value);
+        public abstract void SyncSetCanCastRPC(bool value);
+        public abstract void SetCanCastRPC(bool value);
+        public abstract void RequestCast(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions);
+        public abstract void SyncCastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions);
+        public abstract void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions);
+        public abstract bool IsAlive();
+        public abstract bool CanDie();
+        public abstract void RequestSetCanDie(bool value);
+        public abstract void SyncSetCanDieRPC(bool value);
+        public abstract void SetCanDieRPC(bool value);
+        public abstract void RequestDie();
+        public abstract void SyncDieRPC();
+        public abstract void DieRPC();
+        public abstract void RequestRevive();
+        public abstract void SyncReviveRPC();
+        public abstract void ReviveRPC();
+        public abstract bool CanBeDisplaced();
+        public abstract void RequestSetCanBeDisplaced(bool value);
+        public abstract void SyncSetCanBeDisplacedRPC(bool value);
+        public abstract void SetCanBeDisplacedRPC(bool value);
+        public abstract void RequestDisplace();
+        public abstract void SyncDisplaceRPC();
+        public abstract void DisplaceRPC();
+        public abstract bool CanMove();
+        public abstract float GetReferenceMoveSpeed();
+        public abstract float GetCurrentMoveSpeed();
+        public abstract void RequestSetCanMove(bool value);
+        public abstract void SyncSetCanMoveRPC(bool value);
+        public abstract void SetCanMoveRPC(bool value);
+        public abstract void RequestSetReferenceMoveSpeed(float value);
+        public abstract void SyncSetReferenceMoveSpeedRPC(float value);
+        public abstract void SetReferenceMoveSpeedRPC(float value);
+        public abstract void RequestIncreaseReferenceMoveSpeed(float amount);
+        public abstract void SyncIncreaseReferenceMoveSpeedRPC(float amount);
+        public abstract void IncreaseReferenceMoveSpeedRPC(float amount);
+        public abstract void RequestDecreaseReferenceMoveSpeed(float amount);
+        public abstract void SyncDecreaseReferenceMoveSpeedRPC(float amount);
+        public abstract void DecreaseReferenceMoveSpeedRPC(float amount);
+        public abstract void RequestSetCurrentMoveSpeed(float value);
+        public abstract void SyncSetCurrentMoveSpeedRPC(float value);
+        public abstract void SetCurrentMoveSpeedRPC(float value);
+        public abstract void RequestIncreaseCurrentMoveSpeed(float amount);
+        public abstract void SyncIncreaseCurrentMoveSpeedRPC(float amount);
+        public abstract void IncreaseCurrentMoveSpeedRPC(float amount);
+        public abstract void RequestDecreaseCurrentMoveSpeed(float amount);
+        public abstract void SyncDecreaseCurrentMoveSpeedRPC(float amount);
+        public abstract void DecreaseCurrentMoveSpeedRPC(float amount);
+        public abstract void RequestMove(Vector3 position);
+        public abstract void SyncMoveRPC(Vector3 position);
+        public abstract void MoveRPC(Vector3 position);
+        public abstract float GetMaxRessource();
+        public abstract float GetCurrentRessource();
+        public abstract float GetCurrentRessourcePercent();
+        public abstract void RequestSetMaxRessource(float value);
+        public abstract void SyncSetMaxRessourceRPC(float value);
+        public abstract void SetMaxRessourceRPC(float value);
+        public abstract void RequestIncreaseMaxRessource(float amount);
+        public abstract void SyncIncreaseMaxRessourceRPC(float amount);
+        public abstract void IncreaseMaxRessourceRPC(float amount);
+        public abstract void RequestDecreaseMaxRessource(float amount);
+        public abstract void SyncDecreaseMaxRessourceRPC(float amount);
+        public abstract void DecreaseMaxRessourceRPC(float amount);
+        public abstract void RequestSetCurrentRessource(float value);
+        public abstract void SyncSetCurrentRessourceRPC(float value);
+        public abstract void SetCurrentRessourceRPC(float value);
+        public abstract void RequestSetCurrentRessourcePercent(float value);
+        public abstract void SyncSetCurrentRessourcePercentRPC(float value);
+        public abstract void SetCurrentRessourceRPCPercent(float value);
+        public abstract void RequestIncreaseCurrentRessource(float amount);
+        public abstract void SyncIncreaseCurrentRessourceRPC(float amount);
+        public abstract void IncreaseCurrentRessourceRPC(float amount);
+        public abstract void RequestDecreaseCurrentRessource(float amount);
+        public abstract void SyncDecreaseCurrentRessourceRPC(float amount);
+        public abstract void DecreaseCurrentRessourceRPC(float amount);
+        public abstract Enums.Team GetTeam();
+        public abstract bool CanChangeTeam();
+        public abstract void RequestChangeTeam(bool value);
+        public abstract void SyncChangeTeamRPC(bool value);
+        public abstract void ChangeTeamRPC(bool value);
+        public abstract float GetViewRange();
+        public abstract void RequestSetViewRange(float value);
+        public abstract void SyncSetViewRangeRPC(float value);
+        public abstract void SetViewRangeRPC(float value);
+        public abstract Item[] GetItems();
+        public abstract Item GetItem(int index);
+        public abstract void RequestAddItem(byte index);
+        public abstract void SyncAddItemRPC(byte index);
+        public abstract void AddItemRPC(byte index);
+        public abstract void RequestRemoveItem(byte index);
+        public abstract void RequestRemoveItem(Item item);
+        public abstract void SyncRemoveItemRPC(byte index);
+        public abstract void RemoveItemRPC(byte index);
+    }
 }
+
