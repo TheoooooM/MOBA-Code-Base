@@ -83,7 +83,7 @@ namespace Entities.Champion
 
         [PunRPC] public void SyncIncreaseMaxHpRPC(float amount)
         {
-            if (!PhotonNetwork.IsMasterClient) maxHp += amount;
+            maxHp = amount;
         }
 
         [PunRPC] public void IncreaseMaxHpRPC(float amount)
@@ -99,7 +99,7 @@ namespace Entities.Champion
 
         [PunRPC] public void SyncDecreaseMaxHpRPC(float amount)
         {
-            if (!PhotonNetwork.IsMasterClient) maxHp -= amount;
+            maxHp = amount;
         }
 
         [PunRPC] public void DecreaseMaxHpRPC(float amount)
@@ -126,17 +126,18 @@ namespace Entities.Champion
 
         public void RequestSetCurrentHpPercent(float value)
         {
-            
+            photonView.RPC("SetCurrentHpPercentRPC",RpcTarget.All,value);
         }
 
         [PunRPC] public void SyncSetCurrentHpPercentRPC(float value)
         {
-            
+            currentHp = value;
         }
 
-        public void SetCurrentHpPercentRPC(float value)
+        [PunRPC] public void SetCurrentHpPercentRPC(float value)
         {
-            
+            currentHp = value * maxHp;
+            photonView.RPC("SetCurrentHpPercentRPC",RpcTarget.All,value);
         }
 
         public void RequestIncreaseCurrentHp(float amount)
@@ -671,6 +672,56 @@ namespace Entities.Champion
         }
 
         [PunRPC] public void RemoveItemRPC(byte index)
+        {
+            
+        }
+
+        public bool CanBeTargeted()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RequestSetCanBeTargeted(bool value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC] public void SyncSetCanBeTargetedRPC(bool value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC] public void SetCanBeTargetedRPC(bool value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RequestOnTargeted()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC] public void SyncOnTargetedRPC()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [PunRPC] public void OnTargetedRPC()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RequestOnUntargeted()
+        {
+            
+        }
+
+        [PunRPC] public void SyncOnUntargetedRPC()
+        {
+            
+        }
+
+        [PunRPC] public void OnUntargetedRPC()
         {
             
         }
