@@ -8,16 +8,29 @@ namespace Entities
 {
     public abstract class Entity : MonoBehaviourPun
     {
-        public uint entityIndex; // view ID of the entity
+        /// <summary>
+        /// The viewID of the photonView of the entity.
+        /// </summary>
+        public uint entityIndex;
 
-        public bool canAddPassiveCapacity;
-        public bool canRemovePassiveCapacity;
-        
+        /// <summary>
+        /// True if passiveCapacities can be added to the entity's passiveCapacitiesList. False if not.
+        /// </summary>
+        [SerializeField] private bool canAddPassiveCapacity;
+
+        /// <summary>
+        /// True if passiveCapacities can be removed from the entity's passiveCapacitiesList. False if not.
+        /// </summary>
+        [SerializeField] private bool canRemovePassiveCapacity;
+
+        /// <summary>
+        /// The list of PassiveCapacity on the entity.
+        /// </summary>
         public readonly List<PassiveCapacity> passiveCapacitiesList = new List<PassiveCapacity>();
-        
+
         private void Start()
         {
-            entityIndex = (uint)photonView.ViewID;
+            entityIndex = (uint) photonView.ViewID;
             EntityCollectionManager.AddEntity(this);
 
             OnStart();
@@ -28,7 +41,6 @@ namespace Entities
         /// </summary>
         protected abstract void OnStart();
 
-        
         private void Update()
         {
             OnUpdate();
@@ -42,15 +54,56 @@ namespace Entities
         #region MasterMethods
 
         /// <summary>
+        /// Sends an RPC to the master to set the value canAddPassiveCapacity.
+        /// </summary>
+        /// <param name="value">The value to set canAddPassiveCapacity to</param>
+        [PunRPC]
+        private void SyncSetCanAddPassiveCapacityRPC(bool value)
+        {
+            photonView.RPC("SetCanAddPassiveCapacityRPC", RpcTarget.All, value);
+        }
+
+        /// <summary>
+        /// Sets if passiveCapacities can be added to the entity's passiveCapacitiesList.
+        /// </summary>
+        /// <param name="value">true if they can, false if not</param>
+        [PunRPC]
+        private void SetCanAddPassiveCapacityRPC(bool value)
+        {
+            canAddPassiveCapacity = value;
+        }
+
+        /// <summary>
+        /// Sends an RPC to the master to set the value canRemovePassiveCapacity.
+        /// </summary>
+        /// <param name="value">The value to set canRemovePassiveCapacity to</param>
+        [PunRPC]
+        private void SyncSetCanRemovePassiveCapacityRPC(bool value)
+        {
+            photonView.RPC("SetCanRemovePassiveCapacityRPC", RpcTarget.All, value);
+        }
+
+        /// <summary>
+        /// Sets if passiveCapacities can be removed the entity's passiveCapacitiesList.
+        /// </summary>
+        /// <param name="value">true if they can, false if not</param>
+        [PunRPC]
+        private void SetCanRemovePassiveCapacityRPC(bool value)
+        {
+            canRemovePassiveCapacity = value;
+        }
+
+        /// <summary>
         /// Adds a PassiveCapacity to the passiveCapacityList.
         /// </summary>
         /// <param name="index">The index of the PassiveCapacitySO of the PassiveCapacity to add</param>
         [PunRPC]
         private void AddPassiveCapacityByCapacitySOIndexRPC(uint index)
         {
+            if (!canAddPassiveCapacity) return;
             // TODO - link to CapacitySOCollectionManager
         }
-        
+
         /// <summary>
         /// Removes a PassiveCapacity from the passiveCapacityList.
         /// </summary>
@@ -58,65 +111,84 @@ namespace Entities
         [PunRPC]
         private void RemovePassiveCapacityByIndexRPC(uint index)
         {
+            if (!canRemovePassiveCapacity) return;
             // TODO - link to CapacitySOCollectionManager
         }
 
-        #endregion
-
-        #region ClientMethods
-        
         /// <summary>
         /// Sends an RPC to all clients to add a PassiveCapacity to the passiveCapacityList.
         /// </summary>
         /// <param name="capacity">The PassiveCapacity to add</param>
-        public void RequestAddPassiveCapacity(PassiveCapacity capacity)
+        public void SyncAddPassiveCapacity(PassiveCapacity capacity)
         {
-            photonView.RPC("AddPassiveCapacityRPC",RpcTarget.MasterClient);
+            photonView.RPC("AddPassiveCapacityRPC", RpcTarget.All);
         }
 
         /// <summary>
         /// Sends an RPC to all clients to add a PassiveCapacity to the passiveCapacityList.
         /// </summary>
         /// <param name="capacitySO">The PassiveCapacitySO of the PassiveCapacity to add</param>
-        public void RequestAddPassiveCapacity(PassiveCapacitySO capacitySO)
+        public void SyncAddPassiveCapacity(PassiveCapacitySO capacitySO)
         {
-            photonView.RPC("AddPassiveCapacityRPC",RpcTarget.MasterClient);
+            photonView.RPC("AddPassiveCapacityRPC", RpcTarget.All);
         }
 
         /// <summary>
         /// Sends an RPC to all clients to add a PassiveCapacity to the passiveCapacityList.
         /// </summary>
         /// <param name="index">The index in the CapacitySOCollectionManager of PassiveCapacity to add</param>
-        public void RequestAddPassiveCapacity(uint index)
+        public void SyncAddPassiveCapacity(uint index)
         {
-            photonView.RPC("AddPassiveCapacityRPC",RpcTarget.MasterClient);
+            photonView.RPC("AddPassiveCapacityRPC", RpcTarget.All);
         }
 
         /// <summary>
         /// Sends an RPC to all clients to remove a PassiveCapacity from passiveCapacityList.
         /// </summary>
         /// <param name="capacity">The PassiveCapacity to remove</param>
-        public void RequestRemovePassiveCapacity(PassiveCapacity capacity)
+        public void SyncRemovePassiveCapacity(PassiveCapacity capacity)
         {
-            photonView.RPC("RemovePassiveCapacityRPC",RpcTarget.MasterClient);
+            photonView.RPC("RemovePassiveCapacityRPC", RpcTarget.All);
         }
-        
+
         /// <summary>
         /// Sends an RPC to all clients to remove a PassiveCapacity from passiveCapacityList.
         /// </summary>
         /// <param name="capacityIndex">The index in the CapacitySOCollectionManager of PassiveCapacity to remove</param>
-        public void RequestRemovePassiveCapacity(uint capacityIndex)
+        public void SyncRemovePassiveCapacity(uint capacityIndex)
         {
-            photonView.RPC("RemovePassiveCapacityRPC",RpcTarget.MasterClient);
+            photonView.RPC("RemovePassiveCapacityRPC", RpcTarget.All);
         }
-        
+
         /// <summary>
         /// Sends an RPC to all clients to remove a PassiveCapacity from passiveCapacityList.
         /// </summary>
         /// <param name="index">The index in the passiveCapacitiesList of the PassiveCapacity to remove</param>
-        public void RequestRemovePassiveCapacityByIndex(uint index)
+        public void SyncRemovePassiveCapacityByIndex(uint index)
         {
-            photonView.RPC("RemovePassiveCapacityRPC",RpcTarget.MasterClient);
+            photonView.RPC("RemovePassiveCapacityRPC", RpcTarget.All);
+        }
+
+        #endregion
+
+        #region ClientMethods
+
+        /// <summary>
+        /// Sends an RPC to the master to set the value canAddPassiveCapacity.
+        /// </summary>
+        /// <param name="value">The value tu set canAddPassiveCapacity to</param>
+        public void RequestSetCanAddPassiveCapacity(bool value)
+        {
+            photonView.RPC("SetCanAddPassiveCapacityRPC", RpcTarget.MasterClient, value);
+        }
+
+        /// <summary>
+        /// Sends an RPC to the master to set the value canRemovePassiveCapacity.
+        /// </summary>
+        /// <param name="value">The value to set canRemovePassiveCapacity to</param>
+        public void RequestSetCanRemovePassiveCapacity(bool value)
+        {
+            photonView.RPC("SyncSetCanRemovePassiveCapacityRPC", RpcTarget.MasterClient, value);
         }
 
         #endregion

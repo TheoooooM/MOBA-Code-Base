@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Entities;
 
-public class Champion : Entity
+public abstract class Champion : Entity, IActiveLifeable, IAttackable, ICastable, IDeadable, IDisplaceable, IMoveable,
+    IRessourceable, ITeamable
 {
     public ChampionSO championSo;
     
-    protected override void OnStart()
-    {
-        
-    }
-    protected override void OnUpdate()
-    {
-        
-    }
+    
 }
