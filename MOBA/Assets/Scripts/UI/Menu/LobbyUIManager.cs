@@ -32,7 +32,7 @@ public class LobbyUIManager : MonoBehaviour
         
     }
 
-    public void OnTeamClick()
+    public void OnTeamClick(int index)
     {
         
     }

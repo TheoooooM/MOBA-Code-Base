@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using Entities;
-using UnityEngine;
 
 public class MinionTestTrash : Entity
 {
-    
-    protected override void OnStart()
-    {
-    }
+    protected override void OnStart() { }
 
-    protected override void OnUpdate()
-    {
-    }
-    
-    
+    protected override void OnUpdate() { }
+
+    public override void OnInstantiated() { }
+
+    public override void OnInstantiatedFeedback() { }
 }
