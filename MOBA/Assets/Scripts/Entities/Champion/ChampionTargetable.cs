@@ -21,6 +21,7 @@ namespace Entities.Champion
         public void SetCanBeTargetedRPC(bool value) { }
 
         public event GlobalDelegates.BoolDelegate OnSetCanBeTargeted;
+        public event GlobalDelegates.BoolDelegate OnSetCanBeTargetedFeedback;
 
         public void RequestOnTargeted() { }
 
@@ -31,6 +32,7 @@ namespace Entities.Champion
         public void OnTargetedRPC() { }
 
         public event GlobalDelegates.NoParameterDelegate OnOnTargeted;
+        public event GlobalDelegates.NoParameterDelegate OnOnTargetedFeedback;
 
         public void RequestOnUntargeted() { }
 
@@ -41,5 +43,6 @@ namespace Entities.Champion
         public void OnUntargetedRPC() { }
 
         public event GlobalDelegates.NoParameterDelegate OnOnUntargeted;
+        public event GlobalDelegates.NoParameterDelegate OnOnUntargetedFeedback;
     }
 }

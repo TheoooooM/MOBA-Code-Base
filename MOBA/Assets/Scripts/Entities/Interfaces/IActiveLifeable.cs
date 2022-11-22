@@ -26,6 +26,7 @@
         public void SetMaxHpRPC(float value);
 
         public event GlobalDelegates.FloatDelegate OnSetMaxHp;
+        public event GlobalDelegates.FloatDelegate OnSetMaxHpFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to increase the entity's maxHp.
@@ -44,6 +45,7 @@
         public void IncreaseMaxHpRPC(float amount);
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
+        public event GlobalDelegates.FloatDelegate OnIncreaseMaxHpFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to decrease the entity's maxHp.
@@ -62,6 +64,7 @@
         public void DecreaseMaxHpRPC(float amount);
 
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
+        public event GlobalDelegates.FloatDelegate OnDecreaseMaxHpFeedback;
 
         /// <summary>
         /// Sends an RPC to the master to set the entity's currentHp.
@@ -80,6 +83,7 @@
         public void SetCurrentHpRPC(float value);
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentHp;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentHpFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to set the entity's currentHp to a percentage of  its maxHp.
@@ -98,6 +102,7 @@
         public void SetCurrentHpPercentRPC(float value);
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercentFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to increase the entity's currentHp.
@@ -116,6 +121,7 @@
         public void IncreaseCurrentHpRPC(float amount);
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to decrease the entity's currentHp.
@@ -134,6 +140,7 @@
         public void DecreaseCurrentHpRPC(float amount);
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
     }
 }
 

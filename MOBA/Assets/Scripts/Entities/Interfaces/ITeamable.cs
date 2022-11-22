@@ -21,5 +21,6 @@
         public void ChangeTeamRPC(bool value);
 
         public event GlobalDelegates.BoolDelegate OnChangeTeam;
+        public event GlobalDelegates.BoolDelegate OnChangeTeamFeedback;
     }
 }

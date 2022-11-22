@@ -26,6 +26,7 @@ namespace Entities.Inventory
         public void AddItemRPC(byte index);
 
         public event GlobalDelegates.ByteDelegate OnAddItem;
+        public event GlobalDelegates.ByteDelegate OnAddItemFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to remove an item from the entity's inventory.
@@ -52,6 +53,7 @@ namespace Entities.Inventory
         public void RemoveItemRPC(byte index);
 
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
+        public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
 
     }
 }

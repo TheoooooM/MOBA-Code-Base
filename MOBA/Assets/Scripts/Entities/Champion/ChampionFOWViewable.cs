@@ -80,5 +80,9 @@ namespace Entities.Champion
         public void TryAddFOWViewable(IFOWViewable FOWWhichSee) { }
 
         public void TryRemoveFOWViewable(IFOWViewable FOWWhichSee) { }
+        public event GlobalDelegates.BoolDelegate OnSetCanShowFeedback;
+        public event GlobalDelegates.BoolDelegate OnSetCanHideFeedback;
+        public event GlobalDelegates.NoParameterDelegate ShowElementFeedback;
+        public event GlobalDelegates.NoParameterDelegate HideElementFeedback;
     }
 }

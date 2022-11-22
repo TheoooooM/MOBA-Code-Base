@@ -48,5 +48,10 @@ namespace Entities.Champion
         public void HideElementsRPC() { }
 
         public event GlobalDelegates.NoParameterDelegate HideElement;
+        public event GlobalDelegates.NoParameterDelegate OnSetCanViewFeedback;
+        public event GlobalDelegates.FloatDelegate OnSetViewRangeFeedback;
+        public event GlobalDelegates.FloatDelegate OnSetBaseViewRangeFeedback;
+        public event GlobalDelegates.UintDelegate OnAddFOWSeeableFeedback;
+        public event GlobalDelegates.UintDelegate OnRemoveFOWSeeableFeedback;
     }
 }

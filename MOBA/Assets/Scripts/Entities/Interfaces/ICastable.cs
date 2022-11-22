@@ -20,6 +20,7 @@ namespace Entities
         public void SetCanCastRPC(bool value);
 
         public event GlobalDelegates.FloatDelegate OnSetCanCast;
+        public event GlobalDelegates.FloatDelegate OnSetCanCastFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to cast an ActiveCapacity.
@@ -44,5 +45,6 @@ namespace Entities
         public void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions);
 
         public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCast;
+        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCastFeedback;
     }
 }

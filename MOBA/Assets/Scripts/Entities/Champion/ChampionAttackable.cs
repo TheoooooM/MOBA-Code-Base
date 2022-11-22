@@ -21,6 +21,7 @@ namespace Entities.Champion
         public void SetCanAttackRPC(bool value) { }
 
         public event GlobalDelegates.BoolDelegate OnSetCanAttack;
+        public event GlobalDelegates.BoolDelegate OnSetCanAttackFeedback;
 
         public void RequestAttack(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
 
@@ -31,5 +32,6 @@ namespace Entities.Champion
         public void AttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
 
         public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnAttack;
+        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnAttackFeedback;
     }
 }

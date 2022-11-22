@@ -27,6 +27,7 @@ namespace Entities.Champion
         public void AddItemRPC(byte index) { }
 
         public event GlobalDelegates.ByteDelegate OnAddItem;
+        public event GlobalDelegates.ByteDelegate OnAddItemFeedback;
 
         public void RequestRemoveItem(byte index) { }
 
@@ -39,5 +40,6 @@ namespace Entities.Champion
         public void RemoveItemRPC(byte index) { }
 
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
+        public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
     }
 }

@@ -21,6 +21,7 @@
         public void SetCanDieRPC(bool value);
 
         public event GlobalDelegates.BoolDelegate OnSetCanDie;
+        public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to kill the entity.
@@ -36,6 +37,7 @@
         public void DieRPC();
 
         public event GlobalDelegates.NoParameterDelegate OnDie;
+        public event GlobalDelegates.NoParameterDelegate OnDieFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to revive the entity.
@@ -51,5 +53,6 @@
         public void ReviveRPC();
 
         public event GlobalDelegates.NoParameterDelegate OnRevive;
+        public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
     }
 }

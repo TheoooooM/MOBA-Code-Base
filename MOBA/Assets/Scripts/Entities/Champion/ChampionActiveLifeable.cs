@@ -31,6 +31,7 @@ namespace Entities.Champion
         public void SyncSetMaxHpRPC(float value)
         {
             maxHp = value;
+            OnSetMaxHpFeedback?.Invoke(value);
         }
 
         [PunRPC]
@@ -38,9 +39,11 @@ namespace Entities.Champion
         {
             maxHp = value;
             photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, maxHp);
+            OnSetMaxHp?.Invoke(value);
         }
 
         public event GlobalDelegates.FloatDelegate OnSetMaxHp;
+        public event GlobalDelegates.FloatDelegate OnSetMaxHpFeedback;
 
         public void RequestIncreaseMaxHp(float amount)
         {
@@ -51,6 +54,7 @@ namespace Entities.Champion
         public void SyncIncreaseMaxHpRPC(float amount)
         {
             maxHp = amount;
+            OnIncreaseMaxHpFeedback?.Invoke(amount);
         }
 
         [PunRPC]
@@ -58,9 +62,11 @@ namespace Entities.Champion
         {
             maxHp -= amount;
             photonView.RPC("SyncSetMaxHpRPC", RpcTarget.MasterClient, maxHp);
+            OnIncreaseMaxHp?.Invoke(amount);
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
+        public event GlobalDelegates.FloatDelegate OnIncreaseMaxHpFeedback;
 
         public void RequestDecreaseMaxHp(float amount)
         {
@@ -81,6 +87,7 @@ namespace Entities.Champion
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
+        public event GlobalDelegates.FloatDelegate OnDecreaseMaxHpFeedback;
 
         public void RequestSetCurrentHp(float value)
         {
@@ -101,6 +108,7 @@ namespace Entities.Champion
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentHp;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentHpFeedback;
 
         public void RequestSetCurrentHpPercent(float value)
         {
@@ -121,6 +129,7 @@ namespace Entities.Champion
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercentFeedback;
 
         public void RequestIncreaseCurrentHp(float amount) { }
 
@@ -131,6 +140,7 @@ namespace Entities.Champion
         public void IncreaseCurrentHpRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
 
         public void RequestDecreaseCurrentHp(float amount) { }
 
@@ -141,5 +151,6 @@ namespace Entities.Champion
         public void DecreaseCurrentHpRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
     }
 }

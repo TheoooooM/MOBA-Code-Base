@@ -31,6 +31,7 @@ namespace Entities.Champion
         public void SetMaxResourceRPC(float value) { }
 
         public event GlobalDelegates.FloatDelegate OnSetMaxResource;
+        public event GlobalDelegates.FloatDelegate OnSetMaxResourceFeedback;
 
         public void RequestIncreaseMaxResource(float amount) { }
 
@@ -41,6 +42,7 @@ namespace Entities.Champion
         public void IncreaseMaxResourceRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxResource;
+        public event GlobalDelegates.FloatDelegate OnIncreaseMaxResourceFeedback;
 
         public void RequestDecreaseMaxResource(float amount) { }
 
@@ -51,6 +53,7 @@ namespace Entities.Champion
         public void DecreaseMaxResourceRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxResource;
+        public event GlobalDelegates.FloatDelegate OnDecreaseMaxResourceFeedback;
 
         public void RequestSetCurrentResource(float value) { }
 
@@ -61,6 +64,7 @@ namespace Entities.Champion
         public void SetCurrentResourceRPC(float value) { }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentResource;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentResourceFeedback;
 
         public void RequestSetCurrentResourcePercent(float value) { }
 
@@ -71,6 +75,7 @@ namespace Entities.Champion
         public void SetCurrentResourcePercentRPC(float value) { }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentResourcePercent;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentResourcePercentFeedback;
 
         public void RequestIncreaseCurrentResource(float amount) { }
 
@@ -81,6 +86,7 @@ namespace Entities.Champion
         public void IncreaseCurrentResourceRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentResource;
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentResourceFeedback;
 
         public void RequestDecreaseCurrentResource(float amount) { }
 
@@ -91,5 +97,6 @@ namespace Entities.Champion
         public void DecreaseCurrentResourceRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentResource;
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentResourceFeedback;
     }
 }
