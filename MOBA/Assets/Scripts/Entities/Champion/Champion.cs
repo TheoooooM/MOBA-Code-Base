@@ -14,6 +14,14 @@ namespace Entities.Champion
         protected override void OnStart() { }
 
         protected override void OnUpdate() { }
-        
+        public override void OnInstantiated()
+        {
+            
+        }
+
+        public override void OnInstantiatedFeedback()
+        {
+            
+        }
     }
 }

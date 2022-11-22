@@ -66,10 +66,13 @@ public class PoolNetworkManager : MonoBehaviour
             if (queue.Count == 0)
             {
                 entity = PhotonNetwork.Instantiate(entityRef.gameObject.name, position, rotation).GetComponent<Entity>();
+                entity.OnInstantiated();
+                entity.OnInstantiatedFeedback();
             }
             else
             {
                 entity = queue.Dequeue();
+                entity.OnInstantiated();
                 entity.SendSyncInstantiate(position,rotation);
             }
         }
@@ -79,6 +82,9 @@ public class PoolNetworkManager : MonoBehaviour
             queuesDictionary.Add(entityRef, new Queue<Entity>());
             
             entity = Instantiate(entityRef, position, rotation, parent);
+            //entity.OnInstantiated();
+            //entity.OnInstantiatedFeedback();
+            
         }
 
         return entity;
