@@ -10,6 +10,7 @@ namespace GameStates.States
         {
             if (!sm.IsMaster) return;
             sm.MoveToGameScene();
+            sm.winner = Enums.Team.Neutral;
         }
 
         public override void UpdateState() { }

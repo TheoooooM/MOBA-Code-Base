@@ -37,8 +37,8 @@ namespace GameStates.States
         private bool IsWinConditionChecked()
         {
             // Check win condition for any team
-            sm.winner = Enums.Team.Neutral;
-            return false;
+            //sm.winner = Enums.Team.Neutral;
+            return sm.winner != Enums.Team.Neutral;
         }
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
@@ -21,7 +20,7 @@ namespace GameStates
         public event GlobalDelegates.NoParameterDelegate OnTick;
         public event GlobalDelegates.NoParameterDelegate OnTickFeedback;
 
-        public Enums.Team winner;
+        public Enums.Team winner = Enums.Team.Neutral;
         [SerializeField] private List<int> allPlayersIDs = new List<int>();
         private readonly Dictionary<int, bool> playersReadyDict = new Dictionary<int, bool>();
         public uint expectedPlayerCount = 4;
@@ -33,7 +32,7 @@ namespace GameStates
                 DestroyImmediate(this);
                 return;
             }
-            
+
             Instance = this;
             PhotonNetwork.AutomaticallySyncScene = true;
 
@@ -113,7 +112,6 @@ namespace GameStates
         [PunRPC]
         private void SyncAddPlayerRPC(int photonID)
         {
-            Debug.Log(photonID);
             if (playersReadyDict.ContainsKey(photonID))
             {
                 //playersReadyDict[photonID] = false;
@@ -139,7 +137,6 @@ namespace GameStates
         [PunRPC]
         private void SyncRemovePlayerRPC(int photonID)
         {
-            Debug.Log(photonID);
             if (playersReadyDict.ContainsKey(photonID))
             {
                 playersReadyDict.Remove(photonID);
@@ -163,17 +160,9 @@ namespace GameStates
 
             playersReadyDict[photonID] = ready;
 
-            if (!playersReadyDict[photonID])
-            {
-                Debug.Log("The value was set to false");
-                return;
-            }
-            if (!IsEveryPlayerReady())
-            {
-                Debug.Log("Every player is not ready");
-                return;
-            }
-
+            if (!playersReadyDict[photonID]) return;
+            if (!IsEveryPlayerReady()) return;
+            
             foreach (var key in allPlayersIDs) playersReadyDict[key] = false;
 
             currentState.OnAllPlayerReady();
@@ -181,11 +170,6 @@ namespace GameStates
 
         private bool IsEveryPlayerReady()
         {
-            foreach (var kv in playersReadyDict)
-            {
-                Debug.Log($"{kv.Key} / {kv.Value}");
-            }
-            
             return playersReadyDict.Values.All(ready => ready) && playersReadyDict.Count == expectedPlayerCount;
         }
 
@@ -195,7 +179,6 @@ namespace GameStates
             // Init pools
             // Init more stuff
             SendSetToggleReady(true);
-            Debug.Log("Loading is over");
         }
 
         public void MoveToGameScene()

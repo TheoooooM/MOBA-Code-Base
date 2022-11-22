@@ -334,8 +334,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tickRate: 1
   winner: 0
-  isEveryPlayerReady: 0
+  allPlayersIDs: 
   expectedPlayerCount: 4
+  loadedCube: {fileID: 8621260565833070838, guid: b5fbc9da27e39f343a660fa603cd1e0a, type: 3}
 --- !u!114 &1385662542
 MonoBehaviour:
   m_ObjectHideFlags: 0

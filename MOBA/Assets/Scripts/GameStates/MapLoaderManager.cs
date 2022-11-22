@@ -1,4 +1,6 @@
+using System.Collections;
 using Photon.Pun;
+using UnityEngine;
 
 namespace GameStates
 {
@@ -9,5 +11,6 @@ namespace GameStates
             GameStateMachine.Instance.LoadMap();
             if (PhotonNetwork.IsMasterClient) PhotonNetwork.IsMessageQueueRunning = true;
         }
+        
     }
 }
