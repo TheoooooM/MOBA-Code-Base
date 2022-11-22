@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1145891968548686277}
   - component: {fileID: 1145891968548686278}
   - component: {fileID: 1145891968548686279}
+  - component: {fileID: 4592691154818611573}
   - component: {fileID: 6728838932469448538}
   - component: {fileID: 66387207781892278}
   m_Layer: 0
@@ -98,6 +99,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4592691154818611573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145891968548686272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abbd4fae1b8b17c438853362e41376dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6728838932469448538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,8 +133,11 @@ MonoBehaviour:
   currentRessource: 0
   viewRange: 0
   isAlive: 0
-  referenceMoveSpeed: 0
-  currentMoveSpeed: 0
+  referenceMoveSpeed: 10
+  currentMoveSpeed: 10
+  attackAbilityIndex: 0
+  abilitiesIndexes: 0000
+  ultimateAbilityIndex: 0
   canAttack: 0
   canCast: 0
   canDie: 0

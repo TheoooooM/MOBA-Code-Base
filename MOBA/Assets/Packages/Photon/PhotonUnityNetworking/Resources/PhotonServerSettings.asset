@@ -119,6 +119,30 @@ MonoBehaviour:
   - SyncSetReferenceMoveSpeedRPC
   - SyncSetViewRangeRPC
   - SyncStatesRPC
+  - AddFOWSeeableRPC
+  - HideElementsRPC
+  - OnTargetedRPC
+  - OnUntargetedRPC
+  - RemoveFOWSeeableRPC
+  - RenderFOWRPC
+  - SetBaseViewRangeRPC
+  - SetCanBeTargetedRPC
+  - SetCanHideRPC
+  - SetCanShowRPC
+  - SetCanViewRPC
+  - SetCurrentHpPercentRPC
+  - ShowElementsRPC
+  - SyncAddFOWSeeableRPC
+  - SyncOnTargetedRPC
+  - SyncOnUntargetedRPC
+  - SyncRemoveFOWSeeableRPC
+  - SyncSetBaseViewRangeRPC
+  - SyncSetCanBeTargetedRPC
+  - SyncSetCanHideRPC
+  - SyncSetCanShowRPC
+  - SyncSetCanViewRPC
+  - AddToCurrentItemsRPC
+  - RemoveToCurrentItemsRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

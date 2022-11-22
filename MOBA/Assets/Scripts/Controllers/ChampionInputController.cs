@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
@@ -10,6 +11,9 @@ namespace Controllers.Inputs
         private Champion champion;
         private uint[] selectedEntity;
         private Vector3 cursorWorldPos;
+        private bool isMoving;
+        private Vector2 moveInput;
+        private Vector3 moveVector;
 
         protected override void OnAwake()
         {
@@ -19,6 +23,17 @@ namespace Controllers.Inputs
         private void Start()
         {
             champion = controlledEntity as Champion;
+        }
+
+        private void Update()
+        {
+            Move();
+        }
+
+        private void Move()
+        {
+            if (!isMoving) return;
+            champion.RequestMove(moveVector);
         }
 
 
@@ -83,7 +98,8 @@ namespace Controllers.Inputs
 
             if (Physics.Raycast(mouseRay, out RaycastHit hit))
             {
-                return (uint)hit.transform.GetComponent<Entity>()?.entityIndex;
+                var ent = hit.transform.GetComponent<Entity>();
+                if (ent) return ent.entityIndex;
             }
 
             return 999999;
@@ -111,7 +127,8 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         void OnMove(InputAction.CallbackContext ctx)
         {
-            
+            moveInput = ctx.ReadValue<Vector2>();
+            moveVector = new Vector3(moveInput.x, 0, moveInput.y);
         }
 
         protected override void Link()
@@ -121,8 +138,10 @@ namespace Controllers.Inputs
             InputManager.PlayerMap.Capacity.Capacity0.performed += OnActivateCapacity0;
             InputManager.PlayerMap.Capacity.Capacity1.performed += OnActivateCapacity1;
             InputManager.PlayerMap.Capacity.Capacity2.performed += OnActivateCapacity2;
-            
+
+            InputManager.PlayerMap.Movement.Move.started += context => isMoving = true;
             InputManager.PlayerMap.Movement.Move.performed += OnMove;
+            InputManager.PlayerMap.Movement.Move.canceled += context => isMoving = false;
         }
         
         protected override void Unlink()
