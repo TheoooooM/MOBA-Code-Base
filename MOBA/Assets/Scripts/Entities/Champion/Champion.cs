@@ -11,11 +11,7 @@ namespace Entities.Champion
         public byte[] abilitiesIndexes = new byte[2];
         public byte ultimateAbilityIndex;
 
-        protected override void OnStart() 
-        {
-            //set the camera to follow the champion using CameraController.LinkCameraToTransform(CameraController.mainCamera, transform);
-            CameraController.SetPlayer(transform); 
-        }
+        protected override void OnStart() { }
 
         protected override void OnUpdate() { }
         

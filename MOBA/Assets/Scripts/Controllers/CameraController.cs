@@ -15,51 +15,43 @@ namespace Controllers
         [SerializeField] private float cameraSpeed = 0.1f;
         
         private bool cameraLock = true;
-        private static CameraController mainCamera;
+        public static CameraController Instance;
 
-        private void Awake()
+        public void Awake()
         {
-            SetupInputMap();
+            if (Instance != null && Instance != this)
+            {
+                DestroyImmediate(gameObject);
+                return;
+            }
+            
+            Instance = this;
+        }
+
+        public void LinkCamera(Transform target)
+        {
+            player = target;
             InputManager.PlayerMap.Camera.LockToggle.performed += OnToggleCameraLock;
         }
 
-        private void Start()
+        public void UnLinkCamera()
         {
-            mainCamera = this;
-            //convert the camera Height to degrees
-        }
-
-        //create a static method to call from other scripts that links the transform of the player to the camera
-        public static void SetPlayer(Transform player)
-        {
-            mainCamera.player = player;
+            player = null;
+            InputManager.PlayerMap.Camera.LockToggle.performed -= OnToggleCameraLock;
         }
         
-
-        /// <summary>
-        /// Setup the Camera InputMap of The Player inputs
-        /// </summary>
-        void SetupInputMap()
-        {
-            InputManager.PlayerMap = new PlayerInputs();
-            InputManager.PlayerMap.Enable();
-            Debug.Log("Input Map Set Up");
-        }
-
         /// <summary>
         /// Actions Performed on Toggle CameraLock
         /// </summary>
         /// <param name="ctx"></param>
-        void OnToggleCameraLock(InputAction.CallbackContext ctx)
+        private void OnToggleCameraLock(InputAction.CallbackContext ctx)
         {
-            if (ctx.performed)
-            {
-                cameraLock = !cameraLock;
-                Debug.Log("Camera Lock Toggled");
-            }
+            if (!ctx.performed) return;
+            cameraLock = !cameraLock;
+            Debug.Log("Camera Lock Toggled");
         }
         
-        private void Update()
+        private void LateUpdate()
         {
             //if the player is not null
             if (player !=  null)

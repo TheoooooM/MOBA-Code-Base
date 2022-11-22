@@ -142,6 +142,7 @@ namespace Controllers.Inputs
             InputManager.PlayerMap.Movement.Move.started += context => isMoving = true;
             InputManager.PlayerMap.Movement.Move.performed += OnMove;
             InputManager.PlayerMap.Movement.Move.canceled += context => isMoving = false;
+            CameraController.Instance.LinkCamera(champion.transform);
         }
         
         protected override void Unlink()
@@ -153,6 +154,7 @@ namespace Controllers.Inputs
             InputManager.PlayerMap.Capacity.Capacity2.performed -= OnActivateCapacity2;
             
             InputManager.PlayerMap.Movement.Move.performed -= OnMove;
+            CameraController.Instance.UnLinkCamera();
         }
     }
 }
