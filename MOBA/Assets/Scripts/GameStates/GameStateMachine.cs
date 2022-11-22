@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using GameStates.States;
 using UnityEngine;
@@ -14,13 +15,14 @@ namespace GameStates
         private GameState currentState;
         private GameState[] gamesStates;
 
-        [Tooltip("Ticks per second")] public uint tickRate = 1;
+        [Tooltip("Ticks per second")] public float tickRate = 1;
 
         public event GlobalDelegates.NoParameterDelegate OnTick;
         public event GlobalDelegates.NoParameterDelegate OnTickFeedback;
 
         public Enums.Team winner;
-        public Dictionary<int, bool> playersReadyDict = new Dictionary<int, bool>();
+        private readonly Dictionary<int, bool> playersReadyDict = new Dictionary<int, bool>();
+        public bool isEveryPlayerReady = false;
 
         private void Awake()
         {
@@ -31,6 +33,12 @@ namespace GameStates
             }
 
             Instance = this;
+
+            if (tickRate <= 0)
+            {
+                Debug.LogWarning("TickRate can't be negative. Set to 1");
+                tickRate = 1;
+            }
 
             gamesStates = new GameState[4];
             gamesStates[0] = new LobbyState(this);
@@ -130,10 +138,37 @@ namespace GameStates
 
         public void SendToggleReady()
         {
-            photonView.RPC("ToggleReadyRPC", RpcTarget.MasterClient);
+            photonView.RPC("ToggleReadyRPC", RpcTarget.MasterClient, photonView.Owner.ActorNumber);
         }
 
         [PunRPC]
-        private void ToggleReadyRPC() { }
+        private void ToggleReadyRPC(int photonID)
+        {
+            if (!playersReadyDict.ContainsKey(photonID))
+            {
+                Debug.LogError("This key is not valid.");
+                return;
+            }
+
+            playersReadyDict[photonID] = !playersReadyDict[photonID];
+
+            if (!playersReadyDict[photonID])
+            {
+                isEveryPlayerReady = false;
+                return;
+            }
+
+            isEveryPlayerReady = IsEveryPlayerReady();
+            if (!isEveryPlayerReady) return;
+
+            foreach (var key in playersReadyDict.Keys) playersReadyDict[key] = false;
+            
+            currentState.OnAllPlayerReady();
+        }
+
+        private bool IsEveryPlayerReady()
+        {
+            return playersReadyDict.Values.All(ready => ready);
+        }
     }
 }

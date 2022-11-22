@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace GameStates.States
@@ -21,7 +20,7 @@ namespace GameStates.States
                 return;
             }
 
-            if (timer >= sm.tickRate)
+            if (timer >= 1f / sm.tickRate)
             {
                 timer = 0f;
                 sm.Tick();
@@ -30,6 +29,7 @@ namespace GameStates.States
         }
 
         public override void ExitState() { }
+        public override void OnAllPlayerReady() { }
 
         private bool IsWinConditionChecked()
         {

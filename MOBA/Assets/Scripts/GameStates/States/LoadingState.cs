@@ -9,23 +9,17 @@ namespace GameStates.States
             // Load scene
             // Init pools
             // Init more stuff
-            
-            // Envoie Scene is ready
+
+            sm.SendToggleReady();
         }
 
-        public override void UpdateState()
-        {
-            if (!sm.IsMaster) return;
-            
-            if(IsEverySceneLoaded()) sm.SwitchState(2);
-        }
+        public override void UpdateState() { }
 
         public override void ExitState() { }
 
-        private bool IsEverySceneLoaded()
+        public override void OnAllPlayerReady()
         {
-            return true;
+            sm.SwitchState(2);
         }
-        
     }
 }

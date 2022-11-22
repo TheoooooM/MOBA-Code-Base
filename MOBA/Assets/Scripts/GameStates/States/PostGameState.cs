@@ -4,25 +4,15 @@ namespace GameStates.States
     {
         public PostGameState(GameStateMachine sm) : base(sm) { }
 
-        public override void StartState()
-        {
-        }
+        public override void StartState() { }
 
-        public override void UpdateState()
-        {
-            if (!sm.IsMaster) return;
-            
-            if(IsEveryPlayerReadyForRematch()) sm.SwitchState(1);
-        }
+        public override void UpdateState() { }
 
-        public override void ExitState()
-        {
-        }
+        public override void ExitState() { }
 
-        private bool IsEveryPlayerReadyForRematch()
+        public override void OnAllPlayerReady()
         {
-            return false;
+            sm.SwitchState(0);
         }
-
     }
 }
