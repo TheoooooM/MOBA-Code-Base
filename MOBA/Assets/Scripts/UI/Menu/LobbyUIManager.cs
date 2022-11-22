@@ -1,3 +1,4 @@
+using Entities.Champion;
 using GameStates;
 using TMPro;
 using UnityEngine;
@@ -8,6 +9,9 @@ public class LobbyUIManager : MonoBehaviour
     private bool isReady;
     private GameStateMachine sm;
 
+    private ChampionSO currentChampionSO;
+
+
     private void Start()
     {
         Initialization();
@@ -16,10 +20,10 @@ public class LobbyUIManager : MonoBehaviour
     private void Initialization()
     {
         sm = GameStateMachine.Instance;
-        
+
         toggleReadyButtonText.text = isReady ? "Waiting..." : "Ready!";
     }
-    
+
     public void OnToggleReadyClick()
     {
         isReady = !isReady;
@@ -27,13 +31,23 @@ public class LobbyUIManager : MonoBehaviour
         sm.SendSetToggleReady(isReady);
     }
 
-    public void OnChampionClick()
+    public void OnChampionClick(int index)
     {
-        
+        if (isReady) return;
+
+        if (index >= sm.allChampions.Length)
+        {
+            Debug.LogWarning("Index is not valid. Not serious for the moment.");
+            //return;
+        }
+
+        sm.RequestSetChampion((byte)index);
     }
 
     public void OnTeamClick(int index)
     {
-        
+        if (isReady) return;
+
+        sm.RequestSetTeam((byte)index);
     }
 }

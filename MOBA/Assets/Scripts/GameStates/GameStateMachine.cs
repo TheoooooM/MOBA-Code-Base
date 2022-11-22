@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Entities.Champion;
 using Photon.Pun;
 using GameStates.States;
 using UnityEngine;
@@ -22,8 +23,15 @@ namespace GameStates
 
         public Enums.Team winner = Enums.Team.Neutral;
         [SerializeField] private List<int> allPlayersIDs = new List<int>();
-        private readonly Dictionary<int, bool> playersReadyDict = new Dictionary<int, bool>();
+
+        private readonly Dictionary<int, (Enums.Team, byte, bool)> playersReadyDict =
+            new Dictionary<int, (Enums.Team, byte, bool)>();
+
         public uint expectedPlayerCount = 4;
+
+
+        public ChampionSO[] allChampions;
+        public Enums.Team[] allTeams;
 
         private void Awake()
         {
@@ -118,7 +126,7 @@ namespace GameStates
             }
             else
             {
-                playersReadyDict.Add(photonID, false);
+                playersReadyDict.Add(photonID, (Enums.Team.Neutral, 255, false));
                 allPlayersIDs.Add(photonID);
             }
         }
@@ -144,6 +152,45 @@ namespace GameStates
             }
         }
 
+        public void RequestSetTeam(byte team)
+        {
+            photonView.RPC("SetTeamRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, team);
+        }
+
+        [PunRPC]
+        private void SetTeamRPC(int photonID, byte team)
+        {
+            photonView.RPC("SyncSetTeamRPC", RpcTarget.All, photonID, team);
+        }
+
+        [PunRPC]
+        public void SyncSetTeamRPC(int photonID, byte team)
+        {
+            if (!playersReadyDict.ContainsKey(photonID)) return;
+
+            playersReadyDict[photonID] = ((Enums.Team)team, playersReadyDict[photonID].Item2,
+                playersReadyDict[photonID].Item3);
+        }
+
+        public void RequestSetChampion(byte champion)
+        {
+            photonView.RPC("SetChampionRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, champion);
+        }
+
+        [PunRPC]
+        private void SetChampionRPC(int photonID, byte champion)
+        {
+            photonView.RPC("SyncSetChampionRPC", RpcTarget.All, photonID, champion);
+        }
+
+        [PunRPC]
+        public void SyncSetChampionRPC(int photonID, byte champion)
+        {
+            if (!playersReadyDict.ContainsKey(photonID)) return;
+
+            playersReadyDict[photonID] = (playersReadyDict[photonID].Item1, champion, playersReadyDict[photonID].Item3);
+        }
+
         public void SendSetToggleReady(bool ready)
         {
             photonView.RPC("SetReadyRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, ready);
@@ -158,19 +205,39 @@ namespace GameStates
                 return;
             }
 
-            playersReadyDict[photonID] = ready;
+            playersReadyDict[photonID] = (playersReadyDict[photonID].Item1, 
+                playersReadyDict[photonID].Item2, 
+                ready);
 
-            if (!playersReadyDict[photonID]) return;
+            if (!playersReadyDict[photonID].Item3) return;
             if (!IsEveryPlayerReady()) return;
-            
-            foreach (var key in allPlayersIDs) playersReadyDict[key] = false;
+
+            foreach (var key in allPlayersIDs) playersReadyDict[key] = (playersReadyDict[photonID].Item1, 
+                playersReadyDict[photonID].Item2, 
+                false);
 
             currentState.OnAllPlayerReady();
         }
 
         private bool IsEveryPlayerReady()
         {
-            return playersReadyDict.Values.All(ready => ready) && playersReadyDict.Count == expectedPlayerCount;
+            foreach (var kvp in playersReadyDict)
+            {
+                Debug.Log($"{kvp.Key}, {kvp.Value.Item1}, {kvp.Value.Item2}, {kvp.Value.Item3}");
+            }
+            
+            if (playersReadyDict.Count != expectedPlayerCount) return false;
+
+            var team1Count = 0;
+            var team2Count = 0;
+            foreach (var kvp in playersReadyDict)
+            {
+                if (!kvp.Value.Item3) return false;
+                if (kvp.Value.Item1 == Enums.Team.Team1) team1Count++;
+                if (kvp.Value.Item1 == Enums.Team.Team2) team2Count++;
+            }
+
+            return team1Count == team2Count && team1Count == 2;
         }
 
         public void LoadMap()
