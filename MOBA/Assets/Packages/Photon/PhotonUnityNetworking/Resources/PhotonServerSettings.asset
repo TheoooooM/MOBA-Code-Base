@@ -157,14 +157,7 @@ MonoBehaviour:
   - SyncSetCurrentResourcePercentRPC
   - SyncSetCurrentResourceRPC
   - SyncSetMaxResourceRPC
-  - SyncInitStateRPC
-  - SyncSwitchStateRPC
-  - TickRPC
-  - AddPlayerRPC
-  - RemovePlayerRPC
-  - SyncAddPlayerRPC
-  - SyncRemovePlayerRPC
-  - ToggleReadyRPC
+  - SyncInstantiate
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

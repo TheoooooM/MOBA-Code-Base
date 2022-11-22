@@ -53,6 +53,18 @@ namespace Entities
 
         #region MasterMethods
 
+        public void SendSyncInstantiate(Vector3 position, Quaternion rotation)
+        {
+            photonView.RPC("SyncInstantiate", RpcTarget.All, position, rotation);    
+        }
+        
+        [PunRPC]
+        public void SyncInstantiate(Vector3 position, Quaternion rotation)
+        {
+            transform.position = position;
+            transform.rotation = rotation;
+        }
+
         /// <summary>
         /// Sends an RPC to the master to set the value canAddPassiveCapacity.
         /// </summary>
