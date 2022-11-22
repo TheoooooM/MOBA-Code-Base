@@ -256,6 +256,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 370241463}
+  - component: {fileID: 370241464}
   - component: {fileID: 370241462}
   m_Layer: 0
   m_Name: FogOfWarManager
@@ -294,6 +295,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &370241464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370241461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffadea0787f861843a1d7ea7d46324a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iteration: 4
+  upscaleTexture: 4
+  _useBlur: 1
+  _material: {fileID: 2100000, guid: fb25180902f70ec40a0b988dbf4c415f, type: 2}
+  _material1: {fileID: 2100000, guid: 269845f80d310d74db13180ca168d3e1, type: 2}
+  myTexture: {fileID: 8400000, guid: 6190b3d1728e5ad48a95e080f11805b5, type: 2}
 --- !u!1 &556327340
 GameObject:
   m_ObjectHideFlags: 0

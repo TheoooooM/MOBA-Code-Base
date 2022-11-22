@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _FogTex0:
-        m_Texture: {fileID: 8400000, guid: 6190b3d1728e5ad48a95e080f11805b5, type: 2}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FogTex1:
@@ -34,5 +34,5 @@ Material:
     m_Floats:
     - _Blur: 0.0005
     m_Colors:
-    - _Unexplored: {r: 0.049999982, g: 0.049999982, b: 0.049999982, a: 0.05}
+    - _Unexplored: {r: 1, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
