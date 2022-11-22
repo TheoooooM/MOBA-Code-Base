@@ -38,8 +38,8 @@ namespace Entities.Champion
         public void SetMaxHpRPC(float value)
         {
             maxHp = value;
-            photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, maxHp);
             OnSetMaxHp?.Invoke(value);
+            photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, maxHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnSetMaxHp;
@@ -61,8 +61,8 @@ namespace Entities.Champion
         public void IncreaseMaxHpRPC(float amount)
         {
             maxHp -= amount;
-            photonView.RPC("SyncSetMaxHpRPC", RpcTarget.MasterClient, maxHp);
             OnIncreaseMaxHp?.Invoke(amount);
+            photonView.RPC("SyncSetMaxHpRPC", RpcTarget.MasterClient, maxHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
@@ -77,12 +77,14 @@ namespace Entities.Champion
         public void SyncDecreaseMaxHpRPC(float amount)
         {
             maxHp = amount;
+            OnDecreaseMaxHpFeedback?.Invoke(amount);
         }
 
         [PunRPC]
         public void DecreaseMaxHpRPC(float amount)
         {
             maxHp -= amount;
+            OnDecreaseMaxHp?.Invoke(amount);
             photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.MasterClient, maxHp);
         }
 
@@ -98,12 +100,14 @@ namespace Entities.Champion
         public void SyncSetCurrentHpRPC(float value)
         {
             currentHp = value;
+            OnSetCurrentHpFeedback?.Invoke(value);
         }
 
         [PunRPC]
         public void SetCurrentHpRPC(float value)
         {
             currentHp = value;
+            OnSetCurrentHp?.Invoke(value);
             photonView.RPC("SyncSetCurrentHpRPC", RpcTarget.All, value);
         }
 
@@ -112,43 +116,69 @@ namespace Entities.Champion
 
         public void RequestSetCurrentHpPercent(float value)
         {
-            photonView.RPC("SetCurrentHpPercentRPC", RpcTarget.All, value);
+            photonView.RPC("SetCurrentHpPercentRPC", RpcTarget.MasterClient, value);
         }
 
         [PunRPC]
         public void SyncSetCurrentHpPercentRPC(float value)
         {
             currentHp = value;
+            OnSetCurrentHpPercentFeedback?.Invoke(value);
         }
 
         [PunRPC]
         public void SetCurrentHpPercentRPC(float value)
         {
             currentHp = value * maxHp;
+            OnSetCurrentHpPercentFeedback?.Invoke(value);
             photonView.RPC("SetCurrentHpPercentRPC", RpcTarget.All, value);
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercentFeedback;
 
-        public void RequestIncreaseCurrentHp(float amount) { }
+        public void RequestIncreaseCurrentHp(float amount)
+        {
+            photonView.RPC("IncreaseCurrentHpRPC",RpcTarget.MasterClient,amount);
+        }
 
         [PunRPC]
-        public void SyncIncreaseCurrentHpRPC(float amount) { }
+        public void SyncIncreaseCurrentHpRPC(float amount)
+        {
+            currentHp = amount;
+            OnIncreaseCurrentHpFeedback?.Invoke(amount);
+        }
 
         [PunRPC]
-        public void IncreaseCurrentHpRPC(float amount) { }
+        public void IncreaseCurrentHpRPC(float amount)
+        {
+            currentHp += amount;
+            OnIncreaseCurrentHp?.Invoke(amount);
+            photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp);
+        }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
 
-        public void RequestDecreaseCurrentHp(float amount) { }
+        public void RequestDecreaseCurrentHp(float amount)
+        {
+            photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.MasterClient,amount);
+        }
 
         [PunRPC]
-        public void SyncDecreaseCurrentHpRPC(float amount) { }
+        public void SyncDecreaseCurrentHpRPC(float amount)
+        {
+            currentHp = amount;
+            OnDecreaseCurrentHpFeedback?.Invoke(amount);
+        }
 
         [PunRPC]
-        public void DecreaseCurrentHpRPC(float amount) { }
+        public void DecreaseCurrentHpRPC(float amount)
+        {
+            currentHp -= amount;
+            OnDecreaseCurrentHp?.Invoke(amount);
+            photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp);
+        }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;

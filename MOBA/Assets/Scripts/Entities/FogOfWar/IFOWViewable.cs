@@ -1,18 +1,21 @@
+using System.Collections.Generic;
+
 namespace Entities.FogOfWar
 {
-    public interface IFOWViewable
+    public interface IFOWViewable : ITeamable
     {
+        /// <returns>If the entity can see</returns>
         public bool CanView();
-
-        /// <returns>The view range of the entity</returns>
+        /// <returns>The current view range of the entity</returns>
         public float GetFOWViewRange();
+        /// <returns>The base view range of the entity</returns>
         public float GetFOWBaseViewRange();
 
-        public void RequestSetCanView();
-        public void SyncSetCanViewRPC();
-        public void SetCanViewRPC();
-        public event GlobalDelegates.NoParameterDelegate OnSetCanView;
-        public event GlobalDelegates.NoParameterDelegate OnSetCanViewFeedback;
+        public void RequestSetCanView(bool value);
+        public void SyncSetCanViewRPC(bool value);
+        public void SetCanViewRPC(bool value);
+        public event GlobalDelegates.BoolDelegate OnSetCanView;
+        public event GlobalDelegates.BoolDelegate OnSetCanViewFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to set the entity's view range.

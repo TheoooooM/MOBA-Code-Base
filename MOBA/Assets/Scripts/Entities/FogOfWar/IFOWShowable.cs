@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 namespace Entities.FogOfWar
 {
-    public interface IFOWShowable
+    public interface IFOWShowable : ITeamable
     {
         public bool CanShow();
         public bool CanHide();
