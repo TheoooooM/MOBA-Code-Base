@@ -26,4 +26,14 @@ public class LobbyUIManager : MonoBehaviour
         toggleReadyButtonText.text = isReady ? "Waiting..." : "Ready!";
         sm.SendSetToggleReady(isReady);
     }
+
+    public void OnChampionClick()
+    {
+        
+    }
+
+    public void OnTeamClick()
+    {
+        
+    }
 }
