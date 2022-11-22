@@ -4,7 +4,7 @@ using System;
 
 namespace Entities.Inventory
 {
-    //Asset Menu Synthax :
+    //Asset Menu Syntax :
     //[CreateAssetMenu(menuName = "ItemSO", fileName = "new ItemSO")]
     public abstract class ItemSO : ScriptableObject
     {

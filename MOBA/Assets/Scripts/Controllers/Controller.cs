@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using Entities;
-using UnityEngine;
 
 namespace Controllers
 {
@@ -11,7 +7,7 @@ namespace Controllers
     {
         protected Entity controlledEntity;
 
-         void Awake()
+        private void Awake()
         {
             OnAwake();
         }

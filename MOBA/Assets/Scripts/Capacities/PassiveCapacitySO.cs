@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Entities.Capacities
 {
-//Asset Menu Synthax :
-//[CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO", fileName = "new PassiveCapacitySO")]
+    //Asset Menu Syntax :
+    //[CreateAssetMenu(menuName = "Capacity/PassiveCapacitySO", fileName = "new PassiveCapacitySO")]
     public abstract class PassiveCapacitySO : ScriptableObject
     {
         [Tooltip("GP Name")] public string referenceName;
