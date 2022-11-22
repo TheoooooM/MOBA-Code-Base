@@ -160,6 +160,13 @@ MonoBehaviour:
   - SyncInitStateRPC
   - SyncSwitchStateRPC
   - TickRPC
+  - AddPlayerRPC
+  - RemovePlayerRPC
+  - SyncAddPlayerRPC
+  - SyncRemovePlayerRPC
+  - ToggleReadyRPC
+  - ShareInventory
+  - AssignInventory
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

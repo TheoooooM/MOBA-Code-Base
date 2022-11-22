@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/PostGame.unity
     guid: 93dfbfd6033908b4282b5a37b1930dfd
+  - enabled: 1
+    path: Assets/TEST/Test_blapeze.unity
+    guid: e2f60241148c4ee44b41ac73dc0d932a
   m_configObjects: {}
