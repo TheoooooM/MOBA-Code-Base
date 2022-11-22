@@ -95,7 +95,5 @@ namespace Entities.Champion
 
         public event GlobalDelegates.NoParameterDelegate HideElement;
         public event GlobalDelegates.NoParameterDelegate HideElementFeedback;
-        
-        
     }
 }

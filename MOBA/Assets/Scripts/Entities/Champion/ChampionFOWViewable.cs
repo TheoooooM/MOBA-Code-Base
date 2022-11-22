@@ -14,7 +14,9 @@ namespace Entities.Champion
         public bool CanView() => canView;
         public float GetFOWViewRange() => viewRange;
         public float GetFOWBaseViewRange() => baseViewRange;
-        public List<IFOWShowable> SeenShowables => seenShowables;
+
+        public List<IFOWShowable> SeenShowables() => seenShowables;
+
         public void RequestSetCanView(bool value)
         {
             photonView.RPC("SetCanViewRPC",RpcTarget.MasterClient,value);

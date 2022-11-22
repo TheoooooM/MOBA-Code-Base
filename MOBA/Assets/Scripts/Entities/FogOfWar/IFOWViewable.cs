@@ -11,6 +11,8 @@ namespace Entities.FogOfWar
         /// <returns>The base view range of the entity</returns>
         public float GetFOWBaseViewRange();
 
+        public List<IFOWShowable> SeenShowables();
+
         public void RequestSetCanView(bool value);
         public void SyncSetCanViewRPC(bool value);
         public void SetCanViewRPC(bool value);
