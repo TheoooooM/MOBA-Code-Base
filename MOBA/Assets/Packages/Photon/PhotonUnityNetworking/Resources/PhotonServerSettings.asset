@@ -143,6 +143,23 @@ MonoBehaviour:
   - SyncSetCanViewRPC
   - AddToCurrentItemsRPC
   - RemoveToCurrentItemsRPC
+  - DecreaseCurrentResourceRPC
+  - DecreaseMaxResourceRPC
+  - IncreaseCurrentResourceRPC
+  - IncreaseMaxResourceRPC
+  - SetCurrentResourcePercentRPC
+  - SetCurrentResourceRPC
+  - SetMaxResourceRPC
+  - SyncDecreaseCurrentResourceRPC
+  - SyncDecreaseMaxResourceRPC
+  - SyncIncreaseCurrentResourceRPC
+  - SyncIncreaseMaxResourceRPC
+  - SyncSetCurrentResourcePercentRPC
+  - SyncSetCurrentResourceRPC
+  - SyncSetMaxResourceRPC
+  - SyncInitStateRPC
+  - SyncSwitchStateRPC
+  - TickRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

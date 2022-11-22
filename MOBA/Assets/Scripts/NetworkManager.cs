@@ -8,8 +8,7 @@ using UnityEngine.SceneManagement;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public static NetworkManager Instance;
-    
-    
+
     private void Awake()
     {
         if (Instance != null)
