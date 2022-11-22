@@ -17,7 +17,7 @@ namespace Entities.Capacities
         public string description;
         
         /// <returns>the type of PassiveCapacity associated with this PassiveCapacitySO</returns>
-        public abstract Type GetAssociatedType();
+        public abstract Type AssociatedType();
 
         [Tooltip("All types of the capacity")] public List<Enums.CapacityType> types;
     }

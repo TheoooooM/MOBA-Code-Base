@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Entities.Inventory
 {
     public abstract class Item
@@ -15,6 +11,8 @@ namespace Entities.Inventory
 
         public abstract void OnItemAddedToInventory();
         public abstract void OnItemRemovedInventory();
+
+        public abstract ItemSO AssociatedItemSo();
     }
 }
 

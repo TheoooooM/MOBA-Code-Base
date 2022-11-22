@@ -6,11 +6,11 @@ namespace Entities.Capacities
     {
         private int referenceIndex; //Index Reference in CapacitySOCollectionManager
 
-        private PassiveCapacitySO so; //Reference to its Scriptable Object
-
         private int count; //Amount of Stacks
 
         public List<Enums.CapacityType> types; //All types of the capacity
+
+        public abstract PassiveCapacitySO AssociatedPassiveCapacitySO();
 
         /// <summary>
         /// Call when a Stack of the capicity is Added
