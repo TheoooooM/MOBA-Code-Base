@@ -142,7 +142,7 @@ namespace Controllers.Inputs
             InputManager.PlayerMap.Movement.Move.started += context => isMoving = true;
             InputManager.PlayerMap.Movement.Move.performed += OnMove;
             InputManager.PlayerMap.Movement.Move.canceled += context => isMoving = false;
-            CameraController.Instance.LinkCamera(champion.transform);
+            CameraController.Instance.LinkCamera(controlledEntity.transform);
         }
         
         protected override void Unlink()
