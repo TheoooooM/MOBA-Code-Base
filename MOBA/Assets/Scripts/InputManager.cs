@@ -20,8 +20,9 @@ public class InputManager : MonoBehaviour
     /// Toggle PlayerMap
     /// </summary>
     /// <param name="value">State : true or false</param>
-    public static void TogglePlayerMap(bool value)
+    public static void EnablePlayerMap(bool value)
     {
+        if (PlayerMap == null) return;
         if(value) PlayerMap.Enable();
         else PlayerMap.Disable();
     }
@@ -30,8 +31,9 @@ public class InputManager : MonoBehaviour
     /// Toggle PlayerUIMap
     /// </summary>
     /// <param name="value">State : true or false</param>
-    public static void TogglePlayerUIMap(bool value)
+    public static void EnablePlayerUIMap(bool value)
     {
+        if (PlayerUIMap == null) return;
         if(value) PlayerUIMap.Enable();
         else PlayerUIMap.Disable();
     }

@@ -8,7 +8,10 @@ namespace GameStates.States
 
         private float timer;
 
-        public override void StartState() { }
+        public override void StartState()
+        {
+            InputManager.EnablePlayerMap(true);
+        }
 
         public override void UpdateState()
         {

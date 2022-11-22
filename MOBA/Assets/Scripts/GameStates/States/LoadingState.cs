@@ -1,3 +1,5 @@
+using Photon.Pun;
+
 namespace GameStates.States
 {
     public class LoadingState : GameState
@@ -6,11 +8,8 @@ namespace GameStates.States
 
         public override void StartState()
         {
-            // Load scene
-            // Init pools
-            // Init more stuff
-
-            sm.SendToggleReady();
+            if (!sm.IsMaster) return;
+            sm.MoveToGameScene();
         }
 
         public override void UpdateState() { }

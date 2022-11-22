@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
@@ -21,8 +22,9 @@ namespace GameStates
         public event GlobalDelegates.NoParameterDelegate OnTickFeedback;
 
         public Enums.Team winner;
+        [SerializeField] private List<int> allPlayersIDs = new List<int>();
         private readonly Dictionary<int, bool> playersReadyDict = new Dictionary<int, bool>();
-        public bool isEveryPlayerReady = false;
+        public uint expectedPlayerCount = 4;
 
         private void Awake()
         {
@@ -31,8 +33,9 @@ namespace GameStates
                 DestroyImmediate(this);
                 return;
             }
-
+            
             Instance = this;
+            PhotonNetwork.AutomaticallySyncScene = true;
 
             if (tickRate <= 0)
             {
@@ -66,7 +69,7 @@ namespace GameStates
 
         public void SwitchState(byte stateIndex)
         {
-            photonView.RPC("SyncStatesRPC", RpcTarget.All, stateIndex);
+            photonView.RPC("SyncSwitchStateRPC", RpcTarget.All, stateIndex);
         }
 
         [PunRPC]
@@ -98,7 +101,7 @@ namespace GameStates
 
         public void RequestAddPlayer()
         {
-            photonView.RPC("AddPlayerRPC", RpcTarget.MasterClient, photonView.Owner.ActorNumber);
+            photonView.RPC("AddPlayerRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber);
         }
 
         [PunRPC]
@@ -113,14 +116,18 @@ namespace GameStates
             Debug.Log(photonID);
             if (playersReadyDict.ContainsKey(photonID))
             {
-                playersReadyDict[photonID] = false;
+                //playersReadyDict[photonID] = false;
             }
-            else playersReadyDict.Add(photonID, false);
+            else
+            {
+                playersReadyDict.Add(photonID, false);
+                allPlayersIDs.Add(photonID);
+            }
         }
 
         public void RequestRemovePlayer()
         {
-            photonView.RPC("RemovePlayerRPC", RpcTarget.MasterClient, photonView.Owner.ActorNumber);
+            photonView.RPC("RemovePlayerRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber);
         }
 
         [PunRPC]
@@ -133,16 +140,20 @@ namespace GameStates
         private void SyncRemovePlayerRPC(int photonID)
         {
             Debug.Log(photonID);
-            if (playersReadyDict.ContainsKey(photonID)) playersReadyDict.Remove(photonID);
+            if (playersReadyDict.ContainsKey(photonID))
+            {
+                playersReadyDict.Remove(photonID);
+                allPlayersIDs.Remove(photonID);
+            }
         }
 
-        public void SendToggleReady()
+        public void SendSetToggleReady(bool ready)
         {
-            photonView.RPC("ToggleReadyRPC", RpcTarget.MasterClient, photonView.Owner.ActorNumber);
+            photonView.RPC("SetReadyRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, ready);
         }
 
         [PunRPC]
-        private void ToggleReadyRPC(int photonID)
+        private void SetReadyRPC(int photonID, bool ready)
         {
             if (!playersReadyDict.ContainsKey(photonID))
             {
@@ -150,25 +161,47 @@ namespace GameStates
                 return;
             }
 
-            playersReadyDict[photonID] = !playersReadyDict[photonID];
+            playersReadyDict[photonID] = ready;
 
             if (!playersReadyDict[photonID])
             {
-                isEveryPlayerReady = false;
+                Debug.Log("The value was set to false");
+                return;
+            }
+            if (!IsEveryPlayerReady())
+            {
+                Debug.Log("Every player is not ready");
                 return;
             }
 
-            isEveryPlayerReady = IsEveryPlayerReady();
-            if (!isEveryPlayerReady) return;
+            foreach (var key in allPlayersIDs) playersReadyDict[key] = false;
 
-            foreach (var key in playersReadyDict.Keys) playersReadyDict[key] = false;
-            
             currentState.OnAllPlayerReady();
         }
 
         private bool IsEveryPlayerReady()
         {
-            return playersReadyDict.Values.All(ready => ready);
+            foreach (var kv in playersReadyDict)
+            {
+                Debug.Log($"{kv.Key} / {kv.Value}");
+            }
+            
+            return playersReadyDict.Values.All(ready => ready) && playersReadyDict.Count == expectedPlayerCount;
+        }
+
+        public void LoadMap()
+        {
+            // Load scene
+            // Init pools
+            // Init more stuff
+            SendSetToggleReady(true);
+            Debug.Log("Loading is over");
+        }
+
+        public void MoveToGameScene()
+        {
+            PhotonNetwork.IsMessageQueueRunning = false;
+            PhotonNetwork.LoadLevel("InGameScene");
         }
     }
 }
