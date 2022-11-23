@@ -23,6 +23,7 @@ namespace Entities.Champion
         protected override void OnUpdate()
         {
             MovePlayerMaster();
+            MovePlayerLocal();
         }
         public override void OnInstantiated()
         {
