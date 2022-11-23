@@ -12,7 +12,7 @@ public class ActiveDarkMatter : ActiveCapacity
 
     public override ActiveCapacitySO AssociatedActiveCapacitySO()
     {
-        return ScriptableObject.CreateInstance<ActiveDarkMatterSO>();
+        return CapacitySOCollectionManager.Instance.GetActiveCapacitySOByName(activeCapacitySo.name);
     }
 
     public override bool TryCast(uint entityIndex, uint[] targets, Vector3[] position)
