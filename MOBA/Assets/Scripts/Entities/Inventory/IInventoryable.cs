@@ -54,6 +54,27 @@ namespace Entities.Inventory
 
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
         public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
+        
+        /// <summary>
+        /// Sends an RPC to the master to activate an item in the entity's inventory.
+        /// </summary>
+        /// <param name="index">the index of the item on the ItemCollectionManager</param>
+        public void RequestActivateItem(byte index);
+
+        /// <summary>
+        /// Sends an RPC to all clients to activate an item in the entity's inventory.
+        /// </summary>
+        /// <param name="index">the index of the item on the ItemCollectionManager</param>
+        public void SyncActivateItemRPC(byte index);
+
+        /// <summary>
+        /// Activates an item in the entity's inventory.
+        /// </summary>
+        /// <param name="index">the index of the item on the ItemCollectionManager</param>
+        public void ActivateItemRPC(byte index);
+        public event GlobalDelegates.BoolDelegate OnActivateItem;
+        public event GlobalDelegates.BoolDelegate OnActivateItemFeedback;
+        
 
     }
 }

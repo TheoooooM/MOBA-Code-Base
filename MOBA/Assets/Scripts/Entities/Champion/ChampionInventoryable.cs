@@ -41,5 +41,22 @@ namespace Entities.Champion
 
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
         public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
+        public void RequestActivateItem(byte index)
+        {
+            
+        }
+
+        public void SyncActivateItemRPC(byte index)
+        {
+            
+        }
+
+        public void ActivateItemRPC(byte index)
+        {
+            
+        }
+
+        public event GlobalDelegates.BoolDelegate OnActivateItem;
+        public event GlobalDelegates.BoolDelegate OnActivateItemFeedback;
     }
 }

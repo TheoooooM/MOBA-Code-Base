@@ -8,7 +8,6 @@ namespace Controllers.Inputs
         protected override void OnAwake()
         {
             base.OnAwake();
-            if(!controlledEntity.photonView.IsMine) return;
             //SetupInputMap();
             //Link(controlledEntity);
         }
@@ -22,9 +21,9 @@ namespace Controllers.Inputs
             InputManager.PlayerMap.Enable();
         }
         
-        public void LinkToPlayer(int actorNumber)
+        public void LinkToPlayer()
         {
-            if(actorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
+            if(!controlledEntity.photonView.IsMine) return;
             SetupInputMap();
             Link(controlledEntity);
         }

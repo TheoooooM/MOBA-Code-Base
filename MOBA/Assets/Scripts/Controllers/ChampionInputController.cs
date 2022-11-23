@@ -11,7 +11,7 @@ namespace Controllers.Inputs
     {
         private Champion champion;
         private uint[] selectedEntity;
-        private Vector3 cursorWorldPos;
+        private Vector3[] cursorWorldPos;
         private bool isMoving;
         private Vector2 moveInput;
         private Vector3 moveVector;
@@ -42,7 +42,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnAttack(InputAction.CallbackContext ctx)
         {
-            
+            attackable.RequestAttack(champion.attackAbilityIndex,selectedEntity,cursorWorldPos);
         }
         
         /// <summary>
@@ -51,6 +51,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateCapacity0(InputAction.CallbackContext ctx)
         {
+            castable.RequestCast(champion.abilitiesIndexes[0],selectedEntity,cursorWorldPos);
         }
         /// <summary>
         /// Actions Performed on Capacity 1 Activation
@@ -58,6 +59,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateCapacity1(InputAction.CallbackContext ctx)
         {
+            castable.RequestCast(champion.abilitiesIndexes[1],selectedEntity,cursorWorldPos);
         }
         /// <summary>
         /// Actions Performed on Capacity 2 Activation
@@ -65,6 +67,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateCapacity2(InputAction.CallbackContext ctx)
         {
+            castable.RequestCast(champion.abilitiesIndexes[2],selectedEntity,cursorWorldPos);
         }
 
         /// <summary>
@@ -73,6 +76,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateItem0(InputAction.CallbackContext ctx)
         {
+            inventoryable.RequestActivateItem(0);
         }
         /// <summary>
         /// Actions Performed on Item 1 Activation
@@ -80,6 +84,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateItem1(InputAction.CallbackContext ctx)
         {
+            inventoryable.RequestActivateItem(1);
         }
         /// <summary>
         /// Actions Performed on Item 2 Activation
@@ -87,10 +92,11 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateItem2(InputAction.CallbackContext ctx)
         {
+            inventoryable.RequestActivateItem(2);
         }
 
         /// <summary>
-        /// Get Entity(ies) point by mouse
+        /// Get Entity(ies) and worldPos point by mouse
         /// </summary>
         /// <param name="mousePos"></param>
         /// <returns></returns>
@@ -100,6 +106,7 @@ namespace Controllers.Inputs
 
             if (Physics.Raycast(mouseRay, out RaycastHit hit))
             {
+                cursorWorldPos[0] = hit.point;
                 var ent = hit.transform.GetComponent<Entity>();
                 if (ent) return ent.entityIndex;
             }

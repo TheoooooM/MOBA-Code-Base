@@ -81,8 +81,25 @@ public class Test_entity : Entity, IInventoryable
 
     public event GlobalDelegates.ByteDelegate OnRemoveItem;
     public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
-    
-    
+    public void RequestActivateItem(byte index)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncActivateItemRPC(byte index)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ActivateItemRPC(byte index)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.BoolDelegate OnActivateItem;
+    public event GlobalDelegates.BoolDelegate OnActivateItemFeedback;
+
+
     [PunRPC]
     public void AssignInventory(int index, int team)
     {

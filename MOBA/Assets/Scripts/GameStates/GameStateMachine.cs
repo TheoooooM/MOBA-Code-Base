@@ -327,7 +327,7 @@ namespace GameStates
             var pos = new Vector3(Random.Range(0f, 10f), 1, Random.Range(0f, 10f));
             var go = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, pos, Quaternion.identity);
             go.SendStartPosition(pos);
-            go.GetComponent<PlayerInputController>().LinkToPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
+            go.GetComponent<PlayerInputController>().LinkToPlayer();
             go.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
         }
 
