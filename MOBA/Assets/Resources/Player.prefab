@@ -127,6 +127,14 @@ MonoBehaviour:
   entityIndex: 0
   canAddPassiveCapacity: 0
   canRemovePassiveCapacity: 0
+  canShow: 0
+  canHide: 0
+  elementsToShow: []
+  canChangeTeam: 0
+  team: 0
+  baseViewRange: 0
+  viewRange: 0
+  canView: 0
   championSo: {fileID: 0}
   attackAbilityIndex: 0
   abilitiesIndexes: 0000
@@ -138,11 +146,6 @@ MonoBehaviour:
   isAlive: 0
   canDie: 0
   canBeDisplaced: 0
-  canShow: 0
-  canHide: 0
-  baseViewRange: 0
-  viewRange: 0
-  canView: 0
   referenceMoveSpeed: 10
   currentMoveSpeed: 10
   canMove: 0

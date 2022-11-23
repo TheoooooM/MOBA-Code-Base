@@ -13,7 +13,6 @@ namespace  Entities
         public List<Component> elementsToShow = new List<Component>();
         public bool CanShow() 
         {
-            
             return canShow;
         }
 

@@ -4,6 +4,7 @@ namespace Entities.FogOfWar
 {
     public interface IFOWViewable : ITeamable
     {
+        
         /// <returns>If the entity can see</returns>
         public bool CanView();
         /// <returns>The current view range of the entity</returns>

@@ -60,9 +60,9 @@ namespace Entities.FogOfWar
         Mesh viewMesh;
         public FOVSettings settingsFOV;
 
-        private void RenderFOW(List<IFOWViewable> viewables)
+        private void RenderFOW(List<Entity> viewables)
         {
-            //Maths...
+            Debug.Log("Render");
             //DrawFieldOfView();
             // calculer la texture 
         }
@@ -89,19 +89,14 @@ namespace Entities.FogOfWar
         
         public void UpdateTeamsFOWViewables()
         {
-            // prenne chaque viewable et tu regarde à quelle team ils appartiennent 
-            //
+            // prennent chaque viewable et tu regarde à quelle team ils appartiennent 
+            //Take all viewables and chose the team 
             //RenderFOW();
         }
 
-        private void Start()
-        {   
-            
-        }
-
         private void Update()
-        {
-           UpdateTeamsFOWViewables();  
+        { 
+            UpdateTeamsFOWViewables();  
         }
 
         public void InitMesh()
