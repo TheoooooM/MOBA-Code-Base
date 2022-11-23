@@ -146,6 +146,7 @@ namespace Entities.Champion
         public void SyncIncreaseCurrentHpRPC(float amount)
         {
             currentHp = amount;
+            UIManager.Instance.SetHealthBar(entityIndex);
             OnIncreaseCurrentHpFeedback?.Invoke(currentHp);
         }
 
@@ -169,6 +170,7 @@ namespace Entities.Champion
         public void SyncDecreaseCurrentHpRPC(float amount)
         {
             currentHp = amount;
+            UIManager.Instance.SetHealthBar(entityIndex);
             OnDecreaseCurrentHpFeedback?.Invoke(currentHp);
         }
 

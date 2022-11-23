@@ -18,6 +18,8 @@ namespace Entities.Champion
         {
             // fowm = FogOfWarManager.Instance;
             // fowm.allViewables.Add(entityIndex,this);
+            UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
+            UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
         }
 
         protected override void OnUpdate()

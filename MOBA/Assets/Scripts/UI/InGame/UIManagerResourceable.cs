@@ -1,21 +1,31 @@
-using Entities.Champion;
+using System.Collections.Generic;
+using Entities;
 using UnityEngine;
 using UnityEngine.UI;
 
 public partial class UIManager
 {
-    // Find the UI elements in the scene
-    // and make them follow the player
-    [SerializeField] private Image resourceBar;
-
-    public void UpdateResourceBar()
-    {
-        float resource = player.GetComponent<Champion>().GetCurrentResource();
-        resourceBar.fillAmount = resource;
-    }
+    [SerializeField] private Dictionary<uint, GameObject> entitiesResource = new Dictionary<uint, GameObject>();
+    [SerializeField] private GameObject resourceBarPrefab;
     
-    public void LinkResourceUI(Transform target)
+    public void InstantiateResourceBarForEntity(uint entityIndex)
     {
-        player = target;
+        if (EntityCollectionManager.GetEntityByIndex(entityIndex) != null && EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<IResourceable>() != null)
+        {
+            Transform entityTransform = EntityCollectionManager.GetEntityByIndex(entityIndex).transform;
+            GameObject ResourceBar = Instantiate(resourceBarPrefab, entityTransform.position, Quaternion.identity, entityTransform.GetComponentInChildren<Canvas>().transform);
+            ResourceBar.transform.LookAt(Camera.main.transform);
+            entitiesResource.Add(entityIndex, ResourceBar);
+            SetResourceBar(entityIndex);
+        }
+    }
+
+    public void SetResourceBar(uint entityIndex)
+    {
+        if (entitiesHealth.ContainsKey(entityIndex))
+        {
+            GameObject resourceBar = entitiesHealth[entityIndex];
+            resourceBar.GetComponentInChildren<Image>().fillAmount = EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<IResourceable>().GetCurrentResourcePercent();
+        }
     }
 }

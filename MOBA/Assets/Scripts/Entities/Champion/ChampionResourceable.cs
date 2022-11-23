@@ -146,6 +146,7 @@ namespace Entities.Champion
         public void SyncIncreaseCurrentResourceRPC(float amount)
         {
             currentResource = amount;
+            UIManager.Instance.SetResourceBar(entityIndex);
             OnIncreaseCurrentResourceFeedback?.Invoke(currentResource);
         }
 
@@ -169,6 +170,7 @@ namespace Entities.Champion
         public void SyncDecreaseCurrentResourceRPC(float amount)
         {
             currentResource = amount;
+            UIManager.Instance.SetResourceBar(entityIndex);
             OnDecreaseCurrentResourceFeedback?.Invoke(currentResource);
         }
 
