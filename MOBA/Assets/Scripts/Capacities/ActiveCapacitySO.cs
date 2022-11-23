@@ -17,5 +17,9 @@ namespace Entities.Capacities
         [Tooltip("Cooldown in second")] public float cooldown;
 
         [Tooltip("All types of the capacity")] private List<Enums.CapacityType> types;
+
+        public abstract void TryCast(uint[] targets, Vector3[] direction);
+
+        public abstract void PlayFeedback();
     }
 }

@@ -48,6 +48,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Joined Room");
-        PhotonNetwork.LoadLevel("Test_blapeze");
+        PhotonNetwork.LoadLevel("GameScene");
     }
 }
