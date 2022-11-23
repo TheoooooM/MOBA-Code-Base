@@ -21,11 +21,23 @@ namespace Controllers.Inputs
             InputManager.PlayerMap.Enable();
         }
         
-        public void LinkToPlayer()
+        public void LinkControlsToPlayer()
         {
             if(!controlledEntity.photonView.IsMine) return;
             SetupInputMap();
             Link(controlledEntity);
+        }
+
+        public void LinkCameraToPlayer()
+        {
+            if(!controlledEntity.photonView.IsMine) return;
+            CameraController.Instance.LinkCamera(controlledEntity.transform);
+        }
+
+        public void TransferOwnerShipToMaster()
+        {
+            if(!controlledEntity.photonView.IsMine) return;
+            photonView.TransferOwnership(PhotonNetwork.MasterClient.ActorNumber);
         }
     }
 }
