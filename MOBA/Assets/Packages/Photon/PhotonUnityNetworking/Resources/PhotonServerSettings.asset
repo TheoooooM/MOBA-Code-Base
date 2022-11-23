@@ -178,6 +178,12 @@ MonoBehaviour:
   - SyncTryAddViewableRPC
   - SyncTryRemoveViewableRPC
   - AssignInventory
+  - StartGameRPC
+  - SyncStartGameRPC
+  - ShowRPC
+  - SyncShowRPC
+  - GetConnectedPlayersInformationRPC
+  - SyncGetConnectedPlayersInformationRPC
   - SetStartPosition
   DisableAutoOpenWizard: 1
   ShowSettings: 1

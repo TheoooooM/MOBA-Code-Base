@@ -138,7 +138,6 @@ MonoBehaviour:
   isAlive: 0
   canDie: 0
   canBeDisplaced: 0
-  enemyTeams: 
   canShow: 0
   canHide: 0
   baseViewRange: 0
