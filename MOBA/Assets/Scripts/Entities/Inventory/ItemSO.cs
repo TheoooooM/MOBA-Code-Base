@@ -14,6 +14,8 @@ namespace Entities.Inventory
 
         public byte[] passiveCapacitiesIndexes;
         public byte[] activeCapacitiesIndexes;
+        
+        public Sprite SpriteOfItem;
 
         /// <returns>the type of Item associated with this ItemSO</returns>
         public abstract Type GetAssociatedItemType();
