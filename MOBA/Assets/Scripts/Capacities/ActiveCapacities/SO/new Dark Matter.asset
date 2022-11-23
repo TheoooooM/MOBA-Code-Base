@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b191bac7fd1415340a9ea3de60e83d77, type: 3}
-  m_Name: Dark Matter
+  m_Name: new Dark Matter
   m_EditorClassIdentifier: 
-  referenceName: DarkMatterSO
-  descriptionName: Dark Matter
-  description: Calls a great mass of dark matter to fall from the sky to the target
-    location, dealing magic damage when it lands.
+  referenceName: 
+  descriptionName: 
+  description: 
   cooldown: 0
+  maxRange: 0
   zoneRadius: 0
   damageAmount: 0
   delay: 0

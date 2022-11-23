@@ -16,9 +16,8 @@ namespace Entities.Capacities
         public string description;
 
         [Tooltip("Cooldown in second")] public float cooldown;
-
         
-        [Tooltip("Maximum range")] public float range;
+        [Tooltip("Maximum range")] public float maxRange;
         
         [Tooltip("All types of the capacity")] private List<Enums.CapacityType> types;
         

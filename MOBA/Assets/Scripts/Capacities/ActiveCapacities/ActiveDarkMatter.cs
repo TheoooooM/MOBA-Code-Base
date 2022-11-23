@@ -6,7 +6,6 @@ using UnityEngine;
 public class ActiveDarkMatter : ActiveCapacity
 {
     private float timer;
-    private Entity caster;
     private ActiveDarkMatterSO activeCapacitySo;
     private Vector3[] dir;
 
@@ -17,7 +16,7 @@ public class ActiveDarkMatter : ActiveCapacity
 
     public override bool TryCast(uint entityIndex, uint[] targets, Vector3[] position)
     {
-        if (Vector3.Distance(position[0], caster.transform.position) > activeCapacitySo.range){return false;}
+        if (Vector3.Distance(position[0], caster.transform.position) > activeCapacitySo.maxRange){return false;}
         
         activeCapacitySo = (ActiveDarkMatterSO)AssociatedActiveCapacitySO();
         

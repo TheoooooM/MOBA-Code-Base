@@ -292,6 +292,11 @@ public class MinionTest : Entity, IMoveable
         throw new System.NotImplementedException();
     }
 
+    public void RequestMoveDir(Vector3 direction)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void SyncMoveRPC(Vector3 position)
     {
         throw new System.NotImplementedException();
