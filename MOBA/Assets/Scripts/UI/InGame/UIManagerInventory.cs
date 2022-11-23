@@ -12,7 +12,6 @@ public partial class UIManager
 {
     [SerializeField] private List<RectTransform> inventoriesPanel;
 
-    //private int[] inventoryIndex = { -1, -1, -1, -1 };
     private Dictionary<int, int> inventoryIndex = new Dictionary<int, int>();
 
     #region delegateInventoryUI
@@ -45,17 +44,24 @@ public partial class UIManager
         textPlayer.text = "J" + ((PlayerIndex - 1) / 1000);
     }
 
-    public void UpdateInventory(List<ItemSO> items, uint entityIndex, int MyplayerId)
+    public void UpdateInventory(List<ItemSO> items, uint entityIndex)
     {
-        Debug.Log(MyplayerId);
-        // RectTransform inventory = inventoriesPanel[inventoryIndex[entityIndex]];
-        //
-        // for (int i = 0; i < inventory.childCount; i++)
-        // {
-        //     inventory.GetChild(i).GetComponent<Image>().sprite =
-        //         (items.Count > i && items[i] != null)
-        //             ? items[i].SpriteOfItem
-        //             : null;
-        // }
+        for (int i = 0; i < inventoryIndex.Count; i++)
+        {
+            if (inventoryIndex[i] == entityIndex)
+            {
+                RectTransform inventory = inventoriesPanel[i];
+                
+                 for (int j = 0; j < inventory.childCount; j++)
+                 {
+                     inventory.GetChild(j).GetComponent<Image>().sprite =
+                         (items.Count > j && items[j] != null)
+                             ? items[j].SpriteOfItem
+                             : null;
+                }
+                return;
+            }
+        }
+
     }
 }
