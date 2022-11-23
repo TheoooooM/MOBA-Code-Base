@@ -120,6 +120,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         void OnMoveChange(InputAction.CallbackContext ctx)
         {
+            Debug.Log("Move");
             moveInput = ctx.ReadValue<Vector2>();
             moveVector = new Vector3(moveInput.x, 0, moveInput.y);
             champion.RequestMoveDir(moveVector);

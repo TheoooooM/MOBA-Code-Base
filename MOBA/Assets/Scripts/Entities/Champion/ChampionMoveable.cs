@@ -131,6 +131,7 @@ namespace Entities.Champion
         [PunRPC]
         public void MoveRPC(Vector3 direction)
         {
+            Debug.Log("Send Move to Master");
             //var newPos = transform.position + position * (currentMoveSpeed * Time.deltaTime);
             moveDirection = direction;
         }
