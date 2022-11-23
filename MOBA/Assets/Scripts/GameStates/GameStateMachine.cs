@@ -106,6 +106,26 @@ namespace GameStates
             OnTickFeedback?.Invoke();
         }
 
+        public Enums.Team GetPlayerTeam(int actorNumber)
+        {
+            return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].Item1 : Enums.Team.Neutral;
+        }
+
+        public Enums.Team GetPlayerTeam()
+        {
+            return GetPlayerTeam(PhotonNetwork.LocalPlayer.ActorNumber);
+        }
+
+        public byte GetPlayerChampionSOIndex(int actorNumber)
+        {
+            return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].Item2 : (byte)0;
+        }
+
+        public byte GetPlayerChampionSOIndex()
+        {
+            return GetPlayerChampionSOIndex(PhotonNetwork.LocalPlayer.ActorNumber);
+        }
+
         public void RequestAddPlayer()
         {
             photonView.RPC("AddPlayerRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber);
