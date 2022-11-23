@@ -226,4 +226,9 @@ public class LobbyUIManager : MonoBehaviourPun
     {
         RequestShow();
     }
+
+    public void OnDebugClick()
+    {
+        sm.StartCoroutine(sm.StartingGame());
+    }
 }
