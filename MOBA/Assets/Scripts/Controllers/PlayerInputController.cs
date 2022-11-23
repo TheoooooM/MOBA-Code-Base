@@ -1,3 +1,6 @@
+using Entities;
+using Photon.Pun;
+
 namespace Controllers.Inputs
 {
     public abstract class PlayerInputController : Controller
@@ -6,33 +9,24 @@ namespace Controllers.Inputs
         {
             base.OnAwake();
             if(!controlledEntity.photonView.IsMine) return;
-            
-            SetupInputMap();
-            Link();
+            //SetupInputMap();
+            //Link(controlledEntity);
         }
 
         /// <summary>
         /// Setup the InputMap of The Player inputs
         /// </summary>
-        void SetupInputMap()
+        private void SetupInputMap()
         {
             InputManager.PlayerMap = new PlayerInputs();
             InputManager.PlayerMap.Enable();
         }
-
-        /// <summary>
-        /// Link Inputs to CallBacks Actions
-        /// </summary>
-        protected virtual void Link() 
+        
+        public void LinkToPlayer(int actorNumber)
         {
-        }
-
-        /// <summary>
-        /// Unlink Inputs to CallBacks Actions
-        /// </summary>
-        protected virtual void Unlink()
-        {
-
+            if(actorNumber != PhotonNetwork.LocalPlayer.ActorNumber) return;
+            SetupInputMap();
+            Link(controlledEntity);
         }
     }
 }

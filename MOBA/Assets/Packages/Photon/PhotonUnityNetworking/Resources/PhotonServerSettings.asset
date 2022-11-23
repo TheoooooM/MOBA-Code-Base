@@ -187,6 +187,7 @@ MonoBehaviour:
   - SetStartPosition
   - StartCurrentStateRPC
   - SyncStartCurrentStateRPC
+  - LinkToPlayerRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

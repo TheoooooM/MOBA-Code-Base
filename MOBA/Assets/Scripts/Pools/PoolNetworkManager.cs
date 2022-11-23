@@ -54,6 +54,13 @@ public class PoolNetworkManager : MonoBehaviour
         }
     }
 
+    public Entity PoolInstantiate(byte index, Vector3 position, Quaternion rotation, Transform parent = null)
+    {
+        if (index >= poolElements.Count) return null;
+        var entityRef = poolElements[index].Element;
+        return PoolInstantiate(entityRef, position, rotation, parent);
+    }
+
     public Entity PoolInstantiate(Entity entityRef, Vector3 position, Quaternion rotation, Transform parent = null)
     {
         if(!isSetup)SetupDictionary();

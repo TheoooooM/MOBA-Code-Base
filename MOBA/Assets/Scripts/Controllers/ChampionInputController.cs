@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
 using Entities.Champion;
+using Entities.Inventory;
 
 namespace Controllers.Inputs
 {
@@ -14,6 +15,11 @@ namespace Controllers.Inputs
         private bool isMoving;
         private Vector2 moveInput;
         private Vector3 moveVector;
+
+        private IAttackable attackable;
+        private IMoveable moveable;
+        private ICastable castable;
+        private IInventoryable inventoryable;
 
         protected override void OnAwake()
         {
@@ -34,7 +40,10 @@ namespace Controllers.Inputs
         /// Actions Performed on Attack Activation
         /// </summary>
         /// <param name="ctx"></param>
-        private void OnAttack(InputAction.CallbackContext ctx){}
+        private void OnAttack(InputAction.CallbackContext ctx)
+        {
+            
+        }
         
         /// <summary>
         /// Actions Performed on Capacity 0 Activation
@@ -126,8 +135,13 @@ namespace Controllers.Inputs
             champion.RequestMoveDir(moveVector);
         }
 
-        protected override void Link()
+        protected override void Link(Entity entity)
         {
+            base.Link(entity);
+            moveable = entity.GetComponent<IMoveable>();
+            attackable = entity.GetComponent<IAttackable>();
+            castable = entity.GetComponent<ICastable>();
+            
             InputManager.PlayerMap.Attack.Attack.performed += OnAttack;
             
             InputManager.PlayerMap.Capacity.Capacity0.performed += OnActivateCapacity0;
@@ -136,7 +150,7 @@ namespace Controllers.Inputs
 
             InputManager.PlayerMap.Movement.Move.performed += OnMoveChange;
             InputManager.PlayerMap.Movement.Move.canceled += OnMoveChange;
-            CameraController.Instance.LinkCamera(controlledEntity.transform);
+            CameraController.Instance.LinkCamera(entity.transform);
         }
         
         protected override void Unlink()

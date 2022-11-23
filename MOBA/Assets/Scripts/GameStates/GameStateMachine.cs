@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Controllers.Inputs;
 using Entities.Champion;
 using Photon.Pun;
 using GameStates.States;
@@ -167,23 +168,23 @@ namespace GameStates
         }
 
         [PunRPC]
-        private void AddPlayerRPC(int photonID)
+        private void AddPlayerRPC(int actorNumber)
         {
-            photonView.RPC("SyncAddPlayerRPC", RpcTarget.All, photonID);
+            photonView.RPC("SyncAddPlayerRPC", RpcTarget.All, actorNumber);
         }
 
         [PunRPC]
-        private void SyncAddPlayerRPC(int photonID)
+        private void SyncAddPlayerRPC(int actorNumber)
         {
-            if (playersReadyDict.ContainsKey(photonID))
+            if (playersReadyDict.ContainsKey(actorNumber))
             {
                 Debug.LogWarning($"This player already exists (on {PhotonNetwork.LocalPlayer.ActorNumber})!");
             }
             else
             {
                 Debug.Log($"A player has been added (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
-                playersReadyDict.Add(photonID, (Enums.Team.Neutral, 255, false));
-                allPlayersIDs.Add(photonID);
+                playersReadyDict.Add(actorNumber, (Enums.Team.Neutral, 255, false));
+                allPlayersIDs.Add(actorNumber);
             }
         }
 
@@ -305,14 +306,29 @@ namespace GameStates
             SwitchState(1);
         }
 
+        
+        /// <summary>
+        /// Executed by MapLoaderManager on a GO on the scene 'gameSceneName', so only once the scene is loaded
+        /// </summary>
         public void LoadMap()
         {
-            // Load scene
-            // Init pools
+            // TODO - init pools
             // Init more stuff
             
             // We set players' data
+            // TODO - instantiate players (with their champion)
+            InstantiateChampion();
+            // TODO - link player inputs
             SendSetToggleReady(true);
+        }
+
+        private void InstantiateChampion()
+        {
+            var pos = new Vector3(Random.Range(0f, 10f), 1, Random.Range(0f, 10f));
+            var go = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, pos, Quaternion.identity);
+            go.SendStartPosition(pos);
+            go.GetComponent<PlayerInputController>().LinkToPlayer(PhotonNetwork.LocalPlayer.ActorNumber);
+            go.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
         }
 
         public void MoveToGameScene()
