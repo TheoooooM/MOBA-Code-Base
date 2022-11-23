@@ -1,17 +1,20 @@
 using System;
-using Entities.Capacities;
 using UnityEngine;
 
-
-[CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/Dark Matter", fileName = "new Dark Matter")]
-public class ActiveDarkMatterSO : ActiveCapacitySO
+namespace Entities.Capacities
 {
-    public float zoneRadius;
-    public float damageAmount;
-    public float delay;
-    
-    public override Type AssociatedType()
+    [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/Dark Matter", fileName = "new Dark Matter")]
+    public class ActiveDarkMatterSO : ActiveCapacitySO
     {
-        return typeof(ActiveDarkMatter);
+        public float zoneRadius;
+        public float damageAmount;
+        public float delay;
+    
+        public override Type AssociatedType()
+        {
+            return typeof(ActiveDarkMatter);
+        }
     }
 }
+
+

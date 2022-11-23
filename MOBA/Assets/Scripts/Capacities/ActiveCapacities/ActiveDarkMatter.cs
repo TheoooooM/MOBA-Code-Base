@@ -65,6 +65,5 @@ public class ActiveDarkMatter : ActiveCapacity
 
     public override void PlayFeedback()
     {
-        throw new System.NotImplementedException();
     }
 }

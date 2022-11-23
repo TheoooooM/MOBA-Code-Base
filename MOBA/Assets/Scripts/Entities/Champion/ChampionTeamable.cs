@@ -7,9 +7,7 @@ namespace Entities.Champion
 {
     public partial class Champion : ITeamable
     {
-        public bool canChangeTeam;
 
-        public Enums.Team team;
 
         public Enums.Team GetTeam()
         {
