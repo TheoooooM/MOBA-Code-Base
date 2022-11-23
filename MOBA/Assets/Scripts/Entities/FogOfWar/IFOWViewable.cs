@@ -46,17 +46,17 @@ namespace Entities.FogOfWar
         public event GlobalDelegates.FloatDelegate OnSetBaseViewRange;
         public event GlobalDelegates.FloatDelegate OnSetBaseViewRangeFeedback;
 
-        public void RequestAddFOWSeeable(uint FOWSeeableIndex);
-        public void SyncAddFOWSeeableRPC(uint FOWSeeableIndex);
-        public void AddFOWSeeableRPC(uint FOWSeeableIndex);
-        public event GlobalDelegates.UintDelegate OnAddFOWSeeable;
-        public event GlobalDelegates.UintDelegate OnAddFOWSeeableFeedback;
+        public void AddShowable(uint showableIndex);
+        public void AddShowable(IFOWShowable showable);
+        public void SyncAddShowableRPC(uint showableIndex);
+        public event GlobalDelegates.UintDelegate OnAddShowable;
+        public event GlobalDelegates.UintDelegate OnAddShowableFeedback;
         
-        public void RequestRemoveFOWSeeable(uint FOWSeeableIndex);
-        public void SyncRemoveFOWSeeableRPC(uint FOWSeeableIndex);
-        public void RemoveFOWSeeableRPC(uint FOWSeeableIndex);
-        public event GlobalDelegates.UintDelegate OnRemoveFOWSeeable;
-        public event GlobalDelegates.UintDelegate OnRemoveFOWSeeableFeedback;
+        public void RemoveShowable(uint showableIndex);
+        public void RemoveShowable(IFOWShowable showable);
+        public void SyncRemoveShowableRPC(uint showableIndex);
+        public event GlobalDelegates.UintDelegate OnRemoveShowable;
+        public event GlobalDelegates.UintDelegate OnRemoveShowableFeedback;
 
     }
 }

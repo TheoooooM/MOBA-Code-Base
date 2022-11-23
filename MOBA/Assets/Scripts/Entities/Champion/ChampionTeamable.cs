@@ -16,9 +16,9 @@ namespace Entities.Champion
             return team;
         }
 
-        public Enums.Team[] GetEnemyTeams()
+        public List<Enums.Team> GetEnemyTeams()
         {
-            return Enum.GetValues(typeof(Enums.Team)).Cast<Enums.Team>().Where(someTeam => someTeam != team).ToArray(); //returns all teams that are not 'team'
+            return Enum.GetValues(typeof(Enums.Team)).Cast<Enums.Team>().Where(someTeam => someTeam != team).ToList(); //returns all teams that are not 'team'
         }
 
         public bool CanChangeTeam()

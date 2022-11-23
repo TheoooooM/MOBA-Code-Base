@@ -1,11 +1,13 @@
-﻿namespace Entities
+﻿using System.Collections.Generic;
+
+namespace Entities
 {
     public interface ITeamable
     {
         /// <returns>the team of the entity</returns>
         public Enums.Team GetTeam();
         /// <returns>returns the teams that the entity considers its enemy</returns>
-        public Enums.Team[] GetEnemyTeams();
+        public List<Enums.Team> GetEnemyTeams();
         
         /// <returns>true if the entity can change team, false if not</returns>
         public bool CanChangeTeam();

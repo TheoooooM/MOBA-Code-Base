@@ -86,46 +86,93 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnSetBaseViewRange;
         public event GlobalDelegates.FloatDelegate OnSetBaseViewRangeFeedback;
 
-        public void RequestAddFOWSeeable(uint FOWSeeableIndex)
+        public void AddShowable(uint seenEntityIndex)
         {
+            var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
+            if(entity == null) return;
             
+            var showable = entity.GetComponent<IFOWShowable>();
+            if(showable == null) return;
+            
+            AddShowable(showable);
+        }
+
+        public void AddShowable(IFOWShowable showable)
+        {
+            if (seenShowables.Contains(showable)) return;
+            
+            seenShowables.Add(showable);
+            showable.TryAddFOWViewable(this);
+            
+            var seenEntityIndex = ((Entity)showable).entityIndex;
+            OnAddShowableFeedback?.Invoke(seenEntityIndex);
+            
+            if(!PhotonNetwork.IsMasterClient) return;
+            OnAddShowable?.Invoke(seenEntityIndex);
+            photonView.RPC("SyncAddShowableRPC",RpcTarget.All,seenEntityIndex);
         }
 
         [PunRPC]
-        public void SyncAddFOWSeeableRPC(uint FOWSeeableIndex)
+        public void SyncAddShowableRPC(uint seenEntityIndex)
         {
+            var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
+            if(entity == null) return;
             
+            var showable = entity.GetComponent<IFOWShowable>();
+            if(showable == null) return;
+            if (seenShowables.Contains(showable)) return;
+            
+            seenShowables.Add(showable);
+            OnAddShowableFeedback?.Invoke(seenEntityIndex);
+            if(!PhotonNetwork.IsMasterClient) showable.TryAddFOWViewable(this);
+        }
+        
+        public event GlobalDelegates.UintDelegate OnAddShowable;
+        public event GlobalDelegates.UintDelegate OnAddShowableFeedback;
+
+        public void RemoveShowable(uint seenEntityIndex)
+        {
+            var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
+            if(entity == null) return;
+            
+            var showable = entity.GetComponent<IFOWShowable>();
+            if(showable == null) return;
+            
+            RemoveShowable(showable);
+        }
+
+        public void RemoveShowable(IFOWShowable showable)
+        {
+            if (!seenShowables.Contains(showable)) return;
+            
+            seenShowables.Add(showable);
+            showable.TryRemoveFOWViewable(this);
+            
+            var seenEntityIndex = ((Entity)showable).entityIndex;
+            OnRemoveShowableFeedback?.Invoke(seenEntityIndex);
+            
+            if(!PhotonNetwork.IsMasterClient) return;
+            OnRemoveShowable?.Invoke(seenEntityIndex);
+            photonView.RPC("SyncRemoveShowableRPC",RpcTarget.All,seenEntityIndex);
         }
 
         [PunRPC]
-        public void AddFOWSeeableRPC(uint FOWSeeableIndex)
+        public void SyncRemoveShowableRPC(uint seenEntityIndex)
         {
+            var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
+            if(entity == null) return;
             
+            var showable = entity.GetComponent<IFOWShowable>();
+            if(showable == null) return;
+            if (!seenShowables.Contains(showable)) return;
+            
+            seenShowables.Remove(showable);
+            OnAddShowableFeedback?.Invoke(seenEntityIndex);
+            if(!PhotonNetwork.IsMasterClient) showable.TryRemoveFOWViewable(this);
         }
 
-        public event GlobalDelegates.UintDelegate OnAddFOWSeeable;
-        public event GlobalDelegates.UintDelegate OnAddFOWSeeableFeedback;
-
-        public void RequestRemoveFOWSeeable(uint FOWSeeableIndex) { }
-
-        [PunRPC]
-        public void SyncRemoveFOWSeeableRPC(uint FOWSeeableIndex) { }
-
-        [PunRPC]
-        public void RemoveFOWSeeableRPC(uint FOWSeeableIndex) { }
-
-        public event GlobalDelegates.UintDelegate OnRemoveFOWSeeable;
-        public event GlobalDelegates.UintDelegate OnRemoveFOWSeeableFeedback;
-
-        public void TryAddFOWViewable(IFOWViewable FOWWhichSee)
-        {
-            
-        }
-
-        public void TryRemoveFOWViewable(IFOWViewable FOWWhichSee)
-        {
-            
-        }
+        public event GlobalDelegates.UintDelegate OnRemoveShowable;
+        public event GlobalDelegates.UintDelegate OnRemoveShowableFeedback;
 
     }
 }

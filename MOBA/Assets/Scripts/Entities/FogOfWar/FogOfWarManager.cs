@@ -24,8 +24,8 @@ namespace Entities.FogOfWar
 
             //maskMatPlane.SetFloat("_Opacity", 0);
         }
-        
-        
+
+        public Dictionary<uint, IFOWViewable> allViewables = new Dictionary<uint, IFOWViewable>();
         public List<IFOWViewable> allFOWViewable = new List<IFOWViewable>();
         private Dictionary<Enums.Team, List<IFOWViewable>> teamFOWViewablesDict = new Dictionary<Enums.Team, List<IFOWViewable>>();
 
