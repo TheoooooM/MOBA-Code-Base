@@ -29,7 +29,6 @@ namespace GameStates
 
         public uint expectedPlayerCount = 4;
 
-
         public ChampionSO[] allChampions;
         public Enums.Team[] allTeams;
 
@@ -61,7 +60,15 @@ namespace GameStates
 
         private void Start()
         {
-            InitState();
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log("Master initializes");
+                InitState();
+            }
+            else
+            {
+                RequestStartCurrentState();
+            }
         }
 
         private void Update()
@@ -71,7 +78,8 @@ namespace GameStates
 
         private void InitState()
         {
-            photonView.RPC("SyncInitStateRPC", RpcTarget.All);
+            currentState = gamesStates[0];
+            currentState.StartState();
         }
 
         public void SwitchState(byte stateIndex)
@@ -87,10 +95,35 @@ namespace GameStates
             currentState.StartState();
         }
 
-        [PunRPC]
-        private void SyncInitStateRPC()
+        private void RequestStartCurrentState()
         {
-            currentState = gamesStates[0];
+            photonView.RPC("StartCurrentStateRPC", RpcTarget.MasterClient);
+        }
+
+        [PunRPC]
+        public void StartCurrentStateRPC()
+        {
+            byte index = 255;
+            for (int i = 0; i < gamesStates.Length - 1; i++)
+            {
+                if (gamesStates[i] == currentState) index = (byte)i;
+            }
+
+            if (index == 255)
+            {
+                Debug.LogError("Index is not valid.");
+                return;
+            }
+
+            photonView.RPC("SyncStartCurrentStateRPC", RpcTarget.All, index);
+        }
+
+        [PunRPC]
+        public void SyncStartCurrentStateRPC(byte index)
+        {
+            if (currentState != null) return; // We don't want to sync a client already synced
+            
+            currentState = gamesStates[index];
             currentState.StartState();
         }
 
@@ -142,10 +175,11 @@ namespace GameStates
         {
             if (playersReadyDict.ContainsKey(photonID))
             {
-                //playersReadyDict[photonID] = false;
+                Debug.LogWarning($"This player already exists (on {PhotonNetwork.LocalPlayer.ActorNumber})!");
             }
             else
             {
+                Debug.Log($"A player has been added (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
                 playersReadyDict.Add(photonID, (Enums.Team.Neutral, 255, false));
                 allPlayersIDs.Add(photonID);
             }
@@ -186,8 +220,14 @@ namespace GameStates
         [PunRPC]
         public void SyncSetTeamRPC(int photonID, byte team)
         {
-            if (!playersReadyDict.ContainsKey(photonID)) return;
+            if (!playersReadyDict.ContainsKey(photonID))
+            {
+                Debug.LogWarning($"This player is not added (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
+                return;
+            }
 
+            Debug.Log(
+                $"Player {photonID} set their team, {(Enums.Team)team} (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
             playersReadyDict[photonID] = ((Enums.Team)team, playersReadyDict[photonID].Item2,
                 playersReadyDict[photonID].Item3);
         }
