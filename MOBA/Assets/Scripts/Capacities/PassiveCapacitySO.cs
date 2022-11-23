@@ -14,7 +14,7 @@ namespace Entities.Capacities
 
         [TextArea(4, 4)] [Tooltip("Description of the capacity")]
         public string description;
-        
+
         /// <returns>the type of PassiveCapacity associated with this PassiveCapacitySO</returns>
         public abstract Type AssociatedType();
 

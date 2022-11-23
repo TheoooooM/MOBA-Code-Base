@@ -184,6 +184,7 @@ MonoBehaviour:
   - SyncShowRPC
   - GetConnectedPlayersInformationRPC
   - SyncGetConnectedPlayersInformationRPC
+  - SetStartPosition
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
