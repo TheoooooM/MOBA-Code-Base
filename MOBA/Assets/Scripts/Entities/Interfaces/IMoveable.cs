@@ -25,6 +25,7 @@ namespace Entities
         public void SetCanMoveRPC(bool value);
 
         public event GlobalDelegates.BoolDelegate OnSetCanMove;
+        public event GlobalDelegates.BoolDelegate OnSetCanMoveFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to set the entity's reference move speed.
@@ -43,6 +44,7 @@ namespace Entities
         public void SetReferenceMoveSpeedRPC(float value);
 
         public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeedFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to increase the entity's reference move speed.
@@ -61,6 +63,7 @@ namespace Entities
         public void IncreaseReferenceMoveSpeedRPC(float amount);
 
         public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeedFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to decrease the entity's reference move speed.
@@ -79,6 +82,7 @@ namespace Entities
         public void DecreaseReferenceMoveSpeedRPC(float amount);
 
         public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeedFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to set the entity's current move speed.
@@ -97,6 +101,7 @@ namespace Entities
         public void SetCurrentMoveSpeedRPC(float value);
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeedFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to increase the entity's current move speed.
@@ -115,6 +120,7 @@ namespace Entities
         public void IncreaseCurrentMoveSpeedRPC(float amount);
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeedFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to decrease the entity's current move speed.
@@ -133,6 +139,7 @@ namespace Entities
         public void DecreaseCurrentMoveSpeedRPC(float amount);
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
 
         /// <summary>
         /// Sends an RPC to the master to move the entity.
@@ -151,5 +158,6 @@ namespace Entities
         public void MoveRPC(Vector3 position);
 
         public event GlobalDelegates.Vector3Delegate OnMove;
+        public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
     }
 }

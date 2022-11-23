@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 61243967}
   - component: {fileID: 61243966}
+  - component: {fileID: 61243968}
   m_Layer: 0
   m_Name: GameStateMachine
   m_TagString: Untagged
@@ -153,6 +154,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tickRate: 1
+  winner: 0
+  allPlayersIDs: 
+  expectedPlayerCount: 4
+  loadedCube: {fileID: 8621260565833070838, guid: b5fbc9da27e39f343a660fa603cd1e0a, type: 3}
 --- !u!4 &61243967
 Transform:
   m_ObjectHideFlags: 0
@@ -167,6 +172,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &61243968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61243965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &436625774
 GameObject:
   m_ObjectHideFlags: 0

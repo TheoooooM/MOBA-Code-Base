@@ -66,3 +66,5 @@ crashlytics-build.properties
 
 
 MOBA/UserSettings/
+
+MOBA/Assets/Packages/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset

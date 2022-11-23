@@ -14,5 +14,7 @@ namespace GameStates.States
         public abstract void UpdateState();
 
         public abstract void ExitState();
+
+        public abstract void OnAllPlayerReady();
     }
 }

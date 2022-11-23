@@ -21,6 +21,7 @@ namespace Entities.Champion
         public void SetCanCastRPC(bool value) { }
 
         public event GlobalDelegates.FloatDelegate OnSetCanCast;
+        public event GlobalDelegates.FloatDelegate OnSetCanCastFeedback;
 
         public void RequestCast(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
 
@@ -31,5 +32,6 @@ namespace Entities.Champion
         public void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
 
         public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCast;
+        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCastFeedback;
     }
 }

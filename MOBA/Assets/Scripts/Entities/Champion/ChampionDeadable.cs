@@ -26,6 +26,7 @@ namespace Entities.Champion
         public void SetCanDieRPC(bool value) { }
 
         public event GlobalDelegates.BoolDelegate OnSetCanDie;
+        public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
 
         public void RequestDie() { }
 
@@ -36,6 +37,7 @@ namespace Entities.Champion
         public void DieRPC() { }
 
         public event GlobalDelegates.NoParameterDelegate OnDie;
+        public event GlobalDelegates.NoParameterDelegate OnDieFeedback;
 
         public void RequestRevive() { }
 
@@ -46,5 +48,6 @@ namespace Entities.Champion
         public void ReviveRPC() { }
 
         public event GlobalDelegates.NoParameterDelegate OnRevive;
+        public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
     }
 }

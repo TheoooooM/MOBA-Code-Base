@@ -1,3 +1,6 @@
+using Photon.Pun;
+using UnityEngine;
+
 namespace GameStates.States
 {
     public class PostGameState : GameState
@@ -6,23 +9,16 @@ namespace GameStates.States
 
         public override void StartState()
         {
+            if(PhotonNetwork.IsMasterClient) Debug.Log($"Winner is {sm.winner}");
         }
 
-        public override void UpdateState()
+        public override void UpdateState() { }
+
+        public override void ExitState() { }
+
+        public override void OnAllPlayerReady()
         {
-            if (!sm.IsMaster) return;
-            
-            if(IsEveryPlayerReadyForRematch()) sm.SwitchState(1);
+            sm.SwitchState(0);
         }
-
-        public override void ExitState()
-        {
-        }
-
-        private bool IsEveryPlayerReadyForRematch()
-        {
-            return false;
-        }
-
     }
 }

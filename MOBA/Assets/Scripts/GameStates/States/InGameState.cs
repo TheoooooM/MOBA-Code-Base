@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace GameStates.States
@@ -9,7 +8,10 @@ namespace GameStates.States
 
         private float timer;
 
-        public override void StartState() { }
+        public override void StartState()
+        {
+            InputManager.EnablePlayerMap(true);
+        }
 
         public override void UpdateState()
         {
@@ -21,7 +23,7 @@ namespace GameStates.States
                 return;
             }
 
-            if (timer >= sm.tickRate)
+            if (timer >= 1f / sm.tickRate)
             {
                 timer = 0f;
                 sm.Tick();
@@ -30,12 +32,13 @@ namespace GameStates.States
         }
 
         public override void ExitState() { }
+        public override void OnAllPlayerReady() { }
 
         private bool IsWinConditionChecked()
         {
             // Check win condition for any team
-            sm.winner = Enums.Team.Neutral;
-            return false;
+            //sm.winner = Enums.Team.Neutral;
+            return sm.winner != Enums.Team.Neutral;
         }
     }
 }

@@ -1,3 +1,5 @@
+using Photon.Pun;
+
 namespace GameStates.States
 {
     public class LoadingState : GameState
@@ -6,26 +8,18 @@ namespace GameStates.States
 
         public override void StartState()
         {
-            // Load scene
-            // Init pools
-            // Init more stuff
-            
-            // Envoie Scene is ready
+            if (!sm.IsMaster) return;
+            sm.MoveToGameScene();
+            sm.winner = Enums.Team.Neutral;
         }
 
-        public override void UpdateState()
-        {
-            if (!sm.IsMaster) return;
-            
-            if(IsEverySceneLoaded()) sm.SwitchState(2);
-        }
+        public override void UpdateState() { }
 
         public override void ExitState() { }
 
-        private bool IsEverySceneLoaded()
+        public override void OnAllPlayerReady()
         {
-            return true;
+            sm.SwitchState(2);
         }
-        
     }
 }

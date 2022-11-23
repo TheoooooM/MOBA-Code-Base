@@ -33,6 +33,7 @@ namespace Entities.Champion
         public void SetCanMoveRPC(bool value) { }
 
         public event GlobalDelegates.BoolDelegate OnSetCanMove;
+        public event GlobalDelegates.BoolDelegate OnSetCanMoveFeedback;
 
         public void RequestSetReferenceMoveSpeed(float value) { }
 
@@ -43,6 +44,7 @@ namespace Entities.Champion
         public void SetReferenceMoveSpeedRPC(float value) { }
 
         public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeedFeedback;
 
         public void RequestIncreaseReferenceMoveSpeed(float amount) { }
 
@@ -53,6 +55,7 @@ namespace Entities.Champion
         public void IncreaseReferenceMoveSpeedRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeedFeedback;
 
         public void RequestDecreaseReferenceMoveSpeed(float amount) { }
 
@@ -63,6 +66,7 @@ namespace Entities.Champion
         public void DecreaseReferenceMoveSpeedRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeedFeedback;
 
         public void RequestSetCurrentMoveSpeed(float value) { }
 
@@ -73,6 +77,7 @@ namespace Entities.Champion
         public void SetCurrentMoveSpeedRPC(float value) { }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeedFeedback;
 
         public void RequestIncreaseCurrentMoveSpeed(float amount) { }
 
@@ -83,6 +88,7 @@ namespace Entities.Champion
         public void IncreaseCurrentMoveSpeedRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeedFeedback;
 
         public void RequestDecreaseCurrentMoveSpeed(float amount) { }
 
@@ -93,6 +99,7 @@ namespace Entities.Champion
         public void DecreaseCurrentMoveSpeedRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
 
         public void RequestMove(Vector3 position)
         {
@@ -113,6 +120,7 @@ namespace Entities.Champion
         }
 
         public event GlobalDelegates.Vector3Delegate OnMove;
+        public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
     }
 }
 

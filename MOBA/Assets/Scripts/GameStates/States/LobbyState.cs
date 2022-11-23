@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Photon.Pun;
 
 namespace GameStates.States
@@ -6,30 +5,24 @@ namespace GameStates.States
     public class LobbyState : GameState
     {
         public LobbyState(GameStateMachine sm) : base(sm) { }
-        
 
         public override void StartState()
         {
             sm.RequestAddPlayer();
+            InputManager.EnablePlayerUIMap(true);
         }
 
-        public override void UpdateState()
-        {
-            if (!sm.IsMaster) return;
-            if(IsEveryPlayerReady()) sm.SwitchState(1);
-        }
+        public override void UpdateState() { }
 
         public override void ExitState()
         {
+            InputManager.EnablePlayerMap(false);
+            InputManager.EnablePlayerUIMap(false);
         }
 
-        private bool IsEveryPlayerReady()
+        public override void OnAllPlayerReady()
         {
-            // Check si team choisie
-            // Check si champion choisi
-            // Tout le monde a validé ses choix
-            return true;
+            sm.SwitchState(1);
         }
-
     }
 }

@@ -20,6 +20,7 @@ namespace Entities.Champion
         public void SetCanBeDisplacedRPC(bool value) { }
 
         public event GlobalDelegates.BoolDelegate OnSetCanBeDisplaced;
+        public event GlobalDelegates.BoolDelegate OnSetCanBeDisplacedFeedback;
 
         public void RequestDisplace() { }
 
@@ -30,5 +31,6 @@ namespace Entities.Champion
         public void DisplaceRPC() { }
 
         public event GlobalDelegates.NoParameterDelegate OnDisplace;
+        public event GlobalDelegates.NoParameterDelegate OnDisplaceFeedback;
     }
 }

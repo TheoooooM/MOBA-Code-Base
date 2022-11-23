@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 
 namespace Entities.Champion
@@ -11,6 +14,11 @@ namespace Entities.Champion
         public Enums.Team GetTeam()
         {
             return team;
+        }
+
+        public List<Enums.Team> GetEnemyTeams()
+        {
+            return Enum.GetValues(typeof(Enums.Team)).Cast<Enums.Team>().Where(someTeam => someTeam != team).ToList(); //returns all teams that are not 'team'
         }
 
         public bool CanChangeTeam()
@@ -27,5 +35,6 @@ namespace Entities.Champion
         public void ChangeTeamRPC(bool value) { }
 
         public event GlobalDelegates.BoolDelegate OnChangeTeam;
+        public event GlobalDelegates.BoolDelegate OnChangeTeamFeedback;
     }
 }

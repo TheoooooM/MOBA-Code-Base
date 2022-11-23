@@ -26,6 +26,7 @@
         public void SetMaxResourceRPC(float value);
 
         public event GlobalDelegates.FloatDelegate OnSetMaxResource;
+        public event GlobalDelegates.FloatDelegate OnSetMaxResourceFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to increase the entity's maxResource.
@@ -43,6 +44,7 @@
         /// <param name="amount">the increase amount</param>
         public void IncreaseMaxResourceRPC(float amount);
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxResource;
+        public event GlobalDelegates.FloatDelegate OnIncreaseMaxResourceFeedback;
 
         /// <summary>
         /// Sends an RPC to the master to decrease the entity's maxResource.
@@ -60,6 +62,7 @@
         /// <param name="amount">the increase amount</param>
         public void DecreaseMaxResourceRPC(float amount);
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxResource;
+        public event GlobalDelegates.FloatDelegate OnDecreaseMaxResourceFeedback;
 
         /// <summary>
         /// Sends an RPC to the master to set the entity's currentResource.
@@ -77,6 +80,7 @@
         /// <param name="value">the value to set it to</param>
         public void SetCurrentResourceRPC(float value);
         public event GlobalDelegates.FloatDelegate OnSetCurrentResource;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentResourceFeedback;
 
         /// <summary>
         /// Sends an RPC to the master to set the entity's currentResource to a percentage of  its maxResource.
@@ -94,6 +98,7 @@
         /// <param name="value">the value to set it to</param>
         public void SetCurrentResourcePercentRPC(float value);
         public event GlobalDelegates.FloatDelegate OnSetCurrentResourcePercent;
+        public event GlobalDelegates.FloatDelegate OnSetCurrentResourcePercentFeedback;
 
         /// <summary>
         /// Sends an RPC to the master to increase the entity's currentResource.
@@ -111,6 +116,7 @@
         /// <param name="amount">the decrease amount</param>
         public void IncreaseCurrentResourceRPC(float amount);
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentResource;
+        public event GlobalDelegates.FloatDelegate OnIncreaseCurrentResourceFeedback;
 
         /// <summary>
         /// Sends an RPC to the master to decrease the entity's currentResource.
@@ -128,6 +134,7 @@
         /// <param name="amount">the decrease amount</param>
         public void DecreaseCurrentResourceRPC(float amount);
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentResource;
+        public event GlobalDelegates.FloatDelegate OnDecreaseCurrentResourceFeedback;
 
     }
 }

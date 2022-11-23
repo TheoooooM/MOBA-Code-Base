@@ -1,3 +1,7 @@
+using Controllers;
+using Entities.FogOfWar;
+using UnityEngine;
+
 namespace Entities.Champion
 {
     public partial class Champion : Entity
@@ -7,9 +11,27 @@ namespace Entities.Champion
         public byte attackAbilityIndex;
         public byte[] abilitiesIndexes = new byte[2];
         public byte ultimateAbilityIndex;
-        
-        protected override void OnStart() { }
 
-        protected override void OnUpdate() { }
+        private FogOfWarManager fowm;
+
+        protected override void OnStart()
+        {
+            fowm = FogOfWarManager.Instance;
+            fowm.allViewables.Add(entityIndex,this);
+        }
+
+        protected override void OnUpdate()
+        {
+            
+        }
+        public override void OnInstantiated()
+        {
+            
+        }
+
+        public override void OnInstantiatedFeedback()
+        {
+            
+        }
     }
 }

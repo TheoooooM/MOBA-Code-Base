@@ -21,6 +21,7 @@ namespace Entities
         public void SetCanAttackRPC(bool value);
 
         public event GlobalDelegates.BoolDelegate OnSetCanAttack;
+        public event GlobalDelegates.BoolDelegate OnSetCanAttackFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to Attack.
@@ -45,5 +46,6 @@ namespace Entities
         public void AttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions);
 
         public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnAttack;
+        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnAttackFeedback;
     }
 }

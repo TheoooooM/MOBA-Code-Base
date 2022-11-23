@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Entities.FogOfWar;
 using Photon.Pun;
 
@@ -5,80 +6,173 @@ namespace Entities.Champion
 {
     public partial class Champion : IFOWViewable
     {
+        public float baseViewRange;
         public float viewRange;
+        public bool canView;
+        public List<IFOWShowable> seenShowables = new List<IFOWShowable>();
 
-        public float GetViewRange()
+        public bool CanView() => canView;
+        public float GetFOWViewRange() => viewRange;
+        public float GetFOWBaseViewRange() => baseViewRange;
+
+        public List<IFOWShowable> SeenShowables() => seenShowables;
+
+        public void RequestSetCanView(bool value)
         {
-            return viewRange;
+            photonView.RPC("SetCanViewRPC",RpcTarget.MasterClient,value);
         }
 
-        public bool CanView()
+        [PunRPC]
+        public void SyncSetCanViewRPC(bool value)
         {
-            throw new System.NotImplementedException();
+            canView = value;
+            OnSetCanViewFeedback?.Invoke(value);
         }
 
-        public float GetFOWViewRange()
+        [PunRPC]
+        public void SetCanViewRPC(bool value)
         {
-            throw new System.NotImplementedException();
+            canView = value;
+            OnSetCanView?.Invoke(value);
+            photonView.RPC("SetCanViewRPC",RpcTarget.All,value);
         }
 
-        public float GetFOWBaseViewRange()
+        public event GlobalDelegates.BoolDelegate OnSetCanView;
+        public event GlobalDelegates.BoolDelegate OnSetCanViewFeedback;
+
+        public void RequestSetViewRange(float value)
         {
-            throw new System.NotImplementedException();
+            photonView.RPC("SyncSetViewRangeRPC",RpcTarget.MasterClient,value);
         }
 
-        public void RequestSetCanView() { }
+        [PunRPC]
+        public void SyncSetViewRangeRPC(float value)
+        {
+            viewRange = value;
+            OnSetViewRangeFeedback?.Invoke(value);
+        }
 
         [PunRPC]
-        public void SyncSetCanViewRPC() { }
-
-        [PunRPC]
-        public void SetCanViewRPC() { }
-
-        public event GlobalDelegates.NoParameterDelegate OnSetCanView;
-
-        public void RequestSetViewRange(float value) { }
-
-        [PunRPC]
-        public void SyncSetViewRangeRPC(float value) { }
-
-        [PunRPC]
-        public void SetViewRangeRPC(float value) { }
+        public void SetViewRangeRPC(float value)
+        {
+            viewRange = value;
+            OnSetViewRange?.Invoke(value);
+            photonView.RPC("SyncSetViewRangeRPC",RpcTarget.All,value);
+        }
 
         public event GlobalDelegates.FloatDelegate OnSetViewRange;
+        public event GlobalDelegates.FloatDelegate OnSetViewRangeFeedback;
 
-        public void RequestSetBaseViewRange(float value) { }
+        public void RequestSetBaseViewRange(float value)
+        {
+            photonView.RPC("SetBaseViewRangeRPC",RpcTarget.MasterClient,value);
+        }
 
         [PunRPC]
-        public void SyncSetBaseViewRangeRPC(float value) { }
+        public void SyncSetBaseViewRangeRPC(float value)
+        {
+            baseViewRange = value;
+            OnSetBaseViewRangeFeedback?.Invoke(value);
+        }
 
         [PunRPC]
-        public void SetBaseViewRangeRPC(float value) { }
+        public void SetBaseViewRangeRPC(float value)
+        {
+            baseViewRange = value;
+            OnSetBaseViewRange?.Invoke(value);
+            photonView.RPC("SyncSetBaseViewRangeRPC",RpcTarget.All,value);
+        }
 
         public event GlobalDelegates.FloatDelegate OnSetBaseViewRange;
+        public event GlobalDelegates.FloatDelegate OnSetBaseViewRangeFeedback;
 
-        public void RequestAddFOWSeeable(uint FOWSeeableIndex) { }
+        public void AddShowable(uint seenEntityIndex)
+        {
+            var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
+            if(entity == null) return;
+            
+            var showable = entity.GetComponent<IFOWShowable>();
+            if(showable == null) return;
+            
+            AddShowable(showable);
+        }
+
+        public void AddShowable(IFOWShowable showable)
+        {
+            if (seenShowables.Contains(showable)) return;
+            
+            seenShowables.Add(showable);
+            showable.TryAddFOWViewable(this);
+            
+            var seenEntityIndex = ((Entity)showable).entityIndex;
+            OnAddShowableFeedback?.Invoke(seenEntityIndex);
+            
+            if(!PhotonNetwork.IsMasterClient) return;
+            OnAddShowable?.Invoke(seenEntityIndex);
+            photonView.RPC("SyncAddShowableRPC",RpcTarget.All,seenEntityIndex);
+        }
 
         [PunRPC]
-        public void SyncAddFOWSeeableRPC(uint FOWSeeableIndex) { }
+        public void SyncAddShowableRPC(uint seenEntityIndex)
+        {
+            var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
+            if(entity == null) return;
+            
+            var showable = entity.GetComponent<IFOWShowable>();
+            if(showable == null) return;
+            if (seenShowables.Contains(showable)) return;
+            
+            seenShowables.Add(showable);
+            OnAddShowableFeedback?.Invoke(seenEntityIndex);
+            if(!PhotonNetwork.IsMasterClient) showable.TryAddFOWViewable(this);
+        }
+        
+        public event GlobalDelegates.UintDelegate OnAddShowable;
+        public event GlobalDelegates.UintDelegate OnAddShowableFeedback;
+
+        public void RemoveShowable(uint seenEntityIndex)
+        {
+            var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
+            if(entity == null) return;
+            
+            var showable = entity.GetComponent<IFOWShowable>();
+            if(showable == null) return;
+            
+            RemoveShowable(showable);
+        }
+
+        public void RemoveShowable(IFOWShowable showable)
+        {
+            if (!seenShowables.Contains(showable)) return;
+            
+            seenShowables.Add(showable);
+            showable.TryRemoveFOWViewable(this);
+            
+            var seenEntityIndex = ((Entity)showable).entityIndex;
+            OnRemoveShowableFeedback?.Invoke(seenEntityIndex);
+            
+            if(!PhotonNetwork.IsMasterClient) return;
+            OnRemoveShowable?.Invoke(seenEntityIndex);
+            photonView.RPC("SyncRemoveShowableRPC",RpcTarget.All,seenEntityIndex);
+        }
 
         [PunRPC]
-        public void AddFOWSeeableRPC(uint FOWSeeableIndex) { }
+        public void SyncRemoveShowableRPC(uint seenEntityIndex)
+        {
+            var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
+            if(entity == null) return;
+            
+            var showable = entity.GetComponent<IFOWShowable>();
+            if(showable == null) return;
+            if (!seenShowables.Contains(showable)) return;
+            
+            seenShowables.Remove(showable);
+            OnAddShowableFeedback?.Invoke(seenEntityIndex);
+            if(!PhotonNetwork.IsMasterClient) showable.TryRemoveFOWViewable(this);
+        }
 
-        public event GlobalDelegates.UintDelegate OnAddFOWSeeable;
+        public event GlobalDelegates.UintDelegate OnRemoveShowable;
+        public event GlobalDelegates.UintDelegate OnRemoveShowableFeedback;
 
-        public void RequestRemoveFOWSeeable(uint FOWSeeableIndex) { }
-
-        [PunRPC]
-        public void SyncRemoveFOWSeeableRPC(uint FOWSeeableIndex) { }
-
-        [PunRPC]
-        public void RemoveFOWSeeableRPC(uint FOWSeeableIndex) { }
-
-        public event GlobalDelegates.UintDelegate OnRemoveFOWSeeable;
-
-        public void TryAddFOWViewable(IFOWViewable FOWWhichSee) { }
-
-        public void TryRemoveFOWViewable(IFOWViewable FOWWhichSee) { }
     }
 }
