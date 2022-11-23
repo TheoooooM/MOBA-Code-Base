@@ -2,8 +2,6 @@ namespace Controllers.Inputs
 {
     public abstract class PlayerInputController : Controller
     {
-        public static Enums.Team team;
-
         protected override void OnAwake()
         {
             base.OnAwake();
