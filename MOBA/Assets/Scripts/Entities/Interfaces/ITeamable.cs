@@ -12,17 +12,17 @@ namespace Entities
         /// <returns>true if the entity can change team, false if not</returns>
         public bool CanChangeTeam();
         /// <summary>
-        /// Sends an RPC to the master to set if the entity can change teams.
+        /// Sends an RPC to the master to change the entity's team.
         /// </summary>
-        public void RequestChangeTeam(bool value);
+        public void RequestChangeTeam(Enums.Team team);
         /// <summary>
-        /// Sends an RPC to all clients to set if the entity can change teams.
+        /// Sends an RPC to all clients to set the entity's team.
         /// </summary>
-        public void SyncChangeTeamRPC(bool value);
+        public void SyncChangeTeamRPC(byte team);
         /// <summary>
-        /// Sets if the entity can change teams.
+        /// Sets the entity's team.
         /// </summary>
-        public void ChangeTeamRPC(bool value);
+        public void ChangeTeamRPC(byte team);
 
         public event GlobalDelegates.BoolDelegate OnChangeTeam;
         public event GlobalDelegates.BoolDelegate OnChangeTeamFeedback;
