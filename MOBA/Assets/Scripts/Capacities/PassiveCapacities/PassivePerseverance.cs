@@ -1,5 +1,4 @@
 using GameStates;
-using UnityEngine;
 
 namespace Entities.Capacities
 {
@@ -12,7 +11,7 @@ namespace Entities.Capacities
         
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
-            return ScriptableObject.CreateInstance<PassivePerseveranceSO>();
+            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByName(passiveCapacitySo.name);
         }
 
         public override void OnAdded(Entity target)
