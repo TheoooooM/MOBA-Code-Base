@@ -30,14 +30,23 @@ namespace Entities
         {
             return canChangeTeam;
         }
-        
-        public void RequestChangeTeam(bool value) { }
-        
-        [PunRPC]
-        public void SyncChangeTeamRPC(bool value) { }
+
+        public void RequestChangeTeam(Enums.Team team)
+        {
+            photonView.RPC("ChangeTeamRPC", RpcTarget.MasterClient, (byte) team);
+        }
 
         [PunRPC]
-        public void ChangeTeamRPC(bool value) { }
+        public void SyncChangeTeamRPC(byte team)
+        {
+            this.team = (Enums.Team) team;
+        }
+
+        [PunRPC]
+        public void ChangeTeamRPC(byte team)
+        {
+            photonView.RPC("SyncChangeTeamRPC", RpcTarget.All, team);
+        }
         
         public event GlobalDelegates.BoolDelegate OnChangeTeam;
         public event GlobalDelegates.BoolDelegate OnChangeTeamFeedback;

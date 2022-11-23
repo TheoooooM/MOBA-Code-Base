@@ -329,6 +329,13 @@ namespace GameStates
             go.SendStartPosition(pos);
             go.GetComponent<PlayerInputController>().LinkToPlayer();
             go.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
+
+            var data = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
+            
+            go.RequestChangeTeam(data.Item1);
+            
+            // TODO - Link Champion SO, stats and graphs
+            go.name += $" / {data.Item2}";
         }
 
         public void MoveToGameScene()

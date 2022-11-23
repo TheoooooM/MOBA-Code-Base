@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Entities
 {
     [RequireComponent(typeof(PhotonView))]
-    public abstract  partial class Entity : MonoBehaviourPun
+    public abstract partial class Entity : MonoBehaviourPun
     {
         /// <summary>
         /// The viewID of the photonView of the entity.
