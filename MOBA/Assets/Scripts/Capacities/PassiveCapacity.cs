@@ -12,11 +12,15 @@ namespace Entities.Capacities
 
         public abstract PassiveCapacitySO AssociatedPassiveCapacitySO();
 
+        protected Entity entity;
+        
         /// <summary>
         /// Call when a Stack of the capicity is Added
         /// </summary>
-        public virtual void OnAdded()
+        public virtual void OnAdded(Entity target)
         {
+            entity = target;
+            entity.passiveCapacitiesList.Add(this);
         }
 
         /// <summary>
@@ -24,6 +28,7 @@ namespace Entities.Capacities
         /// </summary>
         public virtual void OnAddedFeedback()
         {
+            entity.passiveCapacitiesList.Add(this);
         }
 
         /// <summary>
@@ -31,6 +36,7 @@ namespace Entities.Capacities
         /// </summary>
         public virtual void OnRemoved()
         {
+            entity.passiveCapacitiesList.Remove(this);
         }
 
         /// <summary>
@@ -38,6 +44,7 @@ namespace Entities.Capacities
         /// </summary>
         public virtual void OnRemoveFeedback()
         {
+            entity.passiveCapacitiesList.Remove(this);
         }
     }
 }
