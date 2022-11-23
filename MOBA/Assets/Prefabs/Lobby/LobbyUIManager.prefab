@@ -1221,7 +1221,7 @@ GameObject:
   - component: {fileID: 3361723290031500036}
   - component: {fileID: 6721805311946145390}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: ChampionName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1641,7 +1641,7 @@ GameObject:
   - component: {fileID: 4885149679385268943}
   - component: {fileID: 2439551754201400462}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: ChampionName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1865,7 +1865,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Client 1
+  m_text: Client 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2870a568caa792641bf4000797f3d667, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2870a568caa792641bf4000797f3d667, type: 2}
@@ -2766,7 +2766,7 @@ GameObject:
   - component: {fileID: 2647568324789496438}
   - component: {fileID: 5470509442899439666}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: ChampionName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3124,7 +3124,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Client 1
+  m_text: Client 4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2870a568caa792641bf4000797f3d667, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2870a568caa792641bf4000797f3d667, type: 2}
@@ -3645,10 +3645,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9bf30a94a187aa428ce8fbbdb304056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectionPart: {fileID: 4198957486806770479}
+  waitingTextObject: {fileID: 7390611485822923015}
+  goTextObject: {fileID: 6537666051997530867}
   readyButton: {fileID: 7826763905973945433}
   readyButtonText: {fileID: 7826763905424999745}
-  connectionPart: {fileID: 4198957486806770479}
-  goTextObject: {fileID: 6537666051997530867}
   selectedChampionColor: {r: 1, g: 0.19607843, b: 1, a: 1}
   unselectedChampionColor: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
   firstChampionColorImage: {fileID: 2508593841215190422}
@@ -3657,6 +3658,19 @@ MonoBehaviour:
   secondTeamColor: {r: 1, g: 0, b: 0.39215687, a: 1}
   teamColorImage: {fileID: 7163237324284147860}
   teamColorText: {fileID: 6635125641859835915}
+  allClientsInformation:
+  - obj: {fileID: 1681576287226647602}
+    clientChampionNameText: {fileID: 6721805311946145390}
+    clientTeamColorfulImage: {fileID: 7272493046732562567}
+  - obj: {fileID: 1692335810468905427}
+    clientChampionNameText: {fileID: 5752923765644515563}
+    clientTeamColorfulImage: {fileID: 7281565481778816667}
+  - obj: {fileID: 7438784783088605084}
+    clientChampionNameText: {fileID: 2439551754201400462}
+    clientTeamColorfulImage: {fileID: 8564667531028473078}
+  - obj: {fileID: 7945704450437517325}
+    clientChampionNameText: {fileID: 5470509442899439666}
+    clientTeamColorfulImage: {fileID: 4053767485581390922}
 --- !u!114 &156687096587402904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3728,7 +3742,7 @@ GameObject:
   - component: {fileID: 2300060928295859168}
   - component: {fileID: 5752923765644515563}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: ChampionName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4107,7 +4121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Client 1
+  m_text: Client 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2870a568caa792641bf4000797f3d667, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2870a568caa792641bf4000797f3d667, type: 2}

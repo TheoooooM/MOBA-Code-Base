@@ -22,7 +22,7 @@ namespace GameStates
         public event GlobalDelegates.NoParameterDelegate OnTickFeedback;
 
         public Enums.Team winner = Enums.Team.Neutral;
-        [SerializeField] private List<int> allPlayersIDs = new List<int>();
+        public List<int> allPlayersIDs = new List<int>();
 
         private readonly Dictionary<int, (Enums.Team, byte, bool)> playersReadyDict =
             new Dictionary<int, (Enums.Team, byte, bool)>();
@@ -242,11 +242,6 @@ namespace GameStates
 
         private bool IsEveryPlayerReady()
         {
-            foreach (var kvp in playersReadyDict)
-            {
-                Debug.Log($"{kvp.Key}, {kvp.Value.Item1}, {kvp.Value.Item2}, {kvp.Value.Item3}");
-            }
-
             if (playersReadyDict.Count != expectedPlayerCount) return false;
 
             var team1Count = 0;

@@ -9,37 +9,41 @@ using UnityEngine.UI;
 public class LobbyUIManager : MonoBehaviourPun
 {
     public static LobbyUIManager Instance;
-
-    private bool isReady;
-
-    [SerializeField] private Button readyButton;
-    [SerializeField] private TextMeshProUGUI readyButtonText;
+    private GameStateMachine sm;
 
     [Header("Connection Part")] [SerializeField]
     private GameObject connectionPart;
 
+    [SerializeField] private GameObject waitingTextObject;
     [SerializeField] private GameObject goTextObject;
 
-    [Header("Champion Selection Part")] [SerializeField]
-    private Color selectedChampionColor;
+    [Header("Selection Part")] [SerializeField]
+    private Button readyButton;
 
+    [SerializeField] private TextMeshProUGUI readyButtonText;
+    [SerializeField] private Color selectedChampionColor;
     [SerializeField] private Color unselectedChampionColor;
-
     [SerializeField] private Image firstChampionColorImage;
     [SerializeField] private Image secondChampionColorImage;
-    
-    [Header("Team Selection Part")] [SerializeField]
-    private Color firstTeamColor;
-
+    [SerializeField] private Color firstTeamColor;
     [SerializeField] private Color secondTeamColor;
     [SerializeField] private Image teamColorImage;
     [SerializeField] private TextMeshProUGUI teamColorText;
     private bool isFirstTeam = true;
 
-    [Header("Data")] private byte currentChampion;
-    private byte currentTeam;
+    [Header("Network")] [SerializeField] private ClientInformation[] allClientsInformation;
 
-    private GameStateMachine sm;
+    [Header("Data")] private byte currentChampion;
+    private Enums.Team currentTeam;
+    private bool isReady;
+
+    [Serializable]
+    private struct ClientInformation
+    {
+        public GameObject obj;
+        public TextMeshProUGUI clientChampionNameText;
+        public Image clientTeamColorfulImage;
+    }
 
     private void Awake()
     {
@@ -51,13 +55,8 @@ public class LobbyUIManager : MonoBehaviourPun
 
         Instance = this;
     }
-
-    private void Start()
-    {
-        Initialization();
-    }
-
-    private void Initialization()
+    
+    public void Initialization()
     {
         sm = GameStateMachine.Instance;
 
@@ -68,9 +67,16 @@ public class LobbyUIManager : MonoBehaviourPun
 
         // Default is no champion selected
         currentChampion = 2;
+        currentTeam = Enums.Team.Team1;
 
         // Default is first team
-        sm.RequestSetTeam(0);
+        sm.RequestSetTeam((byte)currentTeam);
+
+        // Send information to other players
+        RequestShow();
+
+        // Get information from other players
+        RequestGetConnectedPlayersInformation();
     }
 
     public void OnToggleReadyClick()
@@ -79,16 +85,8 @@ public class LobbyUIManager : MonoBehaviourPun
         isReady = !isReady;
 
         // We change GUI
-        if (isReady)
-        {
-            connectionPart.SetActive(true);
-            readyButtonText.text = "Cancel";
-        }
-        else
-        {
-            connectionPart.SetActive(false);
-            readyButtonText.text = "Validate";
-        }
+        connectionPart.SetActive(isReady);
+        readyButtonText.text = isReady ? "Cancel" : "Validate";
 
         // We send request to Master
         sm.SendSetToggleReady(isReady);
@@ -98,30 +96,31 @@ public class LobbyUIManager : MonoBehaviourPun
     {
         if (isReady) return;
 
-        if (index != 0 && index != 1)
-        {
-            Debug.LogError("Index is not valid. Must be 0 or 1.");
-            return;
-        }
-
         currentChampion = (byte)index;
-        
-        // We change GUI
-        if (index == 0)
+
+        switch (index)
         {
-            firstChampionColorImage.color = selectedChampionColor;
-            secondChampionColorImage.color = unselectedChampionColor;
-        }
-        else
-        {
-            firstChampionColorImage.color = unselectedChampionColor;
-            secondChampionColorImage.color = selectedChampionColor;
+            // We change GUI
+            case 0:
+                firstChampionColorImage.color = selectedChampionColor;
+                secondChampionColorImage.color = unselectedChampionColor;
+                break;
+            case 1:
+                firstChampionColorImage.color = unselectedChampionColor;
+                secondChampionColorImage.color = selectedChampionColor;
+                break;
+            default:
+                Debug.LogError("Index is not valid. Must be 0 or 1.");
+                return;
         }
 
         readyButton.interactable = true;
 
         // We send request to Master
         sm.RequestSetChampion(currentChampion);
+
+        // Send information to other players
+        RequestShow();
     }
 
     public void OnTeamClick()
@@ -132,15 +131,18 @@ public class LobbyUIManager : MonoBehaviourPun
         isFirstTeam = !isFirstTeam;
         var index = isFirstTeam ? 1 : 2;
 
-        currentTeam = (byte)index;
-        
+        currentTeam = (Enums.Team)index;
+
         // We change GUI
         teamColorImage.color = isFirstTeam ? firstTeamColor : secondTeamColor;
         teamColorText.color = isFirstTeam ? firstTeamColor : secondTeamColor;
         teamColorText.text = isFirstTeam ? "Team 1" : "Team 2";
 
         // We send request to Master
-        sm.RequestSetTeam(currentTeam);
+        sm.RequestSetTeam((byte)currentTeam);
+
+        // Send information to other players
+        RequestShow();
     }
 
     public void RequestStartGame()
@@ -157,24 +159,63 @@ public class LobbyUIManager : MonoBehaviourPun
     [PunRPC]
     public void SyncStartGameRPC()
     {
+        waitingTextObject.SetActive(false);
         goTextObject.SetActive(true);
     }
 
-    public void RequestShow()
+    private void RequestShow()
     {
-        photonView.RPC("ShowRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, currentTeam, currentChampion);
+        photonView.RPC("ShowRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, (byte)currentTeam,
+            currentChampion);
     }
 
     [PunRPC]
-    public void ShowRPC(byte photonID, byte team, byte champion)
+    public void ShowRPC(int photonID, byte team, byte champion)
     {
-        photonView.RPC("SyncShowRPC", RpcTarget.MasterClient, photonID,currentTeam, currentChampion);
-
+        photonView.RPC("SyncShowRPC", RpcTarget.All, photonID, team, champion);
     }
 
     [PunRPC]
-    public void SyncShowRPC(byte photonID, byte team, byte champion)
+    public void SyncShowRPC(int photonID, byte team, byte champion)
     {
-        
+        if (photonID > allClientsInformation.Length)
+        {
+            Debug.LogError("ID is not valid");
+        }
+
+        // We set GUI
+        allClientsInformation[photonID - 1].obj.SetActive(true);
+        allClientsInformation[photonID - 1].clientChampionNameText.text = champion switch
+        {
+            0 => "Champion 1",
+            1 => "Champion 2",
+            2 => "Waiting...",
+            _ => "No valid!"
+        };
+
+        allClientsInformation[photonID - 1].clientTeamColorfulImage.color = team switch
+        {
+            0 => unselectedChampionColor,
+            1 => firstTeamColor,
+            2 => secondTeamColor,
+            _ => allClientsInformation[photonID].clientTeamColorfulImage.color
+        };
+    }
+
+    private void RequestGetConnectedPlayersInformation()
+    {
+        photonView.RPC("GetConnectedPlayersInformationRPC", RpcTarget.MasterClient);
+    }
+
+    [PunRPC]
+    public void GetConnectedPlayersInformationRPC()
+    {
+        photonView.RPC("SyncGetConnectedPlayersInformationRPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void SyncGetConnectedPlayersInformationRPC()
+    {
+        RequestShow();
     }
 }
