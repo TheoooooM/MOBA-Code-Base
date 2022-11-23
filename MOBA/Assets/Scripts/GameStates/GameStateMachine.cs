@@ -103,7 +103,7 @@ namespace GameStates
         }
 
         [PunRPC]
-        public void StartCurrentStateRPC()
+        private void StartCurrentStateRPC()
         {
             byte index = 255;
             for (int i = 0; i < gamesStates.Length - 1; i++)
@@ -121,7 +121,7 @@ namespace GameStates
         }
 
         [PunRPC]
-        public void SyncStartCurrentStateRPC(byte index)
+        private void SyncStartCurrentStateRPC(byte index)
         {
             if (currentState != null) return; // We don't want to sync a client already synced
             
@@ -136,7 +136,7 @@ namespace GameStates
         }
 
         [PunRPC]
-        public void TickRPC()
+        private void TickRPC()
         {
             OnTickFeedback?.Invoke();
         }
@@ -220,7 +220,7 @@ namespace GameStates
         }
 
         [PunRPC]
-        public void SyncSetTeamRPC(int photonID, byte team)
+        private void SyncSetTeamRPC(int photonID, byte team)
         {
             if (!playersReadyDict.ContainsKey(photonID))
             {
@@ -246,7 +246,7 @@ namespace GameStates
         }
 
         [PunRPC]
-        public void SyncSetChampionRPC(int photonID, byte champion)
+        private void SyncSetChampionRPC(int photonID, byte champion)
         {
             if (!playersReadyDict.ContainsKey(photonID)) return;
 
@@ -300,7 +300,7 @@ namespace GameStates
 
         public IEnumerator StartingGame()
         {
-            LobbyUIManager.Instance.RequestStartGame();
+            LobbyUIManager.Instance.SendStartGame();
             yield return new WaitForSeconds(3f);
             SwitchState(1);
         }
@@ -310,6 +310,8 @@ namespace GameStates
             // Load scene
             // Init pools
             // Init more stuff
+            
+            // We set players' data
             SendSetToggleReady(true);
         }
 

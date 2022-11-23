@@ -55,12 +55,7 @@ public class LobbyUIManager : MonoBehaviourPun
 
         Instance = this;
     }
-
-    private void Start()
-    {
-        //Initialization();
-    }
-
+    
     public void Initialization()
     {
         sm = GameStateMachine.Instance;
@@ -153,19 +148,13 @@ public class LobbyUIManager : MonoBehaviourPun
         RequestShow();
     }
 
-    public void RequestStartGame()
-    {
-        photonView.RPC("StartGameRPC", RpcTarget.MasterClient);
-    }
-
-    [PunRPC]
-    public void StartGameRPC()
+    public void SendStartGame()
     {
         photonView.RPC("SyncStartGameRPC", RpcTarget.All);
     }
-
+    
     [PunRPC]
-    public void SyncStartGameRPC()
+    private void SyncStartGameRPC()
     {
         waitingTextObject.SetActive(false);
         goTextObject.SetActive(true);
@@ -178,13 +167,13 @@ public class LobbyUIManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void ShowRPC(int photonID, byte team, byte champion)
+    private void ShowRPC(int photonID, byte team, byte champion)
     {
         photonView.RPC("SyncShowRPC", RpcTarget.All, photonID, team, champion);
     }
 
     [PunRPC]
-    public void SyncShowRPC(int photonID, byte team, byte champion)
+    private void SyncShowRPC(int photonID, byte team, byte champion)
     {
         if (photonID > allClientsInformation.Length)
         {
@@ -216,13 +205,13 @@ public class LobbyUIManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void GetConnectedPlayersInformationRPC()
+    private void GetConnectedPlayersInformationRPC()
     {
         photonView.RPC("SyncGetConnectedPlayersInformationRPC", RpcTarget.All);
     }
 
     [PunRPC]
-    public void SyncGetConnectedPlayersInformationRPC()
+    private void SyncGetConnectedPlayersInformationRPC()
     {
         RequestShow();
     }
