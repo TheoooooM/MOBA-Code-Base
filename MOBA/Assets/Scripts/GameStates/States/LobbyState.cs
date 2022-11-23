@@ -1,5 +1,3 @@
-using Photon.Pun;
-
 namespace GameStates.States
 {
     public class LobbyState : GameState
@@ -9,6 +7,8 @@ namespace GameStates.States
         public override void StartState()
         {
             sm.RequestAddPlayer();
+            LobbyUIManager.Instance.Initialization();
+            InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(true);
         }
 
@@ -22,7 +22,7 @@ namespace GameStates.States
 
         public override void OnAllPlayerReady()
         {
-            sm.SwitchState(1);
+            sm.StartCoroutine(sm.StartingGame());
         }
     }
 }
