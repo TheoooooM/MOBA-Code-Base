@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,10 +17,11 @@ namespace Entities.Capacities
 
         [Tooltip("Cooldown in second")] public float cooldown;
 
+        
+        [Tooltip("Maximum range")] public float range;
+        
         [Tooltip("All types of the capacity")] private List<Enums.CapacityType> types;
-
-        public abstract void TryCast(uint entityIndex,uint[] targets, Vector3[] direction);
-
-        public abstract void PlayFeedback();
+        
+        public abstract Type AssociatedType();
     }
 }
