@@ -13,6 +13,8 @@ namespace GameStates
         public static GameStateMachine Instance;
         public bool IsMaster => PhotonNetwork.IsMasterClient;
 
+        [SerializeField] private string gameSceneName;
+
         private GameState currentState;
         private GameState[] gamesStates;
 
@@ -314,7 +316,7 @@ namespace GameStates
         public void MoveToGameScene()
         {
             PhotonNetwork.IsMessageQueueRunning = false;
-            PhotonNetwork.LoadLevel("InGameScene");
+            PhotonNetwork.LoadLevel(gameSceneName);
         }
     }
 }
