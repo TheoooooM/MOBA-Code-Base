@@ -14,6 +14,8 @@ namespace Entities.Capacities
 
         public override bool TryCast(uint entityIndex, uint[] targets, Vector3[] position)
         {
+            lifeable = caster.GetComponent<IActiveLifeable>();
+            
             lifeable.IncreaseCurrentHpRPC(so.healAmount);
             
             return true;
