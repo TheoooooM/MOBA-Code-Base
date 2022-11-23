@@ -16,8 +16,8 @@ namespace Entities.Champion
 
         protected override void OnStart()
         {
-            // fowm = FogOfWarManager.Instance;
-            // fowm.allViewables.Add(entityIndex,this);
+            fowm = FogOfWarManager.Instance;
+            fowm.allViewables.Add(entityIndex,this);
             UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
             UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
         }
