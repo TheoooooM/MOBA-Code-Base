@@ -27,13 +27,6 @@ namespace Controllers.Inputs
 
         private void Update()
         {
-            Move();
-        }
-
-        private void Move()
-        {
-            if (!isMoving) return;
-            champion.RequestMove(moveVector);
         }
 
 
@@ -122,13 +115,14 @@ namespace Controllers.Inputs
         }
 
         /// <summary>
-        /// Actions Performed on Move
+        /// Actions Performed on Move direction Change
         /// </summary>
         /// <param name="ctx"></param>
-        void OnMove(InputAction.CallbackContext ctx)
+        void OnMoveChange(InputAction.CallbackContext ctx)
         {
             moveInput = ctx.ReadValue<Vector2>();
             moveVector = new Vector3(moveInput.x, 0, moveInput.y);
+            champion.RequestMoveDir(moveVector);
         }
 
         protected override void Link()
@@ -139,9 +133,8 @@ namespace Controllers.Inputs
             InputManager.PlayerMap.Capacity.Capacity1.performed += OnActivateCapacity1;
             InputManager.PlayerMap.Capacity.Capacity2.performed += OnActivateCapacity2;
 
-            InputManager.PlayerMap.Movement.Move.started += context => isMoving = true;
-            InputManager.PlayerMap.Movement.Move.performed += OnMove;
-            InputManager.PlayerMap.Movement.Move.canceled += context => isMoving = false;
+            InputManager.PlayerMap.Movement.Move.performed += OnMoveChange;
+            InputManager.PlayerMap.Movement.Move.canceled += OnMoveChange;
             CameraController.Instance.LinkCamera(controlledEntity.transform);
         }
         
@@ -153,7 +146,8 @@ namespace Controllers.Inputs
             InputManager.PlayerMap.Capacity.Capacity1.performed -= OnActivateCapacity1;
             InputManager.PlayerMap.Capacity.Capacity2.performed -= OnActivateCapacity2;
             
-            InputManager.PlayerMap.Movement.Move.performed -= OnMove;
+            InputManager.PlayerMap.Movement.Move.performed -= OnMoveChange;
+            InputManager.PlayerMap.Movement.Move.canceled -= OnMoveChange;
             CameraController.Instance.UnLinkCamera();
         }
     }
