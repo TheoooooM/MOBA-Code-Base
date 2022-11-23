@@ -1,34 +1,20 @@
-using Entities;
-using Entities.Capacities;
+using System;
 using UnityEngine;
 
-
-[CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/Dark Matter", fileName = "new Dark Matter")]
-public class ActiveDarkMatterSO : ActiveCapacitySO
+namespace Entities.Capacities
 {
-    public float zoneRadius;
-    public float damageAmount;
+    [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/Dark Matter", fileName = "new Dark Matter")]
+    public class ActiveDarkMatterSO : ActiveCapacitySO
+    {
+        public float zoneRadius;
+        public float damageAmount;
+        public float delay;
     
-    public override void TryCast(uint[] targets, Vector3[] direction)
-    {
-        Collider[] detected = Physics.OverlapSphere(direction[0], zoneRadius);
-
-        foreach (var hit in detected)
+        public override Type AssociatedType()
         {
-            Entity entityTouch = hit.GetComponent<Entity>();
-            
-            if (entityTouch)
-            {
-                IActiveLifeable entityActiveLifeable = entityTouch.GetComponent<IActiveLifeable>();
-                
-                entityActiveLifeable.DecreaseCurrentHpRPC(damageAmount);
-            }
+            return typeof(ActiveDarkMatter);
         }
-
-    }
-
-    public override void PlayFeedback()
-    {
-        throw new System.NotImplementedException();
     }
 }
+
+

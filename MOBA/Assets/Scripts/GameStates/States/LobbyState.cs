@@ -1,4 +1,5 @@
 using Photon.Pun;
+using UnityEngine;
 
 namespace GameStates.States
 {
@@ -8,7 +9,9 @@ namespace GameStates.States
 
         public override void StartState()
         {
-            sm.RequestAddPlayer();
+            LobbyUIManager.Instance.Initialization();
+
+            InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(true);
         }
 
@@ -22,7 +25,7 @@ namespace GameStates.States
 
         public override void OnAllPlayerReady()
         {
-            sm.SwitchState(1);
+            sm.StartCoroutine(sm.StartingGame());
         }
     }
 }

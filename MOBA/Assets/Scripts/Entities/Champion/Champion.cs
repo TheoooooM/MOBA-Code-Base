@@ -13,11 +13,10 @@ namespace Entities.Champion
         public byte ultimateAbilityIndex;
 
         private FogOfWarManager fowm;
-
         protected override void OnStart()
         {
             fowm = FogOfWarManager.Instance;
-            fowm.allViewables.Add(entityIndex,this);
+            //fowm.allViewables.Add(entityIndex,this);
             UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
             UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
         }
@@ -25,6 +24,7 @@ namespace Entities.Champion
         protected override void OnUpdate()
         {
             MovePlayerMaster();
+            MovePlayerLocal();
         }
         public override void OnInstantiated()
         {

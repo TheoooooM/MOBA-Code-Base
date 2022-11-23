@@ -277,10 +277,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b495c58f8f430d458287b1f7b8a437b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraFog: {fileID: 1126480335}
   fogColor: {r: 1, g: 0, b: 0, a: 1}
   fogMat: {fileID: 2100000, guid: 269845f80d310d74db13180ca168d3e1, type: 2}
   worldSize: 50
   worldSizeGizmos: 1
+  viewMeshFilter: {fileID: 0}
+  settingsFOV:
+    viewRadius: 0
+    viewAngle: 0
+    targetMask:
+      serializedVersion: 2
+      m_Bits: 0
+    obstacleMask:
+      serializedVersion: 2
+      m_Bits: 0
+    meshResolution: 1
+    edgeResolveIterations: 0
+    edgeDstThreshold: 0
+    maskCutawayDst: 0.1
 --- !u!4 &370241463
 Transform:
   m_ObjectHideFlags: 0
@@ -501,7 +516,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 12
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -530,12 +545,12 @@ GameObject:
   - component: {fileID: 1285548486}
   - component: {fileID: 1285548485}
   m_Layer: 31
-  m_Name: Sphere
+  m_Name: Test_FoW
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1285548485
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Entities.Champion;
 using Photon.Pun;
 using GameStates.States;
@@ -13,6 +13,8 @@ namespace GameStates
         public static GameStateMachine Instance;
         public bool IsMaster => PhotonNetwork.IsMasterClient;
 
+        [SerializeField] private string gameSceneName;
+
         private GameState currentState;
         private GameState[] gamesStates;
 
@@ -22,13 +24,12 @@ namespace GameStates
         public event GlobalDelegates.NoParameterDelegate OnTickFeedback;
 
         public Enums.Team winner = Enums.Team.Neutral;
-        [SerializeField] private List<int> allPlayersIDs = new List<int>();
+        public List<int> allPlayersIDs = new List<int>();
 
         private readonly Dictionary<int, (Enums.Team, byte, bool)> playersReadyDict =
             new Dictionary<int, (Enums.Team, byte, bool)>();
 
         public uint expectedPlayerCount = 4;
-
 
         public ChampionSO[] allChampions;
         public Enums.Team[] allTeams;
@@ -61,7 +62,15 @@ namespace GameStates
 
         private void Start()
         {
-            InitState();
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log("Master initializes");
+                InitState();
+            }
+            else
+            {
+                RequestStartCurrentState();
+            }
         }
 
         private void Update()
@@ -71,7 +80,8 @@ namespace GameStates
 
         private void InitState()
         {
-            photonView.RPC("SyncInitStateRPC", RpcTarget.All);
+            currentState = gamesStates[0];
+            currentState.StartState();
         }
 
         public void SwitchState(byte stateIndex)
@@ -87,10 +97,35 @@ namespace GameStates
             currentState.StartState();
         }
 
-        [PunRPC]
-        private void SyncInitStateRPC()
+        private void RequestStartCurrentState()
         {
-            currentState = gamesStates[0];
+            photonView.RPC("StartCurrentStateRPC", RpcTarget.MasterClient);
+        }
+
+        [PunRPC]
+        public void StartCurrentStateRPC()
+        {
+            byte index = 255;
+            for (int i = 0; i < gamesStates.Length - 1; i++)
+            {
+                if (gamesStates[i] == currentState) index = (byte)i;
+            }
+
+            if (index == 255)
+            {
+                Debug.LogError("Index is not valid.");
+                return;
+            }
+
+            photonView.RPC("SyncStartCurrentStateRPC", RpcTarget.All, index);
+        }
+
+        [PunRPC]
+        public void SyncStartCurrentStateRPC(byte index)
+        {
+            if (currentState != null) return; // We don't want to sync a client already synced
+            
+            currentState = gamesStates[index];
             currentState.StartState();
         }
 
@@ -142,10 +177,11 @@ namespace GameStates
         {
             if (playersReadyDict.ContainsKey(photonID))
             {
-                //playersReadyDict[photonID] = false;
+                Debug.LogWarning($"This player already exists (on {PhotonNetwork.LocalPlayer.ActorNumber})!");
             }
             else
             {
+                Debug.Log($"A player has been added (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
                 playersReadyDict.Add(photonID, (Enums.Team.Neutral, 255, false));
                 allPlayersIDs.Add(photonID);
             }
@@ -186,8 +222,14 @@ namespace GameStates
         [PunRPC]
         public void SyncSetTeamRPC(int photonID, byte team)
         {
-            if (!playersReadyDict.ContainsKey(photonID)) return;
+            if (!playersReadyDict.ContainsKey(photonID))
+            {
+                Debug.LogWarning($"This player is not added (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
+                return;
+            }
 
+            Debug.Log(
+                $"Player {photonID} set their team, {(Enums.Team)team} (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
             playersReadyDict[photonID] = ((Enums.Team)team, playersReadyDict[photonID].Item2,
                 playersReadyDict[photonID].Item3);
         }
@@ -225,27 +267,23 @@ namespace GameStates
                 return;
             }
 
-            playersReadyDict[photonID] = (playersReadyDict[photonID].Item1, 
-                playersReadyDict[photonID].Item2, 
+            playersReadyDict[photonID] = (playersReadyDict[photonID].Item1,
+                playersReadyDict[photonID].Item2,
                 ready);
 
             if (!playersReadyDict[photonID].Item3) return;
             if (!IsEveryPlayerReady()) return;
 
-            foreach (var key in allPlayersIDs) playersReadyDict[key] = (playersReadyDict[photonID].Item1, 
-                playersReadyDict[photonID].Item2, 
-                false);
+            foreach (var key in allPlayersIDs)
+                playersReadyDict[key] = (playersReadyDict[photonID].Item1,
+                    playersReadyDict[photonID].Item2,
+                    false);
 
             currentState.OnAllPlayerReady();
         }
 
         private bool IsEveryPlayerReady()
         {
-            foreach (var kvp in playersReadyDict)
-            {
-                Debug.Log($"{kvp.Key}, {kvp.Value.Item1}, {kvp.Value.Item2}, {kvp.Value.Item3}");
-            }
-            
             if (playersReadyDict.Count != expectedPlayerCount) return false;
 
             var team1Count = 0;
@@ -260,6 +298,13 @@ namespace GameStates
             return team1Count == team2Count && team1Count == 2;
         }
 
+        public IEnumerator StartingGame()
+        {
+            LobbyUIManager.Instance.RequestStartGame();
+            yield return new WaitForSeconds(3f);
+            SwitchState(1);
+        }
+
         public void LoadMap()
         {
             // Load scene
@@ -271,7 +316,7 @@ namespace GameStates
         public void MoveToGameScene()
         {
             PhotonNetwork.IsMessageQueueRunning = false;
-            PhotonNetwork.LoadLevel("InGameScene");
+            PhotonNetwork.LoadLevel(gameSceneName);
         }
     }
 }

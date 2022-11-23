@@ -57,6 +57,5 @@ namespace Entities.FogOfWar
         public void SyncRemoveShowableRPC(uint showableIndex);
         public event GlobalDelegates.UintDelegate OnRemoveShowable;
         public event GlobalDelegates.UintDelegate OnRemoveShowableFeedback;
-
     }
 }
