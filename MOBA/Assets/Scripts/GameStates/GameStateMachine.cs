@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Entities.Champion;
 using Photon.Pun;
 using GameStates.States;
@@ -225,16 +225,17 @@ namespace GameStates
                 return;
             }
 
-            playersReadyDict[photonID] = (playersReadyDict[photonID].Item1, 
-                playersReadyDict[photonID].Item2, 
+            playersReadyDict[photonID] = (playersReadyDict[photonID].Item1,
+                playersReadyDict[photonID].Item2,
                 ready);
 
             if (!playersReadyDict[photonID].Item3) return;
             if (!IsEveryPlayerReady()) return;
 
-            foreach (var key in allPlayersIDs) playersReadyDict[key] = (playersReadyDict[photonID].Item1, 
-                playersReadyDict[photonID].Item2, 
-                false);
+            foreach (var key in allPlayersIDs)
+                playersReadyDict[key] = (playersReadyDict[photonID].Item1,
+                    playersReadyDict[photonID].Item2,
+                    false);
 
             currentState.OnAllPlayerReady();
         }
@@ -245,7 +246,7 @@ namespace GameStates
             {
                 Debug.Log($"{kvp.Key}, {kvp.Value.Item1}, {kvp.Value.Item2}, {kvp.Value.Item3}");
             }
-            
+
             if (playersReadyDict.Count != expectedPlayerCount) return false;
 
             var team1Count = 0;
@@ -258,6 +259,13 @@ namespace GameStates
             }
 
             return team1Count == team2Count && team1Count == 2;
+        }
+
+        public IEnumerator StartingGame()
+        {
+            LobbyUIManager.Instance.RequestStartGame();
+            yield return new WaitForSeconds(3f);
+            SwitchState(1);
         }
 
         public void LoadMap()

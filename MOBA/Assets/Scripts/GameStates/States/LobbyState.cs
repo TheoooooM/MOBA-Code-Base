@@ -9,6 +9,7 @@ namespace GameStates.States
         public override void StartState()
         {
             sm.RequestAddPlayer();
+            InputManager.EnablePlayerMap(false);
             InputManager.EnablePlayerUIMap(true);
         }
 
@@ -22,7 +23,7 @@ namespace GameStates.States
 
         public override void OnAllPlayerReady()
         {
-            sm.SwitchState(1);
+            sm.StartCoroutine(sm.StartingGame());
         }
     }
 }
