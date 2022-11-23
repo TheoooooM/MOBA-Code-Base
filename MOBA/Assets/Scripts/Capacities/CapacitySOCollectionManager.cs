@@ -20,7 +20,7 @@ namespace Entities.Capacities
         /// Reference of All Active Capacities 
         /// </summary>
         [SerializeField] private List<ActiveCapacitySO> allActiveCapacities = new List<ActiveCapacitySO>();
-
+        
         /// <summary>
         /// List the Index of each passive capacity by his capacityName
         /// Via "allPassiveCapacities"
@@ -63,7 +63,7 @@ namespace Entities.Capacities
         /// </summary>
         /// <param name="name">Capacity Reference Name</param>
         /// <returns></returns>
-        ActiveCapacitySO GetActiveCapacityByName(string name)
+        public ActiveCapacitySO GetActiveCapacitySOByName(string name)
         {
             return allActiveCapacities[activeCapacityIndexReferenceDict[name]];
         }
@@ -73,7 +73,7 @@ namespace Entities.Capacities
         /// </summary>
         /// <param name="index">Capacity Index</param>
         /// <returns></returns>
-        ActiveCapacitySO GetActiveCapacityByIndex(byte index)
+        public ActiveCapacitySO GetActiveCapacitySOByIndex(byte index)
         {
             return allActiveCapacities[index];
         }
@@ -83,7 +83,7 @@ namespace Entities.Capacities
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        byte GetActiveCapacityIndexByName(string name)
+        public byte GetActiveCapacitySOIndexByName(string name)
         {
             return activeCapacityIndexReferenceDict[name];
         }
@@ -106,7 +106,7 @@ namespace Entities.Capacities
         /// </summary>
         /// <param name="name">Capacity Reference Name</param>
         /// <returns></returns>
-        PassiveCapacitySO GetPassiveCapacityByName(string name)
+        public PassiveCapacitySO GetPassiveCapacitySOByName(string name)
         {
             return allPassiveCapacities[passiveCapacityIndexReferenceDict[name]];
         }
@@ -116,7 +116,7 @@ namespace Entities.Capacities
         /// </summary>
         /// <param name="index">Capacity Index</param>
         /// <returns></returns>
-        PassiveCapacitySO GetPassiveCapacityByIndex(byte index)
+        public PassiveCapacitySO GetPassiveCapacitySOByIndex(byte index)
         {
             return allPassiveCapacities[index];
         }
@@ -126,7 +126,7 @@ namespace Entities.Capacities
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        byte GetPassiveCapacityIndexByName(string name)
+        public byte GetPassiveCapacityIndexSOByName(string name)
         {
             return passiveCapacityIndexReferenceDict[name];
         }
