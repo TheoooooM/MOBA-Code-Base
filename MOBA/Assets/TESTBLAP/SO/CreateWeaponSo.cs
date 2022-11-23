@@ -9,6 +9,6 @@ public class CreateWeaponSo : ItemSO
 {
     public override Type GetAssociatedItemType()
     {
-        return typeof(CreateWeaponSo);
+        return typeof(WeaponItem);
     }
 }

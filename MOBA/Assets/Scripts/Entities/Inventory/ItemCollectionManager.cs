@@ -54,7 +54,7 @@ namespace Entities.Inventory
             view.RPC("AddToCurrentItemsRPC",RpcTarget.All,itemSoIndex);
         }
 
-        [PunRPC] public static void AddToCurrentItemsRPC(byte itemSoIndex)
+        [PunRPC] public void AddToCurrentItemsRPC(byte itemSoIndex)
         {
             if (itemSoIndex >= allItems.Count) return;
             currentItems.Add(allItems[itemSoIndex]);

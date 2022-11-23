@@ -16,14 +16,14 @@ public class Test_Stock : MonoBehaviour
         for (int a = 0; a < ItemCollectionManager.allItems.Count; a++)
         {
             ShopItemImagesUI[a].sprite = ItemCollectionManager.allItems[a].SpriteOfItem;
-            ShopItemImagesUI[a].gameObject.AddComponent<Button>().onClick.AddListener(() => BuyItem(ItemCollectionManager.allItems[a]));
+            string name = ItemCollectionManager.allItems[a].referenceName;
+            ShopItemImagesUI[a].gameObject.AddComponent<Button>().onClick.AddListener(() => BuyItem(name));
         }
     }
     
-    public void BuyItem(ItemSO item)
+    public void BuyItem(string item)
     {
-        UIManager.Instance.OnClickOnItem(item);
-        Debug.Log(item.referenceName);
+        UIManager.Instance.OnClickOnItem(int.Parse(item));
     }
     
     void Start()

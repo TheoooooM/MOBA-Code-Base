@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Entities;
 using Entities.Inventory;
 using TMPro;
 using UnityEngine;
@@ -8,54 +10,52 @@ using UnityEngine.UI;
 
 public partial class UIManager
 {
-    
     [SerializeField] private List<RectTransform> inventoriesPanel;
 
-    private int[] inventoryIndex = { -1, -1, -1, -1 };
-    
-    
+    //private int[] inventoryIndex = { -1, -1, -1, -1 };
+    private Dictionary<int, int> inventoryIndex = new Dictionary<int, int>();
+
     #region delegateInventoryUI
 
     public delegate void ParamByte(byte index);
+
     public static ParamByte ClickOnItem;
 
     #endregion
-    
-    public void OnClickOnItem(ItemSO item)
+
+    public void OnClickOnItem(int item)
     {
-        int indexInt = int.Parse(item.referenceName);
-        ClickOnItem?.Invoke((byte)indexInt);
+        ClickOnItem?.Invoke((byte)item);
     }
-    
+
     public bool InventoryAssigned(int index)
     {
-        for (int i = 0; i < inventoryIndex.Length; i++)
-        {
-            if (inventoryIndex[i] == index)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public void AssignInventory(int PlayerIndex, int playerInventoryIndex)
-    {
-        TMP_Text textPlayer = inventoriesPanel[playerInventoryIndex].parent.parent.GetChild(0).GetComponent<TMP_Text>();
-        inventoryIndex[PlayerIndex - 1] = playerInventoryIndex;
-        textPlayer.text = "J" + (PlayerIndex);
+        int value = -1;
+        return (inventoryIndex.TryGetValue(index, out value)) ;
     }
 
-    public void UpdateInventory(Item[] items, int PlayerIndex)
+    public void AssignInventory(int PlayerIndex, int teamTMP)
     {
-        RectTransform inventory = inventoriesPanel[inventoryIndex[PlayerIndex - 1]];
+        int indexInventory = ((int)teamTMP - 1) * 2;
 
-        for (int i = -1; i < inventory.childCount; i++)
-        {
-            inventory.GetChild(i).GetComponent<Image>().sprite =
-                (items[i] != null)
-                    ? items[i].AssociatedItemSo().SpriteOfItem
-                    : null;
-        }
+        indexInventory += Convert.ToInt32(InventoryAssigned(((int)teamTMP - 1) * 2));
+
+        TMP_Text textPlayer = inventoriesPanel[indexInventory].parent.parent.GetChild(0).GetComponent<TMP_Text>();
+        inventoryIndex.Add(indexInventory, PlayerIndex);
+        textPlayer.text = "J" + ((PlayerIndex - 1) / 1000);
+    }
+
+    public void UpdateInventory(List<ItemSO> items, uint entityIndex, int MyplayerId)
+    {
+        Debug.Log(MyplayerId);
+        // RectTransform inventory = inventoriesPanel[inventoryIndex[entityIndex]];
+        //
+        // for (int i = 0; i < inventory.childCount; i++)
+        // {
+        //     inventory.GetChild(i).GetComponent<Image>().sprite =
+        //         (items.Count > i && items[i] != null)
+        //             ? items[i].SpriteOfItem
+        //             : null;
+        // }
     }
 }

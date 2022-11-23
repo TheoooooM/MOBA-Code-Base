@@ -9,30 +9,25 @@ using UnityEngine;
 public class Test_entity : Entity, IInventoryable
 {
     public int teamTMP = -1;
-    
+
     protected override void OnStart()
     {
-        
     }
 
     protected override void OnUpdate()
     {
-        
     }
 
     public override void OnInstantiated()
     {
-
     }
 
     public override void OnInstantiatedFeedback()
     {
-
     }
 
     public Item[] GetItems()
     {
-        
         throw new System.NotImplementedException();
     }
 
@@ -43,22 +38,31 @@ public class Test_entity : Entity, IInventoryable
 
     public void RequestAddItem(byte index)
     {
-        throw new System.NotImplementedException();
+        photonView.RPC("AddItemRPC", RpcTarget.MasterClient, index);
     }
 
+    [PunRPC]
     public void SyncAddItemRPC(byte index)
     {
-        throw new System.NotImplementedException();
+        UIManager.Instance.UpdateInventory(ItemCollectionManager.currentItems, entityIndex, this.photonView.ViewID);
     }
 
+    [PunRPC]
     public void AddItemRPC(byte index)
     {
-        throw new System.NotImplementedException();
+        if (ItemCollectionManager.currentItems.Count >= 3)
+            return;
+
+        //Item newItem = ItemCollectionManager.GetItem(index);
+
+        ItemCollectionManager.TryAddToCurrentItems(index);
+
+        //photonView.RPC("SyncAddItemRPC", RpcTarget.All, index);
     }
 
     public event GlobalDelegates.ByteDelegate OnAddItem;
     public event GlobalDelegates.ByteDelegate OnAddItemFeedback;
-    
+
     public void RequestRemoveItem(byte index)
     {
         throw new System.NotImplementedException();
@@ -69,11 +73,13 @@ public class Test_entity : Entity, IInventoryable
         throw new System.NotImplementedException();
     }
 
+    [PunRPC]
     public void SyncRemoveItemRPC(byte index)
     {
         throw new System.NotImplementedException();
     }
 
+    [PunRPC]
     public void RemoveItemRPC(byte index)
     {
         throw new System.NotImplementedException();
@@ -81,44 +87,40 @@ public class Test_entity : Entity, IInventoryable
 
     public event GlobalDelegates.ByteDelegate OnRemoveItem;
     public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
-    
-    
-    [PunRPC]
-    public void AssignInventory(int index, int team)
-    {
-        int indexInventory = team;
 
-        indexInventory += Convert.ToInt32(UIManager.Instance.InventoryAssigned(team));
-        UIManager.Instance.AssignInventory(index, indexInventory);
-    }
-    
+
     IEnumerator Pomme()
     {
-        yield return new WaitUntil(() => PhotonNetwork.CountOfPlayers == 2);
-        yield return new WaitForSeconds(10);
-        if (GetComponent<Entity>().photonView.IsMine)
-         GetComponent<Entity>().photonView.RPC("AssignInventory", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer.ActorNumber,
-             ((int)teamTMP - 1) * 2);
+        //yield return new WaitUntil(() => PhotonNetwork.CountOfPlayers == 2);
+        yield return new WaitForSeconds(4);
+        EntityCollectionManager.AddEntity(this);
+
+
+        UIManager.Instance.AssignInventory((int)entityIndex, teamTMP);
     }
-    
+
     private void Start()
     {
-        //UIManager.Instance.ClickOnItem += RequestAddItem;
-        switch (PhotonNetwork.LocalPlayer.ActorNumber)
+        UIManager.ClickOnItem += RequestAddItem;
+
+        entityIndex = (uint)photonView.ViewID;
+
+        switch (entityIndex)
         {
-            case 1:
+            case 1001:
                 teamTMP = 1;
                 break;
-            case 2:
+            case 2001:
                 teamTMP = 2;
                 break;
-            case 3:
+            case 3001:
                 teamTMP = 1;
                 break;
-            case 4:
+            case 4001:
                 teamTMP = 2;
                 break;
         }
+
         StartCoroutine(Pomme());
     }
 }
