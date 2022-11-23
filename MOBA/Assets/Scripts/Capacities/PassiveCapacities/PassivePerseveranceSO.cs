@@ -9,7 +9,7 @@ namespace Entities.Capacities
 
         public override Type AssociatedType()
         {
-            throw new NotImplementedException();
+            return typeof(PassivePerseverance);
         }
         
         [Range(0, 1)] public float percentage;
