@@ -13,6 +13,6 @@ public class ActiveAutoAttackSO : ActiveCapacitySO
     
     public override Type AssociatedType()
     {
-        return typeof(ActiveCapacitySO);
+        return typeof(ActiveAutoAttack);
     }
 }
