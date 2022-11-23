@@ -23,7 +23,7 @@ public class BlurFilter : MonoBehaviour
     private void Start()
     {
         rt1 = RenderTexture.GetTemporary(myTexture.width * upscaleTexture, myTexture.height * upscaleTexture);
-        rt2 = RenderTexture.GetTemporary(myTexture.width / 2, myTexture.height / 2);
+        rt2 = RenderTexture.GetTemporary(myTexture.width * upscaleTexture, myTexture.height * upscaleTexture);
         //save = RenderTexture.GetTemporary(myTexture.width, myTexture.height);
     }
 

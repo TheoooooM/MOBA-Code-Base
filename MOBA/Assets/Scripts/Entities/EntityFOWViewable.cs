@@ -1,34 +1,65 @@
+using System;
 using System.Collections.Generic;
 using Entities.FogOfWar;
+using System.Linq;
 using Photon.Pun;
 
-namespace Entities.Champion
+namespace Entities
 {
-    public partial class Champion : IFOWViewable
+    public abstract partial class Entity : IFOWViewable
     {
+        public bool canChangeTeam;
+        public Enums.Team team;
+        
         public float baseViewRange;
         public float viewRange;
         public bool canView;
         public List<IFOWShowable> seenShowables = new List<IFOWShowable>();
+        
+        public Enums.Team GetTeam()
+        {
+            return team;
+        }
+        
+        public List<Enums.Team> GetEnemyTeams()
+        {
+            return Enum.GetValues(typeof(Enums.Team)).Cast<Enums.Team>().Where(someTeam => someTeam != team).ToList(); //returns all teams that are not 'team'
+        }
+        
+        public bool CanChangeTeam()
+        {
+            return canChangeTeam;
+        }
+        
+        public void RequestChangeTeam(bool value) { }
+        
+        [PunRPC]
+        public void SyncChangeTeamRPC(bool value) { }
 
+        [PunRPC]
+        public void ChangeTeamRPC(bool value) { }
+        
+        public event GlobalDelegates.BoolDelegate OnChangeTeam;
+        public event GlobalDelegates.BoolDelegate OnChangeTeamFeedback;
+        
         public bool CanView() => canView;
         public float GetFOWViewRange() => viewRange;
         public float GetFOWBaseViewRange() => baseViewRange;
 
         public List<IFOWShowable> SeenShowables() => seenShowables;
-
+        
         public void RequestSetCanView(bool value)
         {
             photonView.RPC("SetCanViewRPC",RpcTarget.MasterClient,value);
         }
-
+        
         [PunRPC]
         public void SyncSetCanViewRPC(bool value)
         {
             canView = value;
             OnSetCanViewFeedback?.Invoke(value);
         }
-
+        
         [PunRPC]
         public void SetCanViewRPC(bool value)
         {
@@ -36,22 +67,22 @@ namespace Entities.Champion
             OnSetCanView?.Invoke(value);
             photonView.RPC("SetCanViewRPC",RpcTarget.All,value);
         }
-
+        
         public event GlobalDelegates.BoolDelegate OnSetCanView;
         public event GlobalDelegates.BoolDelegate OnSetCanViewFeedback;
-
+        
         public void RequestSetViewRange(float value)
         {
             photonView.RPC("SyncSetViewRangeRPC",RpcTarget.MasterClient,value);
         }
-
+        
         [PunRPC]
         public void SyncSetViewRangeRPC(float value)
         {
             viewRange = value;
             OnSetViewRangeFeedback?.Invoke(value);
         }
-
+        
         [PunRPC]
         public void SetViewRangeRPC(float value)
         {
@@ -59,22 +90,21 @@ namespace Entities.Champion
             OnSetViewRange?.Invoke(value);
             photonView.RPC("SyncSetViewRangeRPC",RpcTarget.All,value);
         }
-
+        
         public event GlobalDelegates.FloatDelegate OnSetViewRange;
         public event GlobalDelegates.FloatDelegate OnSetViewRangeFeedback;
-
         public void RequestSetBaseViewRange(float value)
         {
             photonView.RPC("SetBaseViewRangeRPC",RpcTarget.MasterClient,value);
         }
-
+        
         [PunRPC]
         public void SyncSetBaseViewRangeRPC(float value)
         {
             baseViewRange = value;
             OnSetBaseViewRangeFeedback?.Invoke(value);
         }
-
+        
         [PunRPC]
         public void SetBaseViewRangeRPC(float value)
         {
@@ -82,10 +112,10 @@ namespace Entities.Champion
             OnSetBaseViewRange?.Invoke(value);
             photonView.RPC("SyncSetBaseViewRangeRPC",RpcTarget.All,value);
         }
-
+        
         public event GlobalDelegates.FloatDelegate OnSetBaseViewRange;
         public event GlobalDelegates.FloatDelegate OnSetBaseViewRangeFeedback;
-
+        
         public void AddShowable(uint seenEntityIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
@@ -96,7 +126,7 @@ namespace Entities.Champion
             
             AddShowable(showable);
         }
-
+        
         public void AddShowable(IFOWShowable showable)
         {
             if (seenShowables.Contains(showable)) return;
@@ -111,7 +141,7 @@ namespace Entities.Champion
             OnAddShowable?.Invoke(seenEntityIndex);
             photonView.RPC("SyncAddShowableRPC",RpcTarget.All,seenEntityIndex);
         }
-
+        
         [PunRPC]
         public void SyncAddShowableRPC(uint seenEntityIndex)
         {
@@ -129,7 +159,7 @@ namespace Entities.Champion
         
         public event GlobalDelegates.UintDelegate OnAddShowable;
         public event GlobalDelegates.UintDelegate OnAddShowableFeedback;
-
+        
         public void RemoveShowable(uint seenEntityIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
@@ -140,7 +170,7 @@ namespace Entities.Champion
             
             RemoveShowable(showable);
         }
-
+        
         public void RemoveShowable(IFOWShowable showable)
         {
             if (!seenShowables.Contains(showable)) return;
@@ -155,7 +185,7 @@ namespace Entities.Champion
             OnRemoveShowable?.Invoke(seenEntityIndex);
             photonView.RPC("SyncRemoveShowableRPC",RpcTarget.All,seenEntityIndex);
         }
-
+        
         [PunRPC]
         public void SyncRemoveShowableRPC(uint seenEntityIndex)
         {
@@ -170,9 +200,9 @@ namespace Entities.Champion
             OnAddShowableFeedback?.Invoke(seenEntityIndex);
             if(!PhotonNetwork.IsMasterClient) showable.TryRemoveFOWViewable(this);
         }
-
+        
         public event GlobalDelegates.UintDelegate OnRemoveShowable;
         public event GlobalDelegates.UintDelegate OnRemoveShowableFeedback;
-
-    }
-}
+}       
+}       
+        
