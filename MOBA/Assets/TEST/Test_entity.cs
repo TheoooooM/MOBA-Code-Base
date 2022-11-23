@@ -14,4 +14,14 @@ public class Test_entity : Entity
     {
         
     }
+
+    public override void OnInstantiated()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnInstantiatedFeedback()
+    {
+        throw new System.NotImplementedException();
+    }
 }

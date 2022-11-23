@@ -10,21 +10,21 @@ public class TEST_blapeze : MonoBehaviour
 { 
     void Start()
     {
-        switch (PhotonNetwork.LocalPlayer.ActorNumber)
-        {
-            case 1:
-                Test_Controller_blapeze.team = Enums.Team.Team1;
-                break;
-            case 2:
-                Test_Controller_blapeze.team = Enums.Team.Team2;
-                break;
-            case 3:
-                Test_Controller_blapeze.team = Enums.Team.Team1;
-                break;
-            case 4:
-                Test_Controller_blapeze.team = Enums.Team.Team2;
-                break;
-        }
+        // switch (PhotonNetwork.LocalPlayer.ActorNumber)
+        // {
+        //     case 1:
+        //         Test_Controller_blapeze.team = Enums.Team.Team1;
+        //         break;
+        //     case 2:
+        //         Test_Controller_blapeze.team = Enums.Team.Team2;
+        //         break;
+        //     case 3:
+        //         Test_Controller_blapeze.team = Enums.Team.Team1;
+        //         break;
+        //     case 4:
+        //         Test_Controller_blapeze.team = Enums.Team.Team2;
+        //         break;
+        // }
         StartCoroutine(Pomme());
 
     }
@@ -43,8 +43,8 @@ public class TEST_blapeze : MonoBehaviour
         yield return new WaitUntil(() => PhotonNetwork.CountOfPlayers == 2);
         yield return new WaitForSeconds(10);
         //if (GetComponent<Entity>().photonView.IsMine)
-            GetComponent<Entity>().photonView.RPC("AssignInventory", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer.ActorNumber,
-                ((int)PlayerInputController.team - 1) * 2);
+            // GetComponent<Entity>().photonView.RPC("AssignInventory", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer.ActorNumber,
+            //     ((int)PlayerInputController.team - 1) * 2);
     }
 
     // Update is called once per frame
