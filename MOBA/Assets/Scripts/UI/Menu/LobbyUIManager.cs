@@ -55,7 +55,12 @@ public class LobbyUIManager : MonoBehaviourPun
 
         Instance = this;
     }
-    
+
+    private void Start()
+    {
+        //Initialization();
+    }
+
     public void Initialization()
     {
         sm = GameStateMachine.Instance;
@@ -68,6 +73,9 @@ public class LobbyUIManager : MonoBehaviourPun
         // Default is no champion selected
         currentChampion = 2;
         currentTeam = Enums.Team.Team1;
+
+        // We add a player
+        sm.RequestAddPlayer();
 
         // Default is first team
         sm.RequestSetTeam((byte)currentTeam);
@@ -182,7 +190,7 @@ public class LobbyUIManager : MonoBehaviourPun
         {
             Debug.LogError("ID is not valid");
         }
-
+        
         // We set GUI
         allClientsInformation[photonID - 1].obj.SetActive(true);
         allClientsInformation[photonID - 1].clientChampionNameText.text = champion switch
