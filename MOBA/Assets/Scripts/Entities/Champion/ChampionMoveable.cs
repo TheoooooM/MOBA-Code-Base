@@ -8,6 +8,9 @@ namespace Entities.Champion
         public float referenceMoveSpeed;
         public float currentMoveSpeed;
         public bool canMove;
+        private Vector3 moveDirection;
+        private Vector3 truePosition;
+        private bool truePositionSet;
         
         public bool CanMove()
         {
@@ -101,22 +104,47 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
 
-        public void RequestMove(Vector3 position)
+        public void SendStartPosition(Vector3 position)
         {
-            photonView.RPC("MoveRPC", RpcTarget.MasterClient, position);
+            photonView.RPC("SetStartPosition", RpcTarget.All, position);
+        }
+
+        [PunRPC]
+        void SetStartPosition(Vector3 pos)
+        {
+            truePosition = pos;
+            truePositionSet = true;
+        }
+        
+        
+        public void RequestMoveDir(Vector3 direction)
+        {
+            photonView.RPC("MoveRPC", RpcTarget.MasterClient, direction);
         }
 
         [PunRPC]
         public void SyncMoveRPC(Vector3 position)
         {
-            transform.position = position;
+            truePosition = position;
         }
 
         [PunRPC]
-        public void MoveRPC(Vector3 position)
+        public void MoveRPC(Vector3 direction)
         {
-            var newPos = transform.position + position * (currentMoveSpeed * Time.deltaTime);
+            //var newPos = transform.position + position * (currentMoveSpeed * Time.deltaTime);
+            moveDirection = direction;
+        }
+        
+        void MovePlayerMaster()
+        {
+            var newPos = transform.position + moveDirection * (currentMoveSpeed * Time.deltaTime);
             photonView.RPC("SyncMoveRPC", RpcTarget.All, newPos);
+        }
+
+        void MovePlayerLocal()
+        {
+            if (truePositionSet && Vector3.Distance(transform.position, truePosition) > (currentMoveSpeed * Time.deltaTime))
+                transform.position += (truePosition - transform.position).normalized * currentMoveSpeed * Time.deltaTime;
         }
 
         public event GlobalDelegates.Vector3Delegate OnMove;
