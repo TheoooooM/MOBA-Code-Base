@@ -13,7 +13,6 @@ namespace Entities.Champion
         public byte ultimateAbilityIndex;
 
         private FogOfWarManager fowm;
-
         protected override void OnStart()
         {
             fowm = FogOfWarManager.Instance;

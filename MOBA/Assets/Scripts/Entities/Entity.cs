@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using Entities.Capacities;
+using Entities.FogOfWar;
 using Photon.Pun;
 using UnityEngine;
 
 namespace Entities
 {
     [RequireComponent(typeof(PhotonView))]
-    public abstract class Entity : MonoBehaviourPun
+    public abstract  partial class Entity : MonoBehaviourPun
     {
         /// <summary>
         /// The viewID of the photonView of the entity.
@@ -210,5 +211,7 @@ namespace Entities
         }
 
         #endregion
+
+   
     }
 }
