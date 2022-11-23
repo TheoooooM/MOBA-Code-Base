@@ -136,6 +136,8 @@ namespace Controllers.Inputs
             InputManager.PlayerMap.Movement.Move.performed += OnMoveChange;
             InputManager.PlayerMap.Movement.Move.canceled += OnMoveChange;
             CameraController.Instance.LinkCamera(controlledEntity.transform);
+            UIManager.Instance.LinkLifeUI(controlledEntity.transform);
+            UIManager.Instance.LinkResourceUI(controlledEntity.transform);
         }
         
         protected override void Unlink()
