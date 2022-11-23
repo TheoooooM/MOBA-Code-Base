@@ -1,17 +1,19 @@
 using System.Collections.Generic;
 using Entities.FogOfWar;
 using Photon.Pun;
+using UnityEngine;
 
-namespace Entities.Champion
+namespace  Entities
 {
-    public partial class Champion : IFOWShowable
+    public abstract partial class Entity : IFOWShowable
     {
         public List<IFOWViewable> enemiesThatCanSeeMe = new List<IFOWViewable>();
         public bool canShow;
         public bool canHide;
-        
-        public bool CanShow()
+        public List<Component> elementsToShow = new List<Component>();
+        public bool CanShow() 
         {
+            
             return canShow;
         }
 
@@ -25,7 +27,6 @@ namespace Entities.Champion
             photonView.RPC("SetCanShowRPC",RpcTarget.MasterClient,value);
         }
 
-        [PunRPC]
         public void SyncSetCanShowRPC(bool value)
         {
             canShow = value;
@@ -42,11 +43,9 @@ namespace Entities.Champion
 
         public event GlobalDelegates.BoolDelegate OnSetCanShow;
         public event GlobalDelegates.BoolDelegate OnSetCanShowFeedback;
-
         public void RequestSetCanHide(bool value)
         {
             photonView.RPC("SetCanHideRPC",RpcTarget.MasterClient,value);
-            
         }
 
         [PunRPC]
@@ -66,7 +65,7 @@ namespace Entities.Champion
 
         public event GlobalDelegates.BoolDelegate OnSetCanHide;
         public event GlobalDelegates.BoolDelegate OnSetCanHideFeedback;
-
+        
         public void TryAddFOWViewable(uint viewableIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(viewableIndex);
@@ -91,7 +90,7 @@ namespace Entities.Champion
             if(show) OnShowElement?.Invoke();
             photonView.RPC("SyncTryAddViewableRPC",RpcTarget.All,((Entity)viewable).entityIndex,show);
         }
-
+        
         [PunRPC]
         public void SyncTryAddViewableRPC(uint viewableIndex,bool show)
         {
@@ -102,16 +101,15 @@ namespace Entities.Champion
             enemiesThatCanSeeMe.Add(viewable);
             if (show) ShowElements();
         }
-        
+
         public void ShowElements()
         {
-            
             OnShowElementFeedback?.Invoke();
         }
 
         public event GlobalDelegates.NoParameterDelegate OnShowElement;
         public event GlobalDelegates.NoParameterDelegate OnShowElementFeedback;
-
+        
         public void TryRemoveFOWViewable(uint viewableIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(viewableIndex);
@@ -146,10 +144,9 @@ namespace Entities.Champion
             enemiesThatCanSeeMe.Remove(viewable);
             if(hide) HideElements();
         }
-        
+
         public void HideElements()
         {
-            
             OnHideElementFeedback?.Invoke();
         }
 
