@@ -11,7 +11,7 @@ namespace Entities.Capacities
         
         public abstract ActiveCapacitySO AssociatedActiveCapacitySO();
 
-        public abstract bool TryCast(uint entityIndex,uint[] targets, Vector3[] direction);
+        public abstract bool TryCast(uint entityIndex,uint[] targets, Vector3[] position);
 
         public abstract void PlayFeedback();
     }
