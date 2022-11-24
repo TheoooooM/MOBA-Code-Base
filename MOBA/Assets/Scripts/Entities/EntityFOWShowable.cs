@@ -10,7 +10,7 @@ namespace  Entities
         public List<IFOWViewable> enemiesThatCanSeeMe = new List<IFOWViewable>();
         public bool canShow;
         public bool canHide;
-        public List<Component> elementsToShow = new List<Component>();
+        public List<Object> elementsToShow = new List<Object>();
         public bool CanShow() 
         {
             return canShow;

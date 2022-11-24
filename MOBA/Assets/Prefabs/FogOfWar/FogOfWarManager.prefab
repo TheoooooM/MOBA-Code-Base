@@ -41,8 +41,8 @@ Camera:
   m_GameObject: {fileID: 1126480331}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 4
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -173,16 +173,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraFog: {fileID: 1126480335}
   sceneToRenderFog:
-  - _FogOfWarDebugTest
+  - _InGameScene
   - _FogOfWarDebugTestTry
   fogColor: {r: 1, g: 0, b: 0, a: 1}
   fogMat: {fileID: 2100000, guid: 269845f80d310d74db13180ca168d3e1, type: 2}
   worldSize: 50
   worldSizeGizmos: 1
   settingsFOV:
-    obstacleMask:
-      serializedVersion: 2
-      m_Bits: 0
     meshResolution: 1
     edgeResolveIterations: 0
     edgeDstThreshold: 0

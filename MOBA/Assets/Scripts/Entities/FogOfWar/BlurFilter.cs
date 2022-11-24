@@ -3,10 +3,10 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class BlurFilter : MonoBehaviour
 {
-    [SerializeField, Range(0, 30)]
+    [SerializeField, Range(1, 30)]
     int _iteration = 4;
 
-    [SerializeField, Range(1, 4)] 
+    [SerializeField, Range(1, 8)] 
     int upscaleTexture = 4;
 
     [SerializeField] 
