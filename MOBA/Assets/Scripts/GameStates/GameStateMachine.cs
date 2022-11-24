@@ -296,7 +296,7 @@ namespace GameStates
         {
             photonView.RPC("SendDataDictionaryRPC", RpcTarget.MasterClient);
         }
-        
+
         [PunRPC]
         private void SendDataDictionaryRPC()
         {
@@ -370,6 +370,13 @@ namespace GameStates
             SwitchState(1);
         }
 
+        [PunRPC]
+        public void MoveToGameScene()
+        {
+            PhotonNetwork.IsMessageQueueRunning = false;
+            PhotonNetwork.LoadLevel(gameSceneName);
+        }
+
         /// <summary>
         /// Executed by MapLoaderManager on a GO on the scene 'gameSceneName', so only once the scene is loaded
         /// </summary>
@@ -420,6 +427,8 @@ namespace GameStates
             // We take data
 
             var data = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
+            Debug.Log($"for {champion.name}, data is : team {data.team}");
+            
             if (data.championSOIndex >= allChampionsSo.Length)
             {
                 Debug.LogWarning("Make sure the mesh is valid. Selects default mesh.");
@@ -431,18 +440,8 @@ namespace GameStates
             // We state name
             champion.name += $" / {championSo.name}";
 
-            // We set team
-            champion.RequestChangeTeam(data.team);
-
             // We sync data and champion mesh
-            champion.SyncApplyChampionSO(data.championSOIndex);
-        }
-
-        [PunRPC]
-        public void MoveToGameScene()
-        {
-            PhotonNetwork.IsMessageQueueRunning = false;
-            PhotonNetwork.LoadLevel(gameSceneName);
+            champion.SyncApplyChampionSO(data.championSOIndex, data.team);
         }
     }
 }
