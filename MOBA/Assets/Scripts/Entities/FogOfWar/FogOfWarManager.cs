@@ -113,7 +113,7 @@ namespace Entities.FogOfWar
 
             for (int i = 0; i <= stepCount; i++)
             {
-                float angle = transform.eulerAngles.y - entity.viewAngle / 2 + stepAngleSize * i;
+                float angle = entity.viewAngle / 2 + stepAngleSize * i;
                 ViewCastInfo newViewCast = ViewCast(angle, entity);
 
                 if (i > 0)
@@ -143,7 +143,7 @@ namespace Entities.FogOfWar
             vertices[0] = Vector3.zero;
             for (int i = 0; i < vertexCount - 1; i++)
             {
-                vertices[i + 1] = transform.InverseTransformPoint(viewPoints[i]) + Vector3.forward * settingsFOV.maskCutawayDst;
+                vertices[i + 1] = entity.transform.InverseTransformPoint(viewPoints[i]) + Vector3.forward * settingsFOV.maskCutawayDst;
 
                 if (i < vertexCount - 2)
                 {
@@ -153,10 +153,10 @@ namespace Entities.FogOfWar
                 }
             }
 
-            Mesh viewMesh = entity.meshFilterFoV.mesh;
+            Mesh viewMesh = entity.meshFilterFoV.GetComponent<MeshFilter>().mesh;
             if (viewMesh == null)
             {
-                InitMesh(entity.meshFilterFoV);
+                InitMesh(entity.meshFilterFoV.GetComponent<MeshFilter>());
             }
 
             viewMesh.Clear();
@@ -166,7 +166,7 @@ namespace Entities.FogOfWar
             viewMesh.RecalculateNormals();
         }
         
-        EdgeInfo FindEdge ( ViewCastInfo minViewCast, ViewCastInfo maxViewCast, Entity entity )
+        EdgeInfo FindEdge ( ViewCastInfo minViewCast, ViewCastInfo maxViewCast, Entity entity)
         {
             float minAngle = minViewCast.angle;
             float maxAngle = maxViewCast.angle;
@@ -194,17 +194,13 @@ namespace Entities.FogOfWar
             return new EdgeInfo(minPoint, maxPoint);
         }
         
-        ViewCastInfo ViewCast ( float globalAngle, Entity entity )
+        ViewCastInfo ViewCast (float globalAngle, Entity entity)
         {
-            Vector3 dir = DirFromAngle(globalAngle, true);
+            Vector3 dir = DirFromAngle(globalAngle, true, entity);
             RaycastHit hit;
-
-            Debug.Log("bonsoir");
-      
             if (Physics.Raycast(entity.transform.position, dir, out hit, entity.viewRange, layerTargetFogOfWar))
             {
-                Debug.Log("Detect collision");
-                Debug.DrawRay(entity.transform.position, dir * entity.viewRange, Color.green, Time.deltaTime);
+                Debug.DrawRay(entity.transform.position, dir, Color.green, Time.deltaTime);
                 Entity candidateEntity = hit.collider.gameObject.GetComponent<Entity>();
                 if (candidateEntity != null)
                 {
@@ -214,15 +210,15 @@ namespace Entities.FogOfWar
             }
             else
             {
-                return new ViewCastInfo(false,   dir * entity.viewRange, entity.viewRange, globalAngle);
+                return new ViewCastInfo(false,   entity.transform.position + dir * entity.viewRange, entity.viewRange, globalAngle);
             }
         }
 
-        private Vector3 DirFromAngle ( float angleInDegrees, bool angleIsGlobal )
+        private Vector3 DirFromAngle ( float angleInDegrees, bool angleIsGlobal, Entity entity)
         {
             if (!angleIsGlobal)
             {
-                angleInDegrees += transform.eulerAngles.y;
+                angleInDegrees += entity.transform.eulerAngles.y;
             }
             return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
         }

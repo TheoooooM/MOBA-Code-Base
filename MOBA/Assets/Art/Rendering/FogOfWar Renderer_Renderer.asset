@@ -20,6 +20,7 @@ MonoBehaviour:
     sceneToRenderFog:
     - InGameScene
     - _FogOfWarDebugTry
+    - FOG_InGameScene
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
