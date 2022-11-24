@@ -9,7 +9,7 @@ namespace GameStates.States
 
         public override void StartState()
         {
-            if(PhotonNetwork.IsMasterClient) Debug.Log($"Winner is {sm.winner}");
+            PostGameUIManager.Instance.DisplayPostGame(sm.winner);
         }
 
         public override void UpdateState() { }

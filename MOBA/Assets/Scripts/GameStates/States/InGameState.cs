@@ -20,6 +20,7 @@ namespace GameStates.States
 
             if (IsWinConditionChecked())
             {
+                sm.SendWinner(sm.winner);
                 sm.SwitchState(3);
                 return;
             }
@@ -33,6 +34,7 @@ namespace GameStates.States
         }
 
         public override void ExitState() { }
+
         public override void OnAllPlayerReady() { }
 
         private bool IsWinConditionChecked()
