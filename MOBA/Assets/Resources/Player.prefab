@@ -86,9 +86,13 @@ MonoBehaviour:
   viewRange: 0
   viewAngle: 0
   canView: 0
+  obstacleLayerFogOfWar:
+    serializedVersion: 2
+    m_Bits: 0
   meshFilterFoV: {fileID: 0}
   championSo: {fileID: 0}
   championInitPoint: {fileID: 1874783859807748408}
+  championMesh: {fileID: 0}
   maxHp: 0
   currentHp: 0
   attackAbilityIndex: 0

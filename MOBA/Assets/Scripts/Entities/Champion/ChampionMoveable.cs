@@ -138,15 +138,14 @@ namespace Entities.Champion
         
         void MovePlayerMaster()
         {
-            var newPos = transform.position + moveDirection * (currentMoveSpeed * Time.deltaTime);
-            photonView.RPC("SyncMoveRPC", RpcTarget.All, newPos);
+            transform.position += moveDirection * (currentMoveSpeed * Time.deltaTime);
         }
 
-        void MovePlayerLocal()
+        /*void MovePlayerLocal()
         {
             if (truePositionSet && Vector3.Distance(transform.position, truePosition) > (currentMoveSpeed * Time.deltaTime))
                 transform.position += (truePosition - transform.position).normalized * currentMoveSpeed * Time.deltaTime;
-        }
+        }*/
 
         public event GlobalDelegates.Vector3Delegate OnMove;
         public event GlobalDelegates.Vector3Delegate OnMoveFeedback;

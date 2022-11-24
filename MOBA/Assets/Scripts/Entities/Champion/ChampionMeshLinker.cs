@@ -33,7 +33,7 @@ namespace Entities.Champion
         [PunRPC]
         private void SetColorRPC(Vector3 color)
         {
-            photonView.RPC("SyncSetColorRPC", RpcTarget.All, color);
+            //photonView.RPC("SyncSetColorRPC", RpcTarget.All, color);
         }
 
         [PunRPC]

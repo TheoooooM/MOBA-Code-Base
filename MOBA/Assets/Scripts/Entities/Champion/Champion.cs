@@ -20,14 +20,14 @@ namespace Entities.Champion
             fowm = FogOfWarManager.Instance;
             capacityCollection = CapacitySOCollectionManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
-            UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
-            UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
+            if(UIManager.Instance != null)UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
+            if(UIManager.Instance != null)UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
         }
 
         protected override void OnUpdate()
         {
             MovePlayerMaster();
-            MovePlayerLocal();
+            //MovePlayerLocal();
         }
 
         public override void OnInstantiated() { }
