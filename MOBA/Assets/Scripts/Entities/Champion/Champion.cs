@@ -64,6 +64,9 @@ namespace Entities.Champion
             referenceMoveSpeed = championSo.referenceMoveSpeed;
             currentMoveSpeed = referenceMoveSpeed;
             attackDamage = championSo.attackDamage;
+            attackAbilityIndex = championSo.attackAbilityIndex;
+            abilitiesIndexes = championSo.activeCapacitiesIndexes;
+            ultimateAbilityIndex = championSo.ultimateAbilityIndex;
 
             // TODO - Implement Model/Prefab/Animator
             
