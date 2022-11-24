@@ -11,6 +11,7 @@ namespace GameStates.States
         public override void StartState()
         {
             InputManager.EnablePlayerMap(true);
+            Debug.Log("GAME STARTS");
         }
 
         public override void UpdateState()
