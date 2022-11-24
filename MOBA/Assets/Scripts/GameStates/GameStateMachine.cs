@@ -173,7 +173,7 @@ namespace GameStates
             OnTickFeedback?.Invoke();
         }
 
-        private Enums.Team GetPlayerTeam(int actorNumber)
+        public Enums.Team GetPlayerTeam(int actorNumber)
         {
             return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].team : Enums.Team.Neutral;
         }
@@ -389,6 +389,11 @@ namespace GameStates
             ItemCollectionManager.LinkCapacityIndexes();
 
             InstantiateChampion();
+
+            foreach (var actorNumber in playersReadyDict.Keys)
+            {
+                UIManager.Instance.AssignInventory(actorNumber);
+            }
 
             SendSetToggleReady(true);
         }

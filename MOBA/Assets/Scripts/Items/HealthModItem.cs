@@ -7,18 +7,26 @@ namespace Entities.Inventory
     public class HealthModItem : Item
     {
         private IActiveLifeable lifeable;
-        
-        public override void OnItemAddedToInventory(Entity entity)
+
+        protected override void OnItemAddedEffects(Entity entity)
         {
-            base.OnItemAddedToInventory(entity);
             lifeable = entity.GetComponent<IActiveLifeable>();
             lifeable?.IncreaseMaxHpRPC(((HealthModItemSO)AssociatedItemSO()).healthMod);
         }
 
-        public override void OnItemRemovedFromInventory()
+        protected override void OnItemAddedEffectsFeedback(Entity entity)
         {
-            base.OnItemRemovedFromInventory();
+            Debug.Log($"Gained {((HealthModItemSO)AssociatedItemSO()).healthMod} hp");
+        }
+
+        protected override void OnItemRemovedEffects(Entity entity)
+        {
             lifeable?.DecreaseMaxHpRPC(((HealthModItemSO)AssociatedItemSO()).healthMod);
+        }
+
+        protected override void OnItemRemovedEffectsFeedback(Entity entity)
+        {
+            Debug.Log($"Removed {((HealthModItemSO)AssociatedItemSO()).healthMod} hp");
         }
     }
 }

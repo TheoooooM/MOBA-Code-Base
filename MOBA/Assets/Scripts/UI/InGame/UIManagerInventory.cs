@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Entities;
 using Entities.Inventory;
+using GameStates;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,16 +12,14 @@ public partial class UIManager
 {
     [SerializeField] private List<InventoryPanel> inventoriesPanel = new List<InventoryPanel>();
     private Dictionary<int,InventoryPanel> inventoryPanelsDict = new Dictionary<int, InventoryPanel>();
-
-    private int[] inventoryIndex = { -1, -1, -1, -1 };
-
+    
     [System.Serializable]
     public class InventoryPanel
     {
         public TextMeshProUGUI playerNameText;
         public List<Image> slotImages;
         public Enums.Team team;
-        [HideInInspector] public bool available = false;
+        [HideInInspector] public bool available = true;
     }
 
     #region delegateInventoryUI
@@ -36,35 +35,26 @@ public partial class UIManager
         inventoriesPanel.Clear();
     }
 
-    public void OnClickOnItem(ItemSO item)
+    public void OnClickOnItem(byte item)
     {
-        int indexInt = int.Parse(item.referenceName);
-        ClickOnItem?.Invoke((byte)indexInt);
+        ClickOnItem?.Invoke(item);
     }
 
-    public bool InventoryAssigned(int index)
+    public void AssignInventory(int actorNumber)
     {
-        for (int i = 0; i < inventoriesPanel.Count; i++)
+        var playerTeam = GameStateMachine.Instance.GetPlayerTeam(actorNumber);
+        Debug.Log($"playerTeam : {playerTeam}");
+        foreach (var panel in inventoriesPanel)
         {
-            if (inventoriesPanel[i].available)
-            {
-                return true;
-            }
+            if (panel.team != playerTeam || !panel.available) continue;
+            panel.available = false;
+            inventoryPanelsDict.Add(actorNumber, panel);
+            panel.playerNameText.text = $"J{actorNumber}";
+            break;
         }
-
-        return false;
     }
 
-    public void AssignInventory(int playerIndex)
-    {
-        int inventoryIndex = (int)EntityCollectionManager.GetEntityByIndex(playerIndex).team;
-
-        //inventoryPanelsDict.Add(playerIndex,);
-        //inventoryIndex[playerIndex - 1] = playerInventoryIndex;
-        //inventoriesPanel[playerInventoryIndex].playerNameText.text = "J" + (playerIndex);
-    }
-
-    public void UpdateInventory(Item[] items, int PlayerIndex)
+    public void UpdateInventory(List<Item> items, int PlayerIndex)
     {
         InventoryPanel panel = inventoryPanelsDict[PlayerIndex];
         for (int i = -1; i < panel.slotImages.Count; i++)

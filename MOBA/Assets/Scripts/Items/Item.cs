@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace Entities.Inventory
 {
+    [System.Serializable]
     public abstract class Item
     {
         public bool consumable;
+        
         public int count;
         public float timer;
-        
         public Entity entityOfInventory;
         public IInventoryable inventory;
 
@@ -20,29 +21,43 @@ namespace Entities.Inventory
             return ItemCollectionManager.GetItemSObyIndex(indexOfSOInCollection);
         }
 
-        public virtual void OnItemAddedToInventory(Entity entity)
+        public void OnItemAddedToInventory(Entity entity)
         {
+            if (consumable) count++;
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
+            OnItemAddedEffects(entity);
             var capacityCollection = CapacitySOCollectionManager.Instance;
             // TODO - Add passives
         }
 
-        public virtual void OnItemAddedToInventoryFeedback(Entity entity)
+        protected abstract void OnItemAddedEffects(Entity entity);
+
+        public void OnItemAddedToInventoryFeedback(Entity entity)
         {
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
+            OnItemAddedEffectsFeedback(entity);
             // TODO - Add passives feedbacks
         }
 
-        public virtual void OnItemRemovedFromInventory()
+        protected abstract void OnItemAddedEffectsFeedback(Entity entity);
+
+
+        public void OnItemRemovedFromInventory(Entity entity)
         {
+            OnItemRemovedEffects(entity);
         }
 
-        public virtual void OnItemRemovedInventoryFeedback()
+        protected abstract void OnItemRemovedEffects(Entity entity);
+
+        public void OnItemRemovedFromInventoryFeedback(Entity entity)
         {
+            OnItemRemovedEffectsFeedback(entity);
         }
 
+        protected abstract void OnItemRemovedEffectsFeedback(Entity entity);
+        
         public virtual void OnItemActivated(int[] targets, Vector3[] positions)
         {
         }

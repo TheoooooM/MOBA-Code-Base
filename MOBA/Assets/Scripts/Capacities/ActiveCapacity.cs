@@ -9,9 +9,11 @@ namespace Entities.Capacities
         public Entity caster;
         private float cooldownTimer;
         public bool onCooldown;
+        private float feedbackTimer;
+        
+        public GameObject instantiateFeedbackObj;
 
         protected int target;
-        
         
         public ActiveCapacitySO AssociatedActiveCapacitySO()
         {
@@ -70,6 +72,27 @@ namespace Entities.Capacities
         }
 
         public abstract void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
+
+        public virtual void InitializeFeedbackCountdown()
+        {
+            feedbackTimer = AssociatedActiveCapacitySO().feedbackDuration;
+            GameStateMachine.Instance.OnTick += FeedbackCountdown;
+        }
+
+        public  virtual void FeedbackCountdown()
+        {
+            feedbackTimer -= GameStateMachine.Instance.tickRate;
+
+            if (feedbackTimer <= 0)
+            {
+                DisableFeedback();
+            }
+        }
+        
+        public virtual void DisableFeedback()
+        {
+            PoolLocalManager.Instance.EnqueuePool(AssociatedActiveCapacitySO().feedbackPrefab, instantiateFeedbackObj);
+        }
     }
 }
 

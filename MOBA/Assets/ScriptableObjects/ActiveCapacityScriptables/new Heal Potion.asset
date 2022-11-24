@@ -18,5 +18,7 @@ MonoBehaviour:
   cooldown: 3
   maxRange: 0
   types: 0000000002000000
-  indexInCollection: 0
-  healAmount: 10
+  indexInCollection: 2
+  feedbackDuration: 1
+  feedbackPrefab: {fileID: 3248323131726062708, guid: 9365fdce127720748a1a73011482ddeb, type: 3}
+  healAmount: 1

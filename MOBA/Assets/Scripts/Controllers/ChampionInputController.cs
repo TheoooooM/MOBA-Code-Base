@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
+using Entities.Capacities;
 using Entities.Champion;
 
 namespace Controllers.Inputs
@@ -31,6 +32,8 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateCapacity0(InputAction.CallbackContext ctx)
         {
+            ActiveCapacitySO capacity0 = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(champion.abilitiesIndexes[0]);
+
             champion.RequestCast(champion.abilitiesIndexes[0],selectedEntity,cursorWorldPos);
         }
         /// <summary>
@@ -78,14 +81,14 @@ namespace Controllers.Inputs
         private void OnMouseMove(InputAction.CallbackContext ctx)
         {
             mousePos = ctx.ReadValue<Vector2>();
-            var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
+//            var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
             
-            if (!Physics.Raycast(mouseRay, out RaycastHit hit)) return;
-            cursorWorldPos[0] = hit.point;
+            // if (!Physics.Raycast(mouseRay, out RaycastHit hit)) return;
+            // cursorWorldPos[0] = hit.point;
             
-            var ent = hit.transform.GetComponent<Entity>();
-            if(ent == null) return;
-            selectedEntity[0] = ent.entityIndex;
+            // var ent = hit.transform.GetComponent<Entity>();
+            // if(ent == null) return;
+            // selectedEntity[0] = ent.entityIndex;
 
         }
 
