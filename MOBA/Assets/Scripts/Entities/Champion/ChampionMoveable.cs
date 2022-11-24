@@ -1,11 +1,15 @@
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
+using NavMeshBuilder = UnityEditor.AI.NavMeshBuilder;
 
 namespace Entities.Champion
 {
+    [RequireComponent(typeof(NavMeshAgent))]
     public partial class Champion : IMoveable
     {
+        [Header("Movement")] 
+        public bool isBattlerite = true;
         public float referenceMoveSpeed;
         public float currentMoveSpeed;
         public float currentRotateSpeed;
@@ -14,12 +18,21 @@ namespace Entities.Champion
         
         // === League Of Legends
         private int mouseTargetIndex;
+        private Vector3 movePosition;
         //NavMesh
+        
         private NavMeshAgent agent;
 
         public bool CanMove()
         {
             return canMove;
+        }
+
+        void SetupNavMesh()
+        {
+            agent = GetComponent<NavMeshAgent>();
+            //NavMeshBuilder.ClearAllNavMeshes();
+            //NavMeshBuilder.BuildNavMesh();
         }
 
         public float GetReferenceMoveSpeed()
@@ -137,13 +150,23 @@ namespace Entities.Champion
         #region League Of Legends
 
 
-        void MoveToPosition(Vector3 position)
+        public void MoveToPosition(Vector3 position)
         {
-            position.y = transform.position.y;
+            movePosition = position;
+            movePosition.y = transform.position.y;
             agent.SetDestination(position);
+            Debug.Log($"SetDestination, position:{position}, remainingDistance{agent.remainingDistance}");
             
-            if (agent.remainingDistance <= agent.stoppingDistance || Vector3.Distance(transform.position, position) < 0.1f)agent.SetDestination(transform.position);
 
+        }
+
+        void CheckMoveDistance()
+        {
+            if (Vector3.Distance(transform.position, movePosition) < 0.5f)
+            {
+                agent.SetDestination(transform.position);
+                Debug.Log($"Stop Moving : Transform.position{transform.position}, positon{movePosition} = Distance{Vector3.Distance(transform.position, movePosition)}");
+            }
         }
 
         #endregion

@@ -2,7 +2,7 @@ using Entities.Capacities;
 using Entities.FogOfWar;
 using GameStates;
 using Photon.Pun;
-using UnityEditor.AI;
+
 using UnityEngine;
 
 namespace Entities.Champion
@@ -19,8 +19,7 @@ namespace Entities.Champion
         protected override void OnStart()
         {
             fowm = FogOfWarManager.Instance;
-            NavMeshBuilder.ClearAllNavMeshes();
-            NavMeshBuilder.BuildNavMesh();
+            SetupNavMesh();
             capacityCollection = CapacitySOCollectionManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
             if (UIManager.Instance != null) UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
@@ -33,6 +32,7 @@ namespace Entities.Champion
         {
             Move();
             Rotate();
+            CheckMoveDistance(); // Lol
         }
 
         public override void OnInstantiated() { }
