@@ -19,8 +19,8 @@ namespace Entities
         /// </summary>
         public void SyncSetCanCastRPC(bool value);
 
-        public event GlobalDelegates.FloatDelegate OnSetCanCast;
-        public event GlobalDelegates.FloatDelegate OnSetCanCastFeedback;
+        public event GlobalDelegates.BoolDelegate OnSetCanCast;
+        public event GlobalDelegates.BoolDelegate OnSetCanCastFeedback;
         
         /// <summary>
         /// Sends an RPC to the master to cast an ActiveCapacity.

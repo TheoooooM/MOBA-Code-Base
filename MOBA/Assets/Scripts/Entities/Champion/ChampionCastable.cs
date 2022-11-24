@@ -12,21 +12,34 @@ namespace Entities.Champion
         
         public bool canCast;
 
+        
         public bool CanCast()
         {
             return canCast;
         }
-
-        public void RequestSetCanCast(bool value) { }
+        
+        public void RequestSetCanCast(bool value)
+        {
+            photonView.RPC("CastRPC",RpcTarget.MasterClient,value);
+        }
+        
+        [PunRPC]
+        public void SetCanCastRPC(bool value)
+        {
+            canCast = value;
+            OnSetCanCast?.Invoke(value);
+            photonView.RPC("SyncCastRPC",RpcTarget.All,canCast);
+        }
 
         [PunRPC]
-        public void SyncSetCanCastRPC(bool value) { }
-
-        [PunRPC]
-        public void SetCanCastRPC(bool value) { }
-
-        public event GlobalDelegates.FloatDelegate OnSetCanCast;
-        public event GlobalDelegates.FloatDelegate OnSetCanCastFeedback;
+        public void SyncSetCanCastRPC(bool value)
+        {
+            canCast = value;
+            OnSetCanCastFeedback?.Invoke(value);
+        }
+        
+        public event GlobalDelegates.BoolDelegate OnSetCanCast;
+        public event GlobalDelegates.BoolDelegate OnSetCanCastFeedback;
 
         public void RequestCast(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
@@ -37,12 +50,12 @@ namespace Entities.Champion
         public void CastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            Debug.Log($"Trying to cast {activeCapacity.AssociatedActiveCapacitySO().name}");
-            if (activeCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
-            {
-                photonView.RPC("SyncCastRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
-            }
             
+            if (!activeCapacity.TryCast(entityIndex, targetedEntities, targetedPositions)) return;
+            
+            OnCast?.Invoke(capacityIndex,targetedEntities,targetedPositions);
+            photonView.RPC("SyncCastRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
+
         }
 
         [PunRPC]
@@ -50,6 +63,7 @@ namespace Entities.Champion
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             activeCapacity.PlayFeedback();
+            OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         }
         
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCast;
