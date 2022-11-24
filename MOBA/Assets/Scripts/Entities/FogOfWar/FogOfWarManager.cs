@@ -26,15 +26,16 @@ namespace Entities.FogOfWar
             //maskMatPlane.SetFloat("_Opacity", 0);
         }
 
-        public Dictionary<int, IFOWViewable> allViewables = new Dictionary<int, IFOWViewable>();
+        /*public Dictionary<int, IFOWViewable> allViewables = new Dictionary<int, IFOWViewable>();
         public List<IFOWViewable> allFOWViewable = new List<IFOWViewable>();
         private Dictionary<Enums.Team, List<IFOWViewable>> teamFOWViewablesDict = new Dictionary<Enums.Team, List<IFOWViewable>>();
+        */
 
         /// <summary>
         /// List Of all IFogOfWarViewable for Fog of War render
         /// </summary>
         /// <param name="IFogOfWarViewable"> Interface for Entity </param>
-        private Dictionary<uint, Entity> allViewables = new Dictionary<uint, Entity>();
+        private Dictionary<int, Entity> allViewables = new Dictionary<int, Entity>();
         private Dictionary<Enums.Team, List<Entity>> teamFOWViewablesDict = new Dictionary<Enums.Team, List<Entity>>();
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace Entities.FogOfWar
         //Parameter For Creating Field Of View Mesh
         public FOVSettings settingsFOV;
 
-        private void RenderFOW(Dictionary<uint, Entity> viewables)
+        private void RenderFOW(Dictionary<int, Entity> viewables)
         {
             foreach (var viewable in viewables)
             {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Entities.FogOfWar
 {
-    public interface IFOWViewable : ITeamable
+    public interface IFOWViewable
     {
         
         /// <returns>If the entity can see</returns>

@@ -69,14 +69,11 @@ namespace  Entities
         {
             var entity = EntityCollectionManager.GetEntityByIndex(viewableIndex);
             if(entity == null) return;
-            
-            var viewable = entity.GetComponent<IFOWViewable>();
-            if(viewable == null) return;
-            
-            TryAddFOWViewable(viewable);
+
+            if (entity != null) TryAddFOWViewable(entity);
         }
 
-        public void TryAddFOWViewable(IFOWViewable viewable)
+        public void TryAddFOWViewable(Entity viewable)
         {
             if (!GetEnemyTeams().Contains(viewable.GetTeam()) || enemiesThatCanSeeMe.Contains(viewable)) return;
 
