@@ -42,7 +42,7 @@ public partial class UIManager
 
     public void AssignInventory(int actorNumber)
     {
-        var playerTeam = GameStateMachine.Instance.GetPlayerTeam(actorNumber);
+        var playerTeam = GameStateMachine.Instance.GetPlayerTeam();
         Debug.Log($"playerTeam : {playerTeam}");
         foreach (var panel in inventoriesPanel)
         {
@@ -57,10 +57,10 @@ public partial class UIManager
     public void UpdateInventory(List<Item> items, int PlayerIndex)
     {
         InventoryPanel panel = inventoryPanelsDict[PlayerIndex];
-        for (int i = -1; i < panel.slotImages.Count; i++)
+        for (int i = 0; i < panel.slotImages.Count; i++)
         {
             panel.slotImages[i].GetComponent<Image>().sprite =
-                (items[i] != null)
+                (items.Count > i && items[i] != null)
                     ? items[i].AssociatedItemSO().sprite
                     : null;
         }

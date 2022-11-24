@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Entities.Capacities;
 using Entities.Inventory;
+using GameStates;
 using Photon.Pun;
 using TMPro.EditorUtilities;
 using UnityEngine;
@@ -30,11 +31,11 @@ namespace Entities.Champion
 
         public void RequestAddItem(byte index)
         {
-            photonView.RPC("AddItemRPC",RpcTarget.MasterClient,index);
+            photonView.RPC("AddItemIDRPC",RpcTarget.MasterClient,index, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
         }
 
         [PunRPC]
-        public void AddItemRPC(byte index)
+        public void AddItemIDRPC(byte index, byte SenderID)
         {
             var itemSo = ItemCollectionManager.GetItemSObyIndex(index);
             if (itemSo.consumable)
@@ -45,15 +46,15 @@ namespace Entities.Champion
                     contains = true;
                 }
                 if(!contains && items.Count>=3) return;
-                photonView.RPC("SyncAddItemRPC",RpcTarget.All, index);
+                photonView.RPC("SyncAddItemIDRPC",RpcTarget.All, index, SenderID);
                 return;
             }
             if(items.Count>=3) return;
-            photonView.RPC("SyncAddItemRPC",RpcTarget.All, index);
+            photonView.RPC("SyncAddItemIDRPC",RpcTarget.All, index, SenderID);
         }
 
         [PunRPC]
-        public void SyncAddItemRPC(byte index)
+        public void SyncAddItemIDRPC(byte index, byte SenderID)
         {
             var item = ItemCollectionManager.CreateItem(index, this);
             if(item == null) return;
@@ -62,8 +63,11 @@ namespace Entities.Champion
             {
                 item.OnItemAddedToInventory(this);
                 OnAddItem?.Invoke(index);
-                //uiManager.UpdateInventory(items, entityIndex);
             }
+
+            Debug.Log($"{items.Count} {SenderID}");
+
+            uiManager.UpdateInventory(items, SenderID);
             item.OnItemAddedToInventoryFeedback(this);
             OnAddItemFeedback?.Invoke(index);
         }

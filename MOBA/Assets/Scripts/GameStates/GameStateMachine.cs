@@ -219,7 +219,6 @@ namespace GameStates
                     championSOIndex = 255,
                     playerReady = false
                 };
-
                 playersReadyDict.Add(actorNumber, playerData);
                 debugList[actorNumber] = playerData;
 

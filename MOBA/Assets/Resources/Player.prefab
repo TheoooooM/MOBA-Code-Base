@@ -104,7 +104,9 @@ MonoBehaviour:
   canCast: 0
   isAlive: 0
   canDie: 0
+  timer: 10
   canBeDisplaced: 0
+  items: []
   isBattlerite: 0
   referenceMoveSpeed: 10
   currentMoveSpeed: 10

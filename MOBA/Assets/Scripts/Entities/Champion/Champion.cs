@@ -24,11 +24,9 @@ namespace Entities.Champion
             capacityCollection = CapacitySOCollectionManager.Instance;
             uiManager = UIManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
-            if(uiManager != null)
+            if(uiManager != null && photonView.IsMine)
             {
-                uiManager.InstantiateHealthBarForEntity(entityIndex);
-                uiManager.InstantiateResourceBarForEntity(entityIndex);
-                uiManager.ClickOnItem += RequestAddItem;
+                UIManager.ClickOnItem += RequestAddItem;
             }
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
@@ -41,7 +39,15 @@ namespace Entities.Champion
             CheckMoveDistance(); // Lol
         }
 
-        public override void OnInstantiated() { }
+        public override void OnInstantiated()
+        {
+            uiManager = UIManager.Instance;
+            if (uiManager != null)
+            {
+                uiManager.InstantiateHealthBarForEntity(entityIndex);
+                uiManager.InstantiateResourceBarForEntity(entityIndex);
+            }
+        }
 
         public override void OnInstantiatedFeedback() { }
 
@@ -72,6 +78,15 @@ namespace Entities.Champion
         public void SyncApplyChampionSO(byte championSoIndex, Enums.Team team)
         {
             photonView.RPC("ApplyChampionSORPC", RpcTarget.All, championSoIndex, (byte)team);
+        }
+
+        public void AddItemRPC(byte index)
+        {
+            
+        }
+
+        public void SyncAddItemRPC(byte index)
+        {
         }
     }
 }

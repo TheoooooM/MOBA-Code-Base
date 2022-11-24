@@ -270,9 +270,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e2557b85405f624f9804eec7d8f08b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasPrefab: {fileID: 0}
-  offsetHealthBar: {x: 0, y: 2.5, z: 0}
-  healthBarPrefab: {fileID: 0}
+  offset: {x: 0, y: 2, z: 0}
+  healthBarPrefab: {fileID: 8706198591103583553, guid: 420738969e4e1c84ebd9c03da8134be2, type: 3}
   inventoriesPanel:
   - playerNameText: {fileID: 685302985280346719}
     slotImages:
@@ -302,8 +301,7 @@ MonoBehaviour:
     - {fileID: 3252803865024007886}
     team: 2
     available: 1
-  offsetResourceBar: {x: 0, y: 2, z: 0}
-  resourceBarPrefab: {fileID: 0}
+  resourceBarPrefab: {fileID: 5630961168596188745, guid: 005e9dc584e3abd4db884d636a71c910, type: 3}
 --- !u!114 &1174079734156847840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,14 +315,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShopItemImagesUI:
-  - slotImage: {fileID: 0}
-    buttonShop: {fileID: 0}
-  - slotImage: {fileID: 0}
-    buttonShop: {fileID: 0}
-  - slotImage: {fileID: 0}
-    buttonShop: {fileID: 0}
-  - slotImage: {fileID: 0}
-    buttonShop: {fileID: 0}
+  - slotImage: {fileID: 7498691666862965580}
+    buttonShop: {fileID: 6254738425895781883}
+  - slotImage: {fileID: 7498691666339675346}
+    buttonShop: {fileID: 7948015729911954337}
+  - slotImage: {fileID: 7498691667316348466}
+    buttonShop: {fileID: 1599916294029998724}
+  - slotImage: {fileID: 7498691666812078586}
+    buttonShop: {fileID: 1080442938668134445}
+  Champion: {fileID: 0}
 --- !u!1 &1540399562384152253
 GameObject:
   m_ObjectHideFlags: 0
@@ -2951,7 +2950,7 @@ GameObject:
   - component: {fileID: 7498691667280078571}
   - component: {fileID: 7498691667280078572}
   m_Layer: 5
-  m_Name: Scroll View
+  m_Name: UIShop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
