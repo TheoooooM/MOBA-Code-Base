@@ -1,21 +1,38 @@
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.AI;
+using NavMeshBuilder = UnityEditor.AI.NavMeshBuilder;
 
 namespace Entities.Champion
 {
+    [RequireComponent(typeof(NavMeshAgent))]
     public partial class Champion : IMoveable
     {
+        [Header("Movement")] 
+        public bool isBattlerite = true;
         public float referenceMoveSpeed;
         public float currentMoveSpeed;
         public float currentRotateSpeed;
         public bool canMove;
         private Vector3 moveDirection;
-        private Vector3 truePosition;
-        private bool truePositionSet;
+        
+        // === League Of Legends
+        private int mouseTargetIndex;
+        private Vector3 movePosition;
+        //NavMesh
+        
+        private NavMeshAgent agent;
 
         public bool CanMove()
         {
             return canMove;
+        }
+
+        void SetupNavMesh()
+        {
+            agent = GetComponent<NavMeshAgent>();
+            //NavMeshBuilder.ClearAllNavMeshes();
+            //NavMeshBuilder.BuildNavMesh();
         }
 
         public float GetReferenceMoveSpeed()
@@ -105,18 +122,12 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
 
-        public void SendStartPosition(Vector3 position)
-        {
-            photonView.RPC("SetStartPosition", RpcTarget.All, position);
-        }
+        
 
-        [PunRPC]
-        void SetStartPosition(Vector3 pos)
-        {
-            truePosition = pos;
-            truePositionSet = true;
-        }
+       
 
+        #region Battlerite
+        
         private void Move()
         {
             transform.position += moveDirection * (currentMoveSpeed * Time.deltaTime);
@@ -134,6 +145,32 @@ namespace Entities.Champion
             moveDirection = direction;
         }
 
+        #endregion
+
+        #region League Of Legends
+
+
+        public void MoveToPosition(Vector3 position)
+        {
+            movePosition = position;
+            movePosition.y = transform.position.y;
+            agent.SetDestination(position);
+            Debug.Log($"SetDestination, position:{position}, remainingDistance{agent.remainingDistance}");
+            
+
+        }
+
+        void CheckMoveDistance()
+        {
+            if (Vector3.Distance(transform.position, movePosition) < 0.5f)
+            {
+                agent.SetDestination(transform.position);
+                Debug.Log($"Stop Moving : Transform.position{transform.position}, positon{movePosition} = Distance{Vector3.Distance(transform.position, movePosition)}");
+            }
+        }
+
+        #endregion
+        
         public event GlobalDelegates.Vector3Delegate OnMove;
         public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
     }

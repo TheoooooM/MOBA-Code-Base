@@ -16,6 +16,8 @@ namespace Entities.Capacities
         public string description;
 
         [Tooltip("Cooldown in second")] public float cooldown;
+
+        [Tooltip("Is capacity auto-target")]public bool isTargeting;
         
         [Tooltip("Maximum range")] public float maxRange;
         
