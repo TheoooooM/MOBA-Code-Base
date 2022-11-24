@@ -110,7 +110,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4555090259929885730}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.7
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -161,6 +161,19 @@ MonoBehaviour:
   entityIndex: 0
   canAddPassiveCapacity: 0
   canRemovePassiveCapacity: 0
+  canShow: 0
+  canHide: 0
+  elementsToShow: []
+  canChangeTeam: 0
+  team: 0
+  baseViewRange: 0
+  viewRange: 0
+  viewAngle: 0
+  canView: 0
+  obstacleLayerFogOfWar:
+    serializedVersion: 2
+    m_Bits: 0
+  meshFilterFoV: {fileID: 0}
   myWaypoints: []
   TowersList: []
   wayPointIndex: 0
@@ -174,7 +187,7 @@ MonoBehaviour:
   whoIsAttackingMe: []
   attackCycle: 0
   currentHealth: 10
-  attackDamage: 1
+  attackDamage: 3
   attackSpeed: 2
   attackRange: 5
 --- !u!114 &4555090259929885740
@@ -190,7 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  brainSpeed: 1
+  brainSpeed: 0.4
 --- !u!114 &2637466631205122503
 MonoBehaviour:
   m_ObjectHideFlags: 0

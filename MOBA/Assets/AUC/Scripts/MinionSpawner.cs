@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Entities;
 using UnityEngine;
 
-public class MinionSpawner : MonoBehaviour
+public class MinionSpawner : Building
 {
     public Transform spawnPointForMinion;
     public Entity minionPrefab;
