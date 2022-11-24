@@ -106,7 +106,7 @@ MonoBehaviour:
   timer: 10
   canBeDisplaced: 0
   items: []
-  isBattlerite: 0
+  isBattlerite: 1
   referenceMoveSpeed: 10
   currentMoveSpeed: 10
   currentRotateSpeed: 0
