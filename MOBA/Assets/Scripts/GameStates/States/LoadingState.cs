@@ -1,4 +1,5 @@
 using Photon.Pun;
+using UnityEngine;
 
 namespace GameStates.States
 {
@@ -15,7 +16,10 @@ namespace GameStates.States
 
         public override void UpdateState() { }
 
-        public override void ExitState() { }
+        public override void ExitState()
+        {
+            
+        }
 
         public override void OnAllPlayerReady()
         {

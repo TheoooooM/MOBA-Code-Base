@@ -112,6 +112,8 @@ MonoBehaviour:
   canMove: 0
   maxResource: 0
   currentResource: 0
+  references:
+    version: 1
 --- !u!114 &66387207781892278
 MonoBehaviour:
   m_ObjectHideFlags: 0

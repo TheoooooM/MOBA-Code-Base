@@ -81,14 +81,14 @@ namespace Controllers.Inputs
         private void OnMouseMove(InputAction.CallbackContext ctx)
         {
             mousePos = ctx.ReadValue<Vector2>();
-            var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
+//            var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
             
-            if (!Physics.Raycast(mouseRay, out RaycastHit hit)) return;
-            cursorWorldPos[0] = hit.point;
+            // if (!Physics.Raycast(mouseRay, out RaycastHit hit)) return;
+            // cursorWorldPos[0] = hit.point;
             
-            var ent = hit.transform.GetComponent<Entity>();
-            if(ent == null) return;
-            selectedEntity[0] = ent.entityIndex;
+            // var ent = hit.transform.GetComponent<Entity>();
+            // if(ent == null) return;
+            // selectedEntity[0] = ent.entityIndex;
 
         }
 

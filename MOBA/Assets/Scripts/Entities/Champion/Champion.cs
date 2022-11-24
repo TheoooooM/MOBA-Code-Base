@@ -22,11 +22,13 @@ namespace Entities.Champion
             fowm = FogOfWarManager.Instance;
             SetupNavMesh();
             capacityCollection = CapacitySOCollectionManager.Instance;
+            uiManager = UIManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
             if(uiManager != null)
             {
                 uiManager.InstantiateHealthBarForEntity(entityIndex);
                 uiManager.InstantiateResourceBarForEntity(entityIndex);
+                uiManager.ClickOnItem += RequestAddItem;
             }
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant

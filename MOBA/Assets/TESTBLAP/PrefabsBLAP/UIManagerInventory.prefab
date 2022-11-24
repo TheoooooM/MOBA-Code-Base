@@ -270,35 +270,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e2557b85405f624f9804eec7d8f08b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasPrefab: {fileID: 0}
+  offsetHealthBar: {x: 0, y: 2.5, z: 0}
+  healthBarPrefab: {fileID: 0}
   inventoriesPanel:
   - playerNameText: {fileID: 685302985280346719}
     slotImages:
     - {fileID: 8195389910195609675}
     - {fileID: 8820151462832613366}
     - {fileID: 9059852329522072563}
-    team: 0
+    team: 1
     available: 1
   - playerNameText: {fileID: 3739841221674767857}
     slotImages:
     - {fileID: 2397617564304580892}
     - {fileID: 5326999583058353326}
     - {fileID: 6380360008351323480}
-    team: 0
+    team: 1
     available: 1
   - playerNameText: {fileID: 2396466082800578163}
     slotImages:
     - {fileID: 660807978323189846}
     - {fileID: 5579868221472053654}
     - {fileID: 7962735211563011032}
-    team: 0
+    team: 2
     available: 1
   - playerNameText: {fileID: 6882255239320072034}
     slotImages:
     - {fileID: 4584906490894649010}
     - {fileID: 7295807770039187613}
     - {fileID: 3252803865024007886}
-    team: 0
+    team: 2
     available: 1
+  offsetResourceBar: {x: 0, y: 2, z: 0}
+  resourceBarPrefab: {fileID: 0}
 --- !u!114 &1174079734156847840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,10 +317,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShopItemImagesUI:
-  - {fileID: 7498691666862965580}
-  - {fileID: 7498691666339675346}
-  - {fileID: 7498691667316348466}
-  - {fileID: 7498691666812078586}
+  - slotImage: {fileID: 0}
+    buttonShop: {fileID: 0}
+  - slotImage: {fileID: 0}
+    buttonShop: {fileID: 0}
+  - slotImage: {fileID: 0}
+    buttonShop: {fileID: 0}
+  - slotImage: {fileID: 0}
+    buttonShop: {fileID: 0}
 --- !u!1 &1540399562384152253
 GameObject:
   m_ObjectHideFlags: 0
