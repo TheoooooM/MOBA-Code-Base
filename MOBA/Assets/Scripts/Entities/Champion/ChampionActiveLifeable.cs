@@ -62,7 +62,7 @@ namespace Entities.Champion
         {
             maxHp += amount;
             OnIncreaseMaxHp?.Invoke(amount);
-            photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, maxHp);
+            photonView.RPC("SyncIncreaseMaxHpRPC", RpcTarget.All, maxHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
@@ -129,9 +129,9 @@ namespace Entities.Champion
         [PunRPC]
         public void SetCurrentHpPercentRPC(float value)
         {
-            currentHp = value * maxHp;
+            currentHp = (value * 100)/maxHp;
             OnSetCurrentHpPercent?.Invoke(value);
-            photonView.RPC("SetCurrentHpPercentRPC", RpcTarget.All, value);
+            photonView.RPC("SyncSetCurrentHpPercentRPC", RpcTarget.All, value);
         }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
@@ -162,7 +162,7 @@ namespace Entities.Champion
 
         public void RequestDecreaseCurrentHp(float amount)
         {
-            photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.MasterClient,amount);
+            photonView.RPC("DecreaseCurrentHpRPC",RpcTarget.MasterClient,amount);
         }
 
         [PunRPC]
@@ -178,12 +178,12 @@ namespace Entities.Champion
             currentHp -= amount;
             if (currentHp <= 0)
             {
-                // TODO : Death Logic
                 currentHp = 0;
-                // OnDie?.Invoke();
+                RequestSetCanDie(true);
+                RequestDie();
             }
             OnDecreaseCurrentHp?.Invoke(amount);
-            photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp);
+            photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
