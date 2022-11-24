@@ -100,7 +100,6 @@ namespace Entities.Champion
         public void SyncSetCurrentResourceRPC(float value)
         {
             currentResource = value;
-            EntityResourceBar.Instance.SetResource(entityIndex);
             OnSetCurrentResourceFeedback?.Invoke(value);
         }
 
@@ -124,6 +123,7 @@ namespace Entities.Champion
         public void SyncSetCurrentResourcePercentRPC(float value)
         {
             currentResource = value;
+            uiManager.entitiesResource[entityIndex].SetResourceByValue(value);
             OnSetCurrentResourcePercentFeedback?.Invoke(value);
         }
 

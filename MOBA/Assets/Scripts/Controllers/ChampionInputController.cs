@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
+using Entities.Capacities;
 using Entities.Champion;
 
 namespace Controllers.Inputs
@@ -31,6 +32,8 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateCapacity0(InputAction.CallbackContext ctx)
         {
+            ActiveCapacitySO capacity0 = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(champion.abilitiesIndexes[0]);
+
             champion.RequestCast(champion.abilitiesIndexes[0],selectedEntity,cursorWorldPos);
         }
         /// <summary>
@@ -94,7 +97,7 @@ namespace Controllers.Inputs
         /// </summary>
         /// <param name="mousePos"></param>
         /// <returns></returns>
-        private int GetMouseOverEntity(Vector2 mousePos)
+        public int GetMouseOverEntity(Vector2 mousePos)
         {
             Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -112,7 +115,7 @@ namespace Controllers.Inputs
         /// </summary>
         /// <param name="mousePos"></param>
         /// <returns></returns>
-        private Vector3 GetMouseOverWorldPos(Vector2 mousePos)
+        public Vector3 GetMouseOverWorldPos()
         {
             Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -135,6 +138,12 @@ namespace Controllers.Inputs
             champion.SetMoveDirection(moveVector);
         }
 
+        void OnMoveClick(InputAction.CallbackContext ctx)
+        {
+            Debug.Log("MoveClick");
+            champion.MoveToPosition(GetMouseOverWorldPos());
+        }
+
         protected override void Link(Entity entity)
         {
             base.Link(entity);
@@ -150,8 +159,15 @@ namespace Controllers.Inputs
             inputs.Capacity.Capacity1.performed += OnActivateCapacity1;
             inputs.Capacity.Capacity2.performed += OnActivateUltimateAbility;
 
-            inputs.Movement.Move.performed += OnMoveChange;
-            inputs.Movement.Move.canceled += OnMoveChange;
+            if (champion.isBattlerite)
+            {
+                inputs.Movement.Move.performed += OnMoveChange; 
+                inputs.Movement.Move.canceled += OnMoveChange;
+            }
+            else
+            {
+                inputs.MoveMouse.ActiveButton.performed += OnMoveClick;
+            }
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;
 

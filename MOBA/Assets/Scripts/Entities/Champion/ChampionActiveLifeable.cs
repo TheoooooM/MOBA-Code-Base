@@ -100,7 +100,6 @@ namespace Entities.Champion
         public void SyncSetCurrentHpRPC(float value)
         {
             currentHp = value;
-            EntityHealthBar.Instance.SetHealth(entityIndex);
             OnSetCurrentHpFeedback?.Invoke(value);
         }
 
@@ -124,6 +123,7 @@ namespace Entities.Champion
         public void SyncSetCurrentHpPercentRPC(float value)
         {
             currentHp = value;
+            uiManager.entitiesHealth[entityIndex].SetHealthByValue(value);
             OnSetCurrentHpPercentFeedback?.Invoke(value);
         }
 
@@ -177,6 +177,12 @@ namespace Entities.Champion
         public void DecreaseCurrentHpRPC(float amount)
         {
             currentHp -= amount;
+            if (currentHp <= 0)
+            {
+                // TODO : Death Logic
+                currentHp = 0;
+                // OnDie?.Invoke();
+            }
             OnDecreaseCurrentHp?.Invoke(amount);
             photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp);
         }

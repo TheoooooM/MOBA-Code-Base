@@ -518,7 +518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 166142745878382477, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
       propertyPath: gameSceneName
-      value: TestBL
+      value: InGameScene
       objectReference: {fileID: 0}
     - target: {fileID: 166142745878382477, guid: 1fb64722b0d48bf43bdb68223d31f9ad, type: 3}
       propertyPath: allTeams.Array.size
@@ -593,14 +593,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 156687096587402904, guid: 7b1a5c76f1cd7cc41a23d5e0d4c23eb3, type: 3}
-      propertyPath: sceneViewId
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826763905975169742, guid: 7b1a5c76f1cd7cc41a23d5e0d4c23eb3, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 406496231513901029, guid: add9d7216c4a4214fbde4237c0554a88, type: 3}
       propertyPath: m_Name
       value: CameraController
@@ -648,6 +640,14 @@ PrefabInstance:
     - target: {fileID: 406496231513901031, guid: add9d7216c4a4214fbde4237c0554a88, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 156687096587402904, guid: 7b1a5c76f1cd7cc41a23d5e0d4c23eb3, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7826763905975169742, guid: 7b1a5c76f1cd7cc41a23d5e0d4c23eb3, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b1a5c76f1cd7cc41a23d5e0d4c23eb3, type: 3}

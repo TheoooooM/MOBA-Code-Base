@@ -3,7 +3,7 @@ using Entities.Capacities;
 using GameStates;
 using UnityEngine;
 
-public class ActiveDarkMatter : ActiveCapacity
+public class ActiveDarkMatter : ActiveCapacity,IPrevisualisable
 {
     private float timer;
     private ActiveDarkMatterSO activeCapacitySo;
@@ -59,6 +59,16 @@ public class ActiveDarkMatter : ActiveCapacity
     
     public override void PlayFeedback(int entityIndex, int[] targets, Vector3[] position)
     {
-        
+        Debug.Log("Test");
+    }
+
+    public void EnableDrawing()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void DisableDrawing()
+    {
+        throw new System.NotImplementedException();
     }
 }
