@@ -37,7 +37,7 @@ namespace Entities.Champion
             if(ItemCollectionManager.CreateItem(index, this) == null) return;
             OnAddItem?.Invoke(index);
             OnAddItemFeedback?.Invoke(index);
-            photonView.RPC("SyncAddItemRPC",RpcTarget.Others,index);
+            photonView.RPC("SyncAddItemRPC",RpcTarget.Others, index);
         }
 
         [PunRPC]
@@ -47,6 +47,15 @@ namespace Entities.Champion
             if(item == null) return;
             item.OnItemAddedToInventoryFeedback(this);
             OnAddItemFeedback?.Invoke(index);
+            
+            
+            
+            
+            
+            
+            
+            
+            uiManager.UpdateInventory(ItemCollectionManager.allItems, entityIndex);
         }
         
         public event GlobalDelegates.ByteDelegate OnAddItem;

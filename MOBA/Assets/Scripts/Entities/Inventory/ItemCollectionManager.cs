@@ -38,6 +38,7 @@ namespace Entities.Inventory
         {
             var inventory = entity.GetComponent<IInventoryable>();
             if (inventory == null) return null;
+            if(soIndex>= allItems.Count) return null;
             var so = allItems[soIndex];
             Item item;
             if (so.consumable)
@@ -45,12 +46,13 @@ namespace Entities.Inventory
                 item = inventory.GetItemOfSo(soIndex);
                 if (item != null)
                 {
-                    item.count++;
+                    item.consumable = so.consumable;
                     item.OnItemAddedToInventory(entity);
                     return item;
                 }
             }
             item = (Item) Activator.CreateInstance(allItems[soIndex].AssociatedType());
+            item.consumable = so.consumable;
             item.indexOfSOInCollection = soIndex;
             item.OnItemAddedToInventory(entity);
             return item;

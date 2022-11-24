@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Entities;
 using Entities.Inventory;
+using GameStates;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,7 @@ public partial class UIManager
         public TextMeshProUGUI playerNameText;
         public List<Image> slotImages;
         public Enums.Team team;
-        [HideInInspector] public bool available = false;
+        [HideInInspector] public bool available = true;
     }
 
     #region delegateInventoryUI
@@ -34,30 +35,33 @@ public partial class UIManager
         inventoriesPanel.Clear();
     }
 
-    public void OnClickOnItem(string item)
+    public void OnClickOnItem(byte item)
     {
-        int indexInt = int.Parse(item);
-        ClickOnItem?.Invoke((byte)indexInt);
+        ClickOnItem?.Invoke(item);
     }
 
-    public void AssignInventory(int playerIndex)
+    public void AssignInventory(int actorNumber)
     {
-        int inventoryIndex = ((byte)EntityCollectionManager.GetEntityByIndex(playerIndex).team - 1) / 2;
-
-        inventoryIndex += (inventoriesPanel[inventoryIndex].available) ? 0 : 1;
-        inventoryPanelsDict.Add(playerIndex,inventoriesPanel[inventoryIndex]);
-        
-        inventoriesPanel[inventoryIndex].playerNameText.text = "J" + ((playerIndex - 1) / 1000 );
+        var playerTeam = GameStateMachine.Instance.GetPlayerTeam(actorNumber);
+        Debug.Log($"playerTeam : {playerTeam}");
+        foreach (var panel in inventoriesPanel)
+        {
+            if (panel.team != playerTeam || !panel.available) continue;
+            panel.available = false;
+            inventoryPanelsDict.Add(actorNumber, panel);
+            panel.playerNameText.text = $"J{actorNumber}";
+            break;
+        }
     }
 
-    public void UpdateInventory(Item[] items, int PlayerIndex)
+    public void UpdateInventory(List<ItemSO> items, int PlayerIndex)
     {
         InventoryPanel panel = inventoryPanelsDict[PlayerIndex];
         for (int i = -1; i < panel.slotImages.Count; i++)
         {
             panel.slotImages[i].GetComponent<Image>().sprite =
                 (items[i] != null)
-                    ? items[i].AssociatedItemSO().sprite
+                    ? items[i].sprite
                     : null;
         }
     }
