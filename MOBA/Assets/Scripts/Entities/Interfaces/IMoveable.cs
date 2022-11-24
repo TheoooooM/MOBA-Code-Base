@@ -141,22 +141,6 @@ namespace Entities
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
 
-        /// <summary>
-        /// Sends an RPC to the master to update direction vector.
-        /// </summary>
-        /// <param name="position">the direction to move to</param>
-        public void RequestMoveDir(Vector3 direction);
-        /// <summary>
-        /// Sends an RPC to all clients to move the entity.
-        /// </summary>
-        ///<param name="position">the position to move to</param>
-        public void SyncMoveRPC(Vector3 position);
-        /// <summary>
-        /// Moves the entity.
-        /// </summary>
-        ///<param name="position">the position to move to</param>
-        public void MoveRPC(Vector3 position);
-
         public event GlobalDelegates.Vector3Delegate OnMove;
         public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
     }
