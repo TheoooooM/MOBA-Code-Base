@@ -20,12 +20,31 @@ namespace Entities.Champion
             fowm = FogOfWarManager.Instance;
             capacityCollection = CapacitySOCollectionManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
+            if(UIManager.Instance != null)UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
+            if(UIManager.Instance != null)UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
         }
 
         protected override void OnUpdate()
         {
-            MovePlayerMaster();
-            MovePlayerLocal();
+            //MovePlayerMaster();
+            //MovePlayerLocal();
+            Move();
+            for (int i = 0; i < 1; i++)
+            {
+                //photonView.RPC("SPAM", RpcTarget.All, .2515f,.8745f);
+            }
+
+        }
+
+        [PunRPC]
+        void SPAM(float floa, float flo)
+        {
+            Debug.Log("ca ma casser les couilles");
+        }
+
+        private void Move()
+        {
+            transform.position += moveDirection * currentMoveSpeed * Time.deltaTime;
         }
 
         public override void OnInstantiated() { }

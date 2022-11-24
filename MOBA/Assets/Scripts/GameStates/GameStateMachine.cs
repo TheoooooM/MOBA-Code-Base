@@ -92,6 +92,7 @@ namespace GameStates
         private void Update()
         {
             currentState?.UpdateState();
+            Debug.Log(currentState);
         }
 
         private void InitState()
@@ -364,7 +365,7 @@ namespace GameStates
             // We set local parameters
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
-            controller.TransferOwnerShipToMaster();
+            //controller.TransferOwnerShipToMaster();
         }
 
         private void LinkChampionData(Champion champion)

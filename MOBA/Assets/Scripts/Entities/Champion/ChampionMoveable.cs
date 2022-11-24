@@ -119,34 +119,36 @@ namespace Entities.Champion
         
         public void RequestMoveDir(Vector3 direction)
         {
-            photonView.RPC("MoveRPC", RpcTarget.MasterClient, direction);
+            moveDirection = direction;
+            //photonView.RPC("MoveRPC", RpcTarget.MasterClient, direction);
+            //PhotonNetwork.SendAllOutgoingCommands();
+
         }
 
         [PunRPC]
         public void SyncMoveRPC(Vector3 position)
         {
             truePosition = position;
+            
         }
 
         [PunRPC]
         public void MoveRPC(Vector3 direction)
         {
             Debug.Log("Send Move to Master");
-            //var newPos = transform.position + position * (currentMoveSpeed * Time.deltaTime);
             moveDirection = direction;
         }
         
         void MovePlayerMaster()
         {
-            var newPos = transform.position + moveDirection * (currentMoveSpeed * Time.deltaTime);
-            photonView.RPC("SyncMoveRPC", RpcTarget.All, newPos);
+            transform.position += moveDirection * (currentMoveSpeed * Time.deltaTime);
         }
 
-        void MovePlayerLocal()
+        /*void MovePlayerLocal()
         {
             if (truePositionSet && Vector3.Distance(transform.position, truePosition) > (currentMoveSpeed * Time.deltaTime))
                 transform.position += (truePosition - transform.position).normalized * currentMoveSpeed * Time.deltaTime;
-        }
+        }*/
 
         public event GlobalDelegates.Vector3Delegate OnMove;
         public event GlobalDelegates.Vector3Delegate OnMoveFeedback;

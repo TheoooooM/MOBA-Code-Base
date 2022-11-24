@@ -194,6 +194,7 @@ MonoBehaviour:
   - SetColorRPC
   - SyncSetColorRPC
   - MoveToGameScene
+  - SPAM
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
