@@ -50,14 +50,15 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDieRPC()
         {
-            uiManager.entitiesHealth[entityIndex].SetActive(false);
-            uiManager.entitiesResource[entityIndex].SetActive(false);
             OnDieFeedback?.Invoke();
         }
 
         [PunRPC]
         public void DieRPC()
         {
+            if (!canDie) return;
+            isAlive = false;
+            // TODO: Add death animation, deactivate mesh, collider, movements, etc.
             OnDie?.Invoke();
             photonView.RPC("SyncDieRPC", RpcTarget.All);
         }
@@ -73,15 +74,13 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncReviveRPC()
         {
-            uiManager.entitiesHealth[entityIndex].SetActive(true);
-            uiManager.entitiesResource[entityIndex].SetActive(true);
             OnReviveFeedback?.Invoke();
         }
 
         [PunRPC]
         public void ReviveRPC()
         {
-            // timer before revive
+            // TODO: Replace by TickManager
             while (timer > 0)
             {
                 timer -= Time.deltaTime;
