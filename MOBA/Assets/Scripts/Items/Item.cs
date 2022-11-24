@@ -6,37 +6,32 @@ namespace Entities.Inventory
 {
     public abstract class Item
     {
-        public string referenceName;
-        public string itemName;
-        public string description;
-        public int usesLeft;
-
-        public byte[] passiveCapacitiesIndexes;
-        public byte[] activeCapacitiesIndexes;
+        public bool consumable;
+        public int count;
+        
         public Entity entityOfInventory;
         public IInventoryable inventory;
 
-        public abstract ItemSO AssociatedItemSo();
+        public byte indexOfSOInCollection;
+        
+        public ItemSO AssociatedItemSO()
+        {
+            return ItemCollectionManager.GetItemSObyIndex(indexOfSOInCollection);
+        }
 
         public virtual void OnItemAddedToInventory(Entity entity)
         {
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
             var capacityCollection = CapacitySOCollectionManager.Instance;
-            foreach (var index in passiveCapacitiesIndexes)
-            {
-                //addPassiveCapacity
-            }
+            // TODO - Add passives
         }
 
         public virtual void OnItemAddedToInventoryFeedback(Entity entity)
         {
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
-            foreach (var index in passiveCapacitiesIndexes)
-            {
-                //addPassiveCapacityFeedback
-            }
+            // TODO - Add passives feedbacks
         }
 
         public virtual void OnItemRemovedInventory()
@@ -53,9 +48,9 @@ namespace Entities.Inventory
         {
             var castable = entityOfInventory.GetComponent<ICastable>();
             if(castable == null) return;
-            foreach (var index in activeCapacitiesIndexes)
+            //foreach (var index in activeCapacitiesIndexes)
             {
-                castable.CastRPC(index,targets,positions);
+                //castable.CastRPC(index,targets,positions);
             }
         }
 
@@ -63,7 +58,7 @@ namespace Entities.Inventory
         {
             var castable = entityOfInventory.GetComponent<ICastable>();
             if(castable == null) return;
-            foreach (var index in activeCapacitiesIndexes)
+            //foreach (var index in activeCapacitiesIndexes)
             {
                 //missing castableFeedback?
             }

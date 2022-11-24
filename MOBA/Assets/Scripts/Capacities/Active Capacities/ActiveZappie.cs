@@ -7,7 +7,7 @@ namespace Entities.Capacities
         private ActiveZappieSO so;
         private Vector3 dir;
 
-        public override bool TryCast(int entityIndex, int[] targets, Vector3[] position)
+        public override bool TryCast(int casterIndex, int[] targets, Vector3[] position)
         {
             so = (ActiveZappieSO)AssociatedActiveCapacitySO();
             
@@ -20,7 +20,7 @@ namespace Entities.Capacities
             return true;
         }
 
-        public override void PlayFeedback()
+        public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             var instantiateObj = PoolLocalManager.Instance.PoolInstantiate(so.projectile, caster.transform.position, Quaternion.identity);
             var damageOnCollide = instantiateObj.GetComponent<DamageOnCollide>();

@@ -41,6 +41,11 @@ public class Test_entity : Entity, IInventoryable
         throw new System.NotImplementedException();
     }
 
+    public Item GetItemOfSo(int soIndex)
+    {
+        throw new NotImplementedException();
+    }
+
     public void RequestAddItem(byte index)
     {
         throw new System.NotImplementedException();
@@ -81,7 +86,22 @@ public class Test_entity : Entity, IInventoryable
 
     public event GlobalDelegates.ByteDelegate OnRemoveItem;
     public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
-    public void RequestActivateItem(byte index)
+    public void RequestActivateItem(byte itemIndex, int[] selectedEntities, Vector3[] positions)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ActivateItemRPC(byte index, int[] selectedEntities, Vector3[] positions)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncActivateItemRPC(byte index, int[] selectedEntities, Vector3[] positions)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RequestActivateItem(byte itemIndex)
     {
         throw new NotImplementedException();
     }
@@ -96,8 +116,8 @@ public class Test_entity : Entity, IInventoryable
         throw new NotImplementedException();
     }
 
-    public event GlobalDelegates.BoolDelegate OnActivateItem;
-    public event GlobalDelegates.BoolDelegate OnActivateItemFeedback;
+    public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItem;
+    public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItemFeedback;
 
 
     [PunRPC]

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Controllers.Inputs;
 using Entities.Champion;
+using Entities.Inventory;
 using Photon.Pun;
 using GameStates.States;
 using UnityEngine;
@@ -316,12 +317,13 @@ namespace GameStates
         public void LoadMap()
         {
             // TODO - init pools
+            
             LinkChampionCapacityIndexes();
             
-            // We set players' data
-            // TODO - instantiate players (with their champion)
+            ItemCollectionManager.LinkCapacityIndexes();
+            
             InstantiateChampion();
-            // TODO - link player inputs
+            
             SendSetToggleReady(true);
         }
 

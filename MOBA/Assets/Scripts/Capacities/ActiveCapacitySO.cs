@@ -9,7 +9,7 @@ namespace Entities.Capacities
     public abstract class ActiveCapacitySO : ScriptableObject
     {
         [Tooltip("GP Name")] public string referenceName;
-
+  
         [Tooltip("GD Name")] public string descriptionName;
 
         [TextArea(4, 4)] [Tooltip("Description of the capacity")]

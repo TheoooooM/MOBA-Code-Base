@@ -14,9 +14,9 @@ namespace Entities.Capacities
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
         }
         
-        public abstract bool TryCast(int entityIndex, int[] targets, Vector3[] position);
+        public abstract bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
 
-        public abstract void PlayFeedback();
+        public abstract void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
     }
 }
 

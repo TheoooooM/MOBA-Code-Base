@@ -7,7 +7,7 @@ namespace Entities.Capacities
         private ActiveHealPotionSO so;
         private IActiveLifeable lifeable;
 
-        public override bool TryCast(int entityIndex, int[] targets, Vector3[] position)
+        public override bool TryCast(int casterIndex, int[] targets, Vector3[] position)
         {
             lifeable = caster.GetComponent<IActiveLifeable>();
             
@@ -16,8 +16,9 @@ namespace Entities.Capacities
             return true;
         }
 
-        public override void PlayFeedback()
+        public override void PlayFeedback(int entityIndex, int[] targets, Vector3[] position)
         {
+            
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Entities.Capacities
         public float tickDamageTimer;
         public float durationTimer;
         
-        public override bool TryCast(int entityIndex, int[] targets, Vector3[] pos)
+        public override bool TryCast(int casterIndex, int[] targets, Vector3[] pos)
         {
             so = (ActiveTormentedShadowSO)AssociatedActiveCapacitySO();
             Debug.Log($"Caster is {caster.name}, so is {so.name}");
@@ -67,7 +67,7 @@ namespace Entities.Capacities
             }
         }
 
-        public override void PlayFeedback()
+        public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             Debug.Log("Morgana Gaming");
         }

@@ -10,10 +10,10 @@ public class ActiveAutoAttack : ActiveCapacity
     private float attackTimer;
     private int target;
 
-    public override bool TryCast(int entityIndex, int[] targets, Vector3[] direction)
+    public override bool TryCast(int casterIndex, int[] targets, Vector3[] direction)
     {
         //if the time since the last attack is lower than the attack speed or the target is not in range, return false
-        if (!IsTargetInRange(entityIndex, targets[0]))
+        if (!IsTargetInRange(casterIndex, targets[0]))
         {
             return false;
         }
@@ -23,6 +23,11 @@ public class ActiveAutoAttack : ActiveCapacity
         target = targets[0];
 
         return true;
+    }
+
+    public override void PlayFeedback(int entityIndex, int[] targets, Vector3[] position)
+    {
+        throw new System.NotImplementedException();
     }
 
     private bool IsTargetInRange(int entityIndex, int target)
@@ -42,11 +47,6 @@ public class ActiveAutoAttack : ActiveCapacity
     {
         IActiveLifeable activeLifeable = EntityCollectionManager.GetEntityByIndex(target).GetComponent<IActiveLifeable>();
         activeLifeable.DecreaseCurrentHpRPC(activeAutoAttackSO.damage);
-    }
-
-    public override void PlayFeedback()
-    {
-        throw new System.NotImplementedException();
     }
 
     public void DelayAutoAttack()

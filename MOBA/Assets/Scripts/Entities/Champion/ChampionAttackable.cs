@@ -68,7 +68,7 @@ namespace Entities.Champion
         public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            attackCapacity.PlayFeedback();
+            attackCapacity.PlayFeedback(capacityIndex,targetedEntities,targetedPositions);
             OnAttackFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         }
 

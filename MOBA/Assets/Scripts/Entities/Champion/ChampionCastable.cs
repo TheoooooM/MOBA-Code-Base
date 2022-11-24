@@ -62,7 +62,7 @@ namespace Entities.Champion
         public void SyncCastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            activeCapacity.PlayFeedback();
+            activeCapacity.PlayFeedback(capacityIndex,targetedEntities,targetedPositions);
             OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         }
         

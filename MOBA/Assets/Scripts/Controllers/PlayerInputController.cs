@@ -4,6 +4,8 @@ namespace Controllers.Inputs
 {
     public abstract class PlayerInputController : Controller
     {
+        protected PlayerInputs inputs;
+        
         /// <summary>
         /// Setup the InputMap of The Player inputs
         /// </summary>
@@ -11,6 +13,7 @@ namespace Controllers.Inputs
         {
             InputManager.PlayerMap = new PlayerInputs();
             InputManager.PlayerMap.Enable();
+            inputs = InputManager.PlayerMap;
         }
         
         public void LinkControlsToPlayer()

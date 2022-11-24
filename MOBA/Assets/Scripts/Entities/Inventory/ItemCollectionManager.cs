@@ -26,10 +26,39 @@ namespace Entities.Inventory
             }
         }
 
-        public static Item GetItem(byte index)
+        public static void LinkCapacityIndexes()
         {
-            if (index >= allItems.Count) return null;
-            return (Item)Activator.CreateInstance(allItems[index].GetAssociatedItemType());
+            foreach (var itemSO in allItems)
+            {
+                itemSO.SetIndexes();
+            }
+        }
+
+        public static Item CreateItem(byte soIndex,Entity entity)
+        {
+            var inventory = entity.GetComponent<IInventoryable>();
+            if (inventory == null) return null;
+            var so = allItems[soIndex];
+            Item item;
+            if (so.consumable)
+            {
+                item = inventory.GetItemOfSo(soIndex);
+                if (item != null)
+                {
+                    item.count++;
+                    item.OnItemAddedToInventory(entity);
+                    return item;
+                }
+            }
+            item = (Item) Activator.CreateInstance(allItems[soIndex].AssociatedType());
+            item.indexOfSOInCollection = soIndex;
+            item.OnItemAddedToInventory(entity);
+            return item;
+        }
+        
+        public static ItemSO GetItemSObyIndex(byte index)
+        {
+            return allItems[index];
         }
 
         public static bool IsInCurrentItems(ItemSO itemSO)
@@ -39,7 +68,7 @@ namespace Entities.Inventory
 
         public static bool IsInCurrentItems(Item item)
         {
-            return IsInCurrentItems(item.AssociatedItemSo());
+            return IsInCurrentItems(item.AssociatedItemSO());
         }
 
         public static bool IsInCurrentItems(byte itemSoIndex)

@@ -1,9 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
 using Entities.Champion;
-using Entities.Inventory;
 
 namespace Controllers.Inputs
 {
@@ -58,7 +56,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateItem0(InputAction.CallbackContext ctx)
         {
-            champion.RequestActivateItem(0);
+            champion.RequestActivateItem(0,selectedEntity,cursorWorldPos);
         }
         /// <summary>
         /// Actions Performed on Item 1 Activation
@@ -66,7 +64,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateItem1(InputAction.CallbackContext ctx)
         {
-            champion.RequestActivateItem(1);
+            champion.RequestActivateItem(1,selectedEntity,cursorWorldPos);
         }
         /// <summary>
         /// Actions Performed on Item 2 Activation
@@ -74,7 +72,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateItem2(InputAction.CallbackContext ctx)
         {
-            champion.RequestActivateItem(2);
+            champion.RequestActivateItem(2,selectedEntity,cursorWorldPos);
         }
 
         private void OnMouseMove(InputAction.CallbackContext ctx)
@@ -147,31 +145,35 @@ namespace Controllers.Inputs
             selectedEntity = new int[1];
             cursorWorldPos = new Vector3[1];
             
-            InputManager.PlayerMap.Attack.Attack.performed += OnAttack;
+            inputs.Attack.Attack.performed += OnAttack;
             
-            InputManager.PlayerMap.Capacity.Capacity0.performed += OnActivateCapacity0;
-            InputManager.PlayerMap.Capacity.Capacity1.performed += OnActivateCapacity1;
-            InputManager.PlayerMap.Capacity.Capacity2.performed += OnActivateUltimateAbility;
+            inputs.Capacity.Capacity0.performed += OnActivateCapacity0;
+            inputs.Capacity.Capacity1.performed += OnActivateCapacity1;
+            inputs.Capacity.Capacity2.performed += OnActivateUltimateAbility;
 
-            InputManager.PlayerMap.Movement.Move.performed += OnMoveChange;
-            InputManager.PlayerMap.Movement.Move.canceled += OnMoveChange;
+            inputs.Movement.Move.performed += OnMoveChange;
+            inputs.Movement.Move.canceled += OnMoveChange;
 
-            InputManager.PlayerMap.MoveMouse.MousePos.performed += OnMouseMove;
+            inputs.MoveMouse.MousePos.performed += OnMouseMove;
+
+            inputs.Inventory.ActivateItem0.performed += OnActivateItem0;
+            inputs.Inventory.ActivateItem1.performed += OnActivateItem1;
+            inputs.Inventory.ActivateItem2.performed += OnActivateItem2;
 
         }
         
         protected override void Unlink()
         {
-            InputManager.PlayerMap.Attack.Attack.performed -= OnAttack;
+            inputs.Attack.Attack.performed -= OnAttack;
             
-            InputManager.PlayerMap.Capacity.Capacity0.performed -= OnActivateCapacity0;
-            InputManager.PlayerMap.Capacity.Capacity1.performed -= OnActivateCapacity1;
-            InputManager.PlayerMap.Capacity.Capacity2.performed -= OnActivateUltimateAbility;
+            inputs.Capacity.Capacity0.performed -= OnActivateCapacity0;
+            inputs.Capacity.Capacity1.performed -= OnActivateCapacity1;
+            inputs.Capacity.Capacity2.performed -= OnActivateUltimateAbility;
             
-            InputManager.PlayerMap.Movement.Move.performed -= OnMoveChange;
-            InputManager.PlayerMap.Movement.Move.canceled -= OnMoveChange;
+            inputs.Movement.Move.performed -= OnMoveChange;
+            inputs.Movement.Move.canceled -= OnMoveChange;
             
-            InputManager.PlayerMap.MoveMouse.MousePos.performed -= OnMouseMove;
+            inputs.MoveMouse.MousePos.performed -= OnMouseMove;
 
             CameraController.Instance.UnLinkCamera();
         }

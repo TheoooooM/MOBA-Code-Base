@@ -189,6 +189,8 @@ MonoBehaviour:
   - SyncStartCurrentStateRPC
   - LinkToPlayerRPC
   - ApplyChampionSORPC
+  - ActivateItemRPC
+  - SyncActivateItemRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -9,7 +9,7 @@ public class ActiveDarkMatter : ActiveCapacity
     private ActiveDarkMatterSO activeCapacitySo;
     private Vector3[] dir;
 
-    public override bool TryCast(int entityIndex, int[] targets, Vector3[] position)
+    public override bool TryCast(int casterIndex, int[] targets, Vector3[] position)
     {
         if (Vector3.Distance(position[0], caster.transform.position) > activeCapacitySo.maxRange){return false;}
         
@@ -17,7 +17,7 @@ public class ActiveDarkMatter : ActiveCapacity
         
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
         
-        caster = EntityCollectionManager.GetEntityByIndex(entityIndex);
+        caster = EntityCollectionManager.GetEntityByIndex(casterIndex);
         dir = position;
 
         return true;
@@ -57,8 +57,9 @@ public class ActiveDarkMatter : ActiveCapacity
             GameStateMachine.Instance.OnTick -= DelayWaitingTick;
         }
     }
-
-    public override void PlayFeedback()
+    
+    public override void PlayFeedback(int entityIndex, int[] targets, Vector3[] position)
     {
+        
     }
 }

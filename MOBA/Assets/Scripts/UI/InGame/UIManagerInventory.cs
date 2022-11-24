@@ -54,7 +54,7 @@ public partial class UIManager
         {
             inventory.GetChild(i).GetComponent<Image>().sprite =
                 (items[i] != null)
-                    ? items[i].AssociatedItemSo().SpriteOfItem
+                    ? items[i].AssociatedItemSO().sprite
                     : null;
         }
     }
