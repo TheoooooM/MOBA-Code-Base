@@ -13,7 +13,6 @@ public partial class UIManager
         if (EntityCollectionManager.GetEntityByIndex(entityIndex) != null && EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<IActiveLifeable>() != null)
         {
             Transform entityTransform = EntityCollectionManager.GetEntityByIndex(entityIndex).transform;
-            Vector3 direction = Camera.main.transform.position - entityTransform.position;
             EntityHealthBar canvasHealth = Instantiate(healthBarPrefab, entityTransform.position + offset, Quaternion.identity, entityTransform);
             canvasHealth.transform.LookAt(canvasHealth.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
             entitiesHealth.Add(entityIndex, canvasHealth);
