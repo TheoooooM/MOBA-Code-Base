@@ -100,6 +100,7 @@ namespace Entities.Champion
         public void SyncSetCurrentResourceRPC(float value)
         {
             currentResource = value;
+            EntityResourceBar.Instance.SetResource(entityIndex);
             OnSetCurrentResourceFeedback?.Invoke(value);
         }
 
