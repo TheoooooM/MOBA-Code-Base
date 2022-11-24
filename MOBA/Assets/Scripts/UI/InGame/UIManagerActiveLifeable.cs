@@ -5,8 +5,7 @@ using UnityEngine;
 public partial class UIManager
 {
     [Header("HealthBar Elements")]
-    [SerializeField] private readonly Dictionary<int, Canvas> entitiesHealth = new Dictionary<int, Canvas>();
-    [SerializeField] private Vector3 offsetHealthBar = new Vector3(0, 2.5f, 0);
+    [SerializeField] private readonly Dictionary<int, EntityHealthBar> entitiesHealth = new Dictionary<int, EntityHealthBar>();
     [SerializeField] private EntityHealthBar healthBarPrefab;
 
     public void InstantiateHealthBarForEntity(int entityIndex)
@@ -14,11 +13,11 @@ public partial class UIManager
         if (EntityCollectionManager.GetEntityByIndex(entityIndex) != null && EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<IActiveLifeable>() != null)
         {
             Transform entityTransform = EntityCollectionManager.GetEntityByIndex(entityIndex).transform;
-            Canvas canvas = Instantiate(canvasPrefab, entityTransform);
-            if (Camera.main != null) canvas.transform.LookAt(Camera.main.transform);
-            EntityHealthBar healthBar = Instantiate(healthBarPrefab, Vector3.zero + offsetHealthBar, Quaternion.identity, canvas.transform);
-            entitiesHealth.Add(entityIndex, canvas);
-            healthBar.SetHealth(entityIndex);
+            Vector3 direction = Camera.main.transform.position - entityTransform.position;
+            EntityHealthBar canvasHealth = Instantiate(healthBarPrefab, entityTransform.position + offset, Quaternion.identity, entityTransform);
+            canvasHealth.transform.LookAt(canvasHealth.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+            entitiesHealth.Add(entityIndex, canvasHealth);
+            canvasHealth.SetHealth(entityIndex);
         }
     }
 }
