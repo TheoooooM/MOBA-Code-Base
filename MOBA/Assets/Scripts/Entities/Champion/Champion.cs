@@ -27,6 +27,7 @@ namespace Entities.Champion
             if(uiManager != null && photonView.IsMine)
             {
                 UIManager.ClickOnItem += RequestAddItem;
+                UIManager.RemoveOnItem += RequestRemoveItem;
             }
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
@@ -78,15 +79,6 @@ namespace Entities.Champion
         public void SyncApplyChampionSO(byte championSoIndex, Enums.Team team)
         {
             photonView.RPC("ApplyChampionSORPC", RpcTarget.All, championSoIndex, (byte)team);
-        }
-
-        public void AddItemRPC(byte index)
-        {
-            
-        }
-
-        public void SyncAddItemRPC(byte index)
-        {
         }
     }
 }

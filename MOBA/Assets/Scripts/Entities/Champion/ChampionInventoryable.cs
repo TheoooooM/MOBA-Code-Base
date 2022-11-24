@@ -31,11 +31,21 @@ namespace Entities.Champion
 
         public void RequestAddItem(byte index)
         {
-            photonView.RPC("AddItemIDRPC",RpcTarget.MasterClient,index, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
+            photonView.RPC("AddItemRPC",RpcTarget.MasterClient,index, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
+        }
+
+        public void AddItemRPC(byte index)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SyncAddItemRPC(byte index)
+        {
+            throw new System.NotImplementedException();
         }
 
         [PunRPC]
-        public void AddItemIDRPC(byte index, byte SenderID)
+        public void AddItemRPC(byte index, byte senderID)
         {
             var itemSo = ItemCollectionManager.GetItemSObyIndex(index);
             if (itemSo.consumable)
@@ -46,15 +56,15 @@ namespace Entities.Champion
                     contains = true;
                 }
                 if(!contains && items.Count>=3) return;
-                photonView.RPC("SyncAddItemIDRPC",RpcTarget.All, index, SenderID);
+                photonView.RPC("SyncAddItemRPC",RpcTarget.All, index, senderID);
                 return;
             }
             if(items.Count>=3) return;
-            photonView.RPC("SyncAddItemIDRPC",RpcTarget.All, index, SenderID);
+            photonView.RPC("SyncAddItemRPC",RpcTarget.All, index, senderID);
         }
 
         [PunRPC]
-        public void SyncAddItemIDRPC(byte index, byte SenderID)
+        public void SyncAddItemRPC(byte index, byte senderID)
         {
             var item = ItemCollectionManager.CreateItem(index, this);
             if(item == null) return;
@@ -64,10 +74,9 @@ namespace Entities.Champion
                 item.OnItemAddedToInventory(this);
                 OnAddItem?.Invoke(index);
             }
+            
+            uiManager.UpdateInventory(items, senderID, photonView.IsMine);
 
-            Debug.Log($"{items.Count} {SenderID}");
-
-            uiManager.UpdateInventory(items, SenderID);
             item.OnItemAddedToInventoryFeedback(this);
             OnAddItemFeedback?.Invoke(index);
         }
@@ -78,7 +87,7 @@ namespace Entities.Champion
         /// <param name="index">index of Item in this entity's inventory</param>
         public void RequestRemoveItem(byte index)
         {
-            photonView.RPC("RemoveItemRPC",RpcTarget.MasterClient,index);
+            photonView.RPC("RemoveItemRPC",RpcTarget.MasterClient,index, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
         }
 
         /// <param name="item">Item to remove from this entity's inventory</param>
@@ -88,14 +97,24 @@ namespace Entities.Champion
             RequestRemoveItem((byte)items.IndexOf(item));
         }
 
-        [PunRPC]
         public void RemoveItemRPC(byte index)
         {
-            photonView.RPC("SyncRemoveItemRPC",RpcTarget.All,index);
+            throw new System.NotImplementedException();
+        }
+
+        public void SyncRemoveItemRPC(byte index)
+        {
+            throw new System.NotImplementedException();
         }
 
         [PunRPC]
-        public void SyncRemoveItemRPC(byte index)
+        public void RemoveItemRPC(byte index, byte senderID)
+        {
+            photonView.RPC("SyncRemoveItemRPC",RpcTarget.All,index, senderID);
+        }
+
+        [PunRPC]
+        public void SyncRemoveItemRPC(byte index, byte senderID)
         {
             if(index >= items.Count) return;
             var item = items[index];
@@ -105,6 +124,9 @@ namespace Entities.Champion
                 item.OnItemRemovedFromInventory(this);
                 OnRemoveItem?.Invoke(index);
             }
+            
+            uiManager.UpdateInventory(items, senderID, photonView.IsMine);
+            
             item.OnItemRemovedFromInventoryFeedback(this);
             OnRemoveItemFeedback?.Invoke(index);
         }
