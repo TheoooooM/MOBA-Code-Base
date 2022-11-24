@@ -1,3 +1,4 @@
+using Controllers;
 using Entities.Capacities;
 using Entities.FogOfWar;
 using GameStates;
@@ -16,6 +17,7 @@ namespace Entities.Champion
         private FogOfWarManager fowm;
         private CapacitySOCollectionManager capacityCollection;
         private UIManager uiManager;
+        public Camera camera;
 
         protected override void OnStart()
         {
@@ -23,6 +25,7 @@ namespace Entities.Champion
             SetupNavMesh();
             capacityCollection = CapacitySOCollectionManager.Instance;
             uiManager = UIManager.Instance;
+            camera = Camera.main;
             //fowm.allViewables.Add(entityIndex,this);
             if(uiManager != null)
             {
