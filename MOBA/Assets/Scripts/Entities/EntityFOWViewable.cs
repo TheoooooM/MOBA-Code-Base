@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Entities.FogOfWar;
 using System.Linq;
 using Photon.Pun;
+using UnityEngine;
 
 namespace Entities
 {
@@ -13,8 +14,11 @@ namespace Entities
         
         public float baseViewRange;
         public float viewRange;
+        [Range(0,360)] public float viewAngle;
         public bool canView;
         public List<IFOWShowable> seenShowables = new List<IFOWShowable>();
+
+        public MeshFilter meshFilterFoV;
         
         public Enums.Team GetTeam()
         {
@@ -102,6 +106,27 @@ namespace Entities
         
         public event GlobalDelegates.FloatDelegate OnSetViewRange;
         public event GlobalDelegates.FloatDelegate OnSetViewRangeFeedback;
+        public void RequestSetViewAngle(float value)
+        {
+            photonView.RPC("SyncSetViewAngleRPC",RpcTarget.MasterClient,value);
+        }
+
+        public void SyncSetViewAngleRPC(float value)
+        {
+            viewAngle = value;
+            OnSetViewAngleFeedback?.Invoke(value);
+        }
+
+        public void SetViewAngleRPC(float value)
+        {
+            viewAngle = value;
+            OnSetViewAngle?.Invoke(value);
+            photonView.RPC("SyncSetViewAngleRPC",RpcTarget.All,value);
+        }
+
+        public event GlobalDelegates.FloatDelegate OnSetViewAngle;
+        public event GlobalDelegates.FloatDelegate OnSetViewAngleFeedback;
+
         public void RequestSetBaseViewRange(float value)
         {
             photonView.RPC("SetBaseViewRangeRPC",RpcTarget.MasterClient,value);

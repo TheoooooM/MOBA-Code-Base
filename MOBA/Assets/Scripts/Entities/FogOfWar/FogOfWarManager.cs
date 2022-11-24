@@ -26,15 +26,17 @@ namespace Entities.FogOfWar
             //maskMatPlane.SetFloat("_Opacity", 0);
         }
 
-        public Dictionary<int, IFOWViewable> allViewables = new Dictionary<int, IFOWViewable>();
+        /*public Dictionary<int, IFOWViewable> allViewables = new Dictionary<int, IFOWViewable>();
         public List<IFOWViewable> allFOWViewable = new List<IFOWViewable>();
         private Dictionary<Enums.Team, List<IFOWViewable>> teamFOWViewablesDict = new Dictionary<Enums.Team, List<IFOWViewable>>();
+        */
 
         /// <summary>
         /// List Of all IFogOfWarViewable for Fog of War render
         /// </summary>
         /// <param name="IFogOfWarViewable"> Interface for Entity </param>
-        private List<IFOWViewable> allViewable;
+        private Dictionary<int, Entity> allViewables = new Dictionary<int, Entity>();
+        private Dictionary<Enums.Team, List<Entity>> teamFOWViewablesDict = new Dictionary<Enums.Team, List<Entity>>();
 
         /// <summary>
         /// Call In Update
@@ -55,81 +57,73 @@ namespace Entities.FogOfWar
         public bool worldSizeGizmos;
         
         //Parameter For Creating Field Of View Mesh
-        
-        [HideInInspector] public MeshFilter viewMeshFilter;
-        Mesh viewMesh;
         public FOVSettings settingsFOV;
 
-        private void RenderFOW(List<IFOWViewable> viewables)
+        private void RenderFOW(Dictionary<int, Entity> viewables)
         {
-            //Maths...
-            //DrawFieldOfView();
-            // calculer la texture 
+            foreach (var viewable in viewables)
+            {
+                DrawFieldOfView(viewable.Value);
+            }
         }
 
- 
+
         /// <summary>
         /// Add Entity To the Fog Of War render
         /// </summary>
         /// <param name="viewable"></param>
-        void AddFOWViewable(IFOWViewable viewable)
+        public void AddFOWViewable(Entity viewable)
         {
-            allViewable.Add(viewable);
+            allViewables.Add(viewable.entityIndex,viewable);
         }
 
         /// <summary>
         /// Remove Entity To the Fog Of War render
         /// </summary>
         /// <param name="viewable"></param>
-         void RemoveFOWViewable(IFOWViewable viewable)
+        public void RemoveFOWViewable(Entity viewable)
         {
-            allViewable.Remove(viewable);
+            allViewables.Remove(viewable.entityIndex);
         }
-        
         
         public void UpdateTeamsFOWViewables()
         {
-            // prenne chaque viewable et tu regarde à quelle team ils appartiennent 
-            //
-            //RenderFOW();
-        }
-
-        private void Start()
-        {   
-            
+            // prennent chaque viewable et tu regarde à quelle team ils appartiennent 
+            //Take all viewables and chose the team 
+            RenderFOW(allViewables);
         }
 
         private void Update()
-        {
-           UpdateTeamsFOWViewables();  
+        { 
+            UpdateTeamsFOWViewables();  
         }
 
-        public void InitMesh()
+        public void InitMesh(MeshFilter viewMeshFilter)
         {
-            viewMesh = new Mesh();
-            viewMesh.name = "View Mesh";
+            Mesh viewMesh = new Mesh();
+            viewMeshFilter.name = "View Mesh";
             viewMeshFilter.mesh = viewMesh;
         }
         
         //Draw the Field of View for the Player.
-        public void DrawFieldOfView ()
+        public void DrawFieldOfView (Entity entity)
         {
-            int stepCount = Mathf.RoundToInt(settingsFOV.viewAngle * settingsFOV.meshResolution / 5);
-            float stepAngleSize = settingsFOV.viewAngle / stepCount;
+            int stepCount = Mathf.RoundToInt(entity.viewAngle * settingsFOV.meshResolution / 5);
+            float stepAngleSize = entity.viewAngle / stepCount;
             List<Vector3> viewPoints = new List<Vector3>();
             ViewCastInfo oldViewCast = new ViewCastInfo();
 
             for (int i = 0; i <= stepCount; i++)
             {
-                float angle = transform.eulerAngles.y - settingsFOV.viewAngle / 2 + stepAngleSize * i;
-                ViewCastInfo newViewCast = ViewCast(angle);
+                float angle = transform.eulerAngles.y - entity.viewAngle / 2 + stepAngleSize * i;
+                ViewCastInfo newViewCast = ViewCast(angle, entity);
 
                 if (i > 0)
                 {
                     bool edgeDstThresholdExceeded = Mathf.Abs(oldViewCast.dst - newViewCast.dst) > settingsFOV.edgeDstThreshold;
                     if (oldViewCast.hit != newViewCast.hit || (oldViewCast.hit && newViewCast.hit && edgeDstThresholdExceeded))
                     {
-                        EdgeInfo edge = FindEdge(oldViewCast, newViewCast);
+                        EdgeInfo edge = FindEdge(oldViewCast, newViewCast, entity);
                         if (edge.pointA != Vector3.zero)
                         {
                             viewPoints.Add(edge.pointA);
@@ -161,9 +155,10 @@ namespace Entities.FogOfWar
                 }
             }
 
+            Mesh viewMesh = entity.meshFilterFoV.mesh;
             if (viewMesh == null)
             {
-                InitMesh();
+                InitMesh(entity.meshFilterFoV);
             }
 
             viewMesh.Clear();
@@ -173,7 +168,7 @@ namespace Entities.FogOfWar
             viewMesh.RecalculateNormals();
         }
         
-        EdgeInfo FindEdge ( ViewCastInfo minViewCast, ViewCastInfo maxViewCast )
+        EdgeInfo FindEdge ( ViewCastInfo minViewCast, ViewCastInfo maxViewCast, Entity entity )
         {
             float minAngle = minViewCast.angle;
             float maxAngle = maxViewCast.angle;
@@ -183,7 +178,7 @@ namespace Entities.FogOfWar
             for (int i = 0; i < settingsFOV.edgeResolveIterations; i++)
             {
                 float angle = (minAngle + maxAngle) / 2;
-                ViewCastInfo newViewCast = ViewCast(angle);
+                ViewCastInfo newViewCast = ViewCast(angle, entity);
 
                 bool edgeDstThresholdExceeded = Mathf.Abs(minViewCast.dst - newViewCast.dst) > settingsFOV.edgeDstThreshold;
                 if (newViewCast.hit == minViewCast.hit && !edgeDstThresholdExceeded)
@@ -201,18 +196,18 @@ namespace Entities.FogOfWar
             return new EdgeInfo(minPoint, maxPoint);
         }
         
-        ViewCastInfo ViewCast ( float globalAngle )
+        ViewCastInfo ViewCast ( float globalAngle, Entity entity )
         {
             Vector3 dir = DirFromAngle(globalAngle, true);
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, dir, out hit, settingsFOV.viewRadius, settingsFOV.obstacleMask))
+            if (Physics.Raycast(transform.position, dir, out hit, entity.viewRange, settingsFOV.obstacleMask))
             {
                 return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
             }
             else
             {
-                return new ViewCastInfo(false, transform.position + dir * settingsFOV.viewRadius, settingsFOV.viewRadius, globalAngle);
+                return new ViewCastInfo(false, transform.position + dir * entity.viewRange, entity.viewRange, globalAngle);
             }
         }
 
@@ -267,10 +262,6 @@ namespace Entities.FogOfWar
 [System.Serializable]
 public class FOVSettings
 {
-    public float viewRadius;
-    [Range(0, 360)]
-    public float viewAngle;
-    public LayerMask targetMask;
     public LayerMask obstacleMask;
     
     public float meshResolution;

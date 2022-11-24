@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Entities.FogOfWar
 {
-    public interface IFOWShowable : ITeamable
+    public interface IFOWShowable
     {
         public bool CanShow();
         public bool CanHide();
@@ -19,7 +19,7 @@ namespace Entities.FogOfWar
         public event GlobalDelegates.BoolDelegate OnSetCanHide;
         public event GlobalDelegates.BoolDelegate OnSetCanHideFeedback;
         public void TryAddFOWViewable(int viewableIndex);
-        public void TryAddFOWViewable(IFOWViewable viewable);
+        public void TryAddFOWViewable(Entity viewable);
         public void SyncTryAddViewableRPC(int viewableIndex,bool show);
         public void ShowElements();
         public event GlobalDelegates.NoParameterDelegate OnShowElement;
