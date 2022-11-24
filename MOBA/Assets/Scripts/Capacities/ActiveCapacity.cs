@@ -12,6 +12,8 @@ namespace Entities.Capacities
         private float feedbackTimer;
         
         public GameObject instantiateFeedbackObj;
+
+        protected int target;
         
         public ActiveCapacitySO AssociatedActiveCapacitySO()
         {
@@ -40,9 +42,32 @@ namespace Entities.Capacities
             if (!onCooldown)
             {
                 InitiateCooldown();
+
+                if (targetsEntityIndexes.Length > 0)
+                {
+                    target = targetsEntityIndexes[0];
+
+                    if (!IsTargetInRange() && AssociatedActiveCapacitySO().isTargeting)
+                    {
+                        
+                        return false;
+                    }
+                }
                 return true;
             }
 
+            return false;
+        }
+        
+        private bool IsTargetInRange()
+        {
+            //get the distance between the entity and the target
+            float distance = Vector3.Distance(caster.transform.position, EntityCollectionManager.GetEntityByIndex(target).transform.position);
+            //if the distance is lower than the range, return true
+            if (distance < AssociatedActiveCapacitySO().maxRange)
+            {
+                return true;
+            }
             return false;
         }
 

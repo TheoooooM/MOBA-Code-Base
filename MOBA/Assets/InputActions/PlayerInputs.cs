@@ -109,19 +109,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 }
             ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""818df789-f830-48ab-9ceb-689b5f0c4a50"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Attack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
+            ""bindings"": []
         },
         {
             ""name"": ""Capacity"",
@@ -299,6 +287,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ActiveButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""423383cc-dfaf-401e-9009-8a937d79459c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -310,6 +307,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MousePos"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0003a3b0-03b5-4a22-8db0-21af37bb3959"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActiveButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -340,6 +348,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // MoveMouse
         m_MoveMouse = asset.FindActionMap("MoveMouse", throwIfNotFound: true);
         m_MoveMouse_MousePos = m_MoveMouse.FindAction("MousePos", throwIfNotFound: true);
+        m_MoveMouse_ActiveButton = m_MoveMouse.FindAction("ActiveButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -597,11 +606,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MoveMouse;
     private IMoveMouseActions m_MoveMouseActionsCallbackInterface;
     private readonly InputAction m_MoveMouse_MousePos;
+    private readonly InputAction m_MoveMouse_ActiveButton;
     public struct MoveMouseActions
     {
         private @PlayerInputs m_Wrapper;
         public MoveMouseActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @MousePos => m_Wrapper.m_MoveMouse_MousePos;
+        public InputAction @ActiveButton => m_Wrapper.m_MoveMouse_ActiveButton;
         public InputActionMap Get() { return m_Wrapper.m_MoveMouse; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -614,6 +625,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @MousePos.started -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnMousePos;
                 @MousePos.performed -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnMousePos;
                 @MousePos.canceled -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnMousePos;
+                @ActiveButton.started -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnActiveButton;
+                @ActiveButton.performed -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnActiveButton;
+                @ActiveButton.canceled -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnActiveButton;
             }
             m_Wrapper.m_MoveMouseActionsCallbackInterface = instance;
             if (instance != null)
@@ -621,6 +635,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @MousePos.started += instance.OnMousePos;
                 @MousePos.performed += instance.OnMousePos;
                 @MousePos.canceled += instance.OnMousePos;
+                @ActiveButton.started += instance.OnActiveButton;
+                @ActiveButton.performed += instance.OnActiveButton;
+                @ActiveButton.canceled += instance.OnActiveButton;
             }
         }
     }
@@ -652,5 +669,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IMoveMouseActions
     {
         void OnMousePos(InputAction.CallbackContext context);
+        void OnActiveButton(InputAction.CallbackContext context);
     }
 }

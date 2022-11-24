@@ -69,6 +69,9 @@ public class LobbyUIManager : MonoBehaviourPun
         currentChampion = 2;
         currentTeam = Enums.Team.Team1;
 
+        // We sync others' data
+        sm.RequestSendDataDictionary();
+        
         // We add a player
         sm.RequestAddPlayer();
 

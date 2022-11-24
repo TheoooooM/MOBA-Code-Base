@@ -2,6 +2,7 @@ using Entities.Capacities;
 using Entities.FogOfWar;
 using GameStates;
 using Photon.Pun;
+
 using UnityEngine;
 
 namespace Entities.Champion
@@ -18,10 +19,11 @@ namespace Entities.Champion
         protected override void OnStart()
         {
             fowm = FogOfWarManager.Instance;
+            SetupNavMesh();
             capacityCollection = CapacitySOCollectionManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
-            if(UIManager.Instance != null)UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
-            if(UIManager.Instance != null)UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
+            if (UIManager.Instance != null) UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
+            if (UIManager.Instance != null) UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
         }
@@ -30,14 +32,15 @@ namespace Entities.Champion
         {
             Move();
             Rotate();
+            CheckMoveDistance(); // Lol
         }
-        
+
         public override void OnInstantiated() { }
 
         public override void OnInstantiatedFeedback() { }
 
         [PunRPC]
-        public void ApplyChampionSORPC(byte championSoIndex)
+        public void ApplyChampionSORPC(byte championSoIndex, byte team)
         {
             var so = GameStateMachine.Instance.allChampionsSo[championSoIndex];
             championSo = so;
@@ -52,16 +55,17 @@ namespace Entities.Champion
             attackAbilityIndex = championSo.attackAbilityIndex;
             abilitiesIndexes = championSo.activeCapacitiesIndexes;
             ultimateAbilityIndex = championSo.ultimateAbilityIndex;
-
-            // TODO - Implement Model/Prefab/Animator
             
-            var championMesh = Instantiate(championSo.championMeshPrefab, championInitPoint.position, Quaternion.identity, championInitPoint);
-            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
+             var championMesh = Instantiate(championSo.championMeshPrefab, championInitPoint.position,
+                Quaternion.identity, championInitPoint);
+
+            this.team = (Enums.Team)team;
+            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
         }
 
-        public void SyncApplyChampionSO(byte championSoIndex)
+        public void SyncApplyChampionSO(byte championSoIndex, Enums.Team team)
         {
-            photonView.RPC("ApplyChampionSORPC", RpcTarget.All, championSoIndex);
+            photonView.RPC("ApplyChampionSORPC", RpcTarget.All, championSoIndex, (byte)team);
         }
     }
 }
