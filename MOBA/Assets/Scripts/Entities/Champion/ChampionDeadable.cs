@@ -48,8 +48,8 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDieRPC()
         {
-            EntityHealthBar.Instance.SetActive(entityIndex, false);
-            EntityResourceBar.Instance.SetActive(entityIndex, false);
+            uiManager.entitiesHealth[entityIndex].SetActive(false);
+            uiManager.entitiesResource[entityIndex].SetActive(false);
             OnDieFeedback?.Invoke();
         }
 
@@ -71,8 +71,8 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncReviveRPC()
         {
-            EntityHealthBar.Instance.SetActive(entityIndex, true);
-            EntityResourceBar.Instance.SetActive(entityIndex, true);
+            uiManager.entitiesHealth[entityIndex].SetActive(true);
+            uiManager.entitiesResource[entityIndex].SetActive(true);
             OnReviveFeedback?.Invoke();
         }
 

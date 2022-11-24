@@ -1,24 +1,31 @@
+using System;
+using Entities;
+using Entities.Champion;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EntityResourceBar : MonoBehaviour
 {
-    public static EntityResourceBar Instance;
-    
     [SerializeField] private Image resourceBar;
-    
-    public void SetResource(float value)
+    private UIManager uiManager;
+
+    private void Start()
+    {
+        uiManager = UIManager.Instance;
+    }
+
+    public void SetResourceByValue(float value)
     {
         resourceBar.fillAmount = value;
     }
     
-    public void SetResource(int entityIndex, float value)
+    public void SetResourceByIndex(int entityIndex)
     {
-        UIManager.Instance.entitiesResource[entityIndex].resourceBar.fillAmount = value;
+        resourceBar.fillAmount = EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<Champion>().GetCurrentResourcePercent();
     }
     
-    public void SetActive(int entityIndex, bool active)
+    public void SetActive(bool active)
     {
-        UIManager.Instance.entitiesResource[entityIndex].gameObject.SetActive(active);
+        resourceBar.gameObject.SetActive(active);
     }
 }

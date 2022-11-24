@@ -16,7 +16,7 @@ public partial class UIManager
             EntityHealthBar canvasHealth = Instantiate(healthBarPrefab, entityTransform.position + offset, Quaternion.identity, entityTransform);
             canvasHealth.transform.LookAt(canvasHealth.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
             entitiesHealth.Add(entityIndex, canvasHealth);
-            canvasHealth.SetHealth(entityIndex);
+            canvasHealth.SetHealthByIndex(entityIndex);
         }
     }
 }

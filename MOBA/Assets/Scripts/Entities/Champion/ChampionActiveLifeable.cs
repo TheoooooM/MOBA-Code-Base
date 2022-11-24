@@ -100,7 +100,6 @@ namespace Entities.Champion
         public void SyncSetCurrentHpRPC(float value)
         {
             currentHp = value;
-            EntityHealthBar.Instance.SetHealth(entityIndex, value);
             OnSetCurrentHpFeedback?.Invoke(value);
         }
 
@@ -124,6 +123,7 @@ namespace Entities.Champion
         public void SyncSetCurrentHpPercentRPC(float value)
         {
             currentHp = value;
+            uiManager.entitiesHealth[entityIndex].SetHealthByValue(value);
             OnSetCurrentHpPercentFeedback?.Invoke(value);
         }
 

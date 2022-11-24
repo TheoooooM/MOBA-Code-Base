@@ -16,7 +16,7 @@ public partial class UIManager
             EntityResourceBar canvasResource = Instantiate(resourceBarPrefab, entityTransform.position + offset, Quaternion.identity, entityTransform);
             canvasResource.transform.LookAt(canvasResource.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
             entitiesResource.Add(entityIndex, canvasResource);
-            canvasResource.SetResource(entityIndex);
+            canvasResource.SetResourceByIndex(entityIndex);
         }
     }
 }
