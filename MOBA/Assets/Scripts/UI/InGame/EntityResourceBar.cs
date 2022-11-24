@@ -1,17 +1,15 @@
-using System;
 using Entities;
-using Entities.Champion;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EntityResourceBar : MonoBehaviour
 {
     [SerializeField] private Image resourceBar;
-    private UIManager uiManager;
+    private Camera cam;
 
     private void Start()
     {
-        uiManager = UIManager.Instance;
+        cam = Camera.main;
     }
 
     public void SetResourceByValue(float value)
@@ -21,6 +19,7 @@ public class EntityResourceBar : MonoBehaviour
     
     public void SetResourceByIndex(int entityIndex)
     {
+        transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
         resourceBar.fillAmount = EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<IResourceable>().GetCurrentResourcePercent();
     }
     
