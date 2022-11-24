@@ -4,6 +4,7 @@ namespace Entities.FogOfWar
 {
     public interface IFOWViewable : ITeamable
     {
+        
         /// <returns>If the entity can see</returns>
         public bool CanView();
         /// <returns>The current view range of the entity</returns>
@@ -39,7 +40,30 @@ namespace Entities.FogOfWar
 
         public event GlobalDelegates.FloatDelegate OnSetViewRange;
         public event GlobalDelegates.FloatDelegate OnSetViewRangeFeedback;
+        
+        /// <summary>
+        /// Sends an RPC to the master to set the entity's view range.
+        /// </summary>
+        /// <param name="value">the value to set it to</param>
+        public void RequestSetViewAngle(float value);
 
+        /// <summary>
+        /// Sends an RPC to all clients to set the entity's view range.
+        /// </summary>
+        /// <param name="value">the value to set it to</param>
+        public void SyncSetViewAngleRPC(float value);
+
+        /// <summary>
+        /// Sets the entity's view range.
+        /// </summary>
+        /// <param name="value">the value to set it to</param>
+        public void SetViewAngleRPC(float value);
+
+        public event GlobalDelegates.FloatDelegate OnSetViewAngle;
+        public event GlobalDelegates.FloatDelegate OnSetViewAngleFeedback;
+
+        
+        //Demander à Gauthier et Hubert 
         public void RequestSetBaseViewRange(float value);
         public void SyncSetBaseViewRangeRPC(float value);
         public void SetBaseViewRangeRPC(float value);
