@@ -5,7 +5,7 @@ public  class GlobalDelegates : MonoBehaviour
     public delegate void NoParameterDelegate();
     public delegate void BoolDelegate(bool b);
 
-    public delegate void ByteDelegate(bool b);
+    public delegate void ByteDelegate(byte b);
 
     public delegate void IntDelegate(int u);
 

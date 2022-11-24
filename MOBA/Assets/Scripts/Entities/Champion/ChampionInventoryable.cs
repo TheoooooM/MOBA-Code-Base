@@ -26,26 +26,39 @@ namespace Entities.Champion
             return items.FirstOrDefault(item => item.indexOfSOInCollection == soIndex);
         }
 
-        public void RequestAddItem(byte index) { }
+        public void RequestAddItem(byte index)
+        {
+            photonView.RPC("AddItemRPC",RpcTarget.MasterClient,index);
+        }
 
         [PunRPC]
-        public void SyncAddItemRPC(byte index) { }
+        public void AddItemRPC(byte index)
+        {
+            if(ItemCollectionManager.CreateItem(index, this) == null) return;
+            OnAddItem?.Invoke(index);
+            OnAddItemFeedback?.Invoke(index);
+            photonView.RPC("SyncAddItemRPC",RpcTarget.Others,index);
+        }
 
         [PunRPC]
-        public void AddItemRPC(byte index) { }
-
+        public void SyncAddItemRPC(byte index)
+        {
+            var item = ItemCollectionManager.CreateItem(index, this);
+            if(item == null) return;
+            item.OnItemAddedToInventoryFeedback(this);
+            OnAddItemFeedback?.Invoke(index);
+        }
+        
         public event GlobalDelegates.ByteDelegate OnAddItem;
         public event GlobalDelegates.ByteDelegate OnAddItemFeedback;
 
         public void RequestRemoveItem(byte index) { }
 
         public void RequestRemoveItem(Item item) { }
-
-        [PunRPC]
-        public void SyncRemoveItemRPC(byte index) { }
-
         [PunRPC]
         public void RemoveItemRPC(byte index) { }
+        [PunRPC]
+        public void SyncRemoveItemRPC(byte index) { }
 
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
         public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
@@ -60,13 +73,13 @@ namespace Entities.Champion
             if(itemIndex >= items.Length) return;
             var item = items[itemIndex];
             if(item == null) return;
+            items[itemIndex].OnItemActivated(selectedEntities,positions);
             foreach (var capacityIndex in item.AssociatedItemSO().activeCapacitiesIndexes)
             {
                 var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
                 if (!activeCapacity.TryCast(entityIndex, selectedEntities, positions)) return;
                 // TODO - activeCapacityFeedback
             }
-            items[itemIndex].OnItemActivated(selectedEntities,positions);
             OnActivateItem?.Invoke(itemIndex,selectedEntities,positions);
             photonView.RPC("SyncActivateItemRPC",RpcTarget.All,itemIndex,selectedEntities,positions);
         }
