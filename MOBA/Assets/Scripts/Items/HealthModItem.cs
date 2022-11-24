@@ -8,16 +8,14 @@ namespace Entities.Inventory
     {
         private IActiveLifeable lifeable;
         
-        public override void OnItemAddedToInventory(Entity entity)
+        public override void OnItemAddedEffects(Entity entity)
         {
-            base.OnItemAddedToInventory(entity);
             lifeable = entity.GetComponent<IActiveLifeable>();
             lifeable?.IncreaseMaxHpRPC(((HealthModItemSO)AssociatedItemSO()).healthMod);
         }
 
-        public override void OnItemRemovedFromInventory()
+        public override void OnItemRemovedEffects(Entity entity)
         {
-            base.OnItemRemovedFromInventory();
             lifeable?.DecreaseMaxHpRPC(((HealthModItemSO)AssociatedItemSO()).healthMod);
         }
     }

@@ -14,14 +14,19 @@ namespace Entities.Champion
 
         private FogOfWarManager fowm;
         private CapacitySOCollectionManager capacityCollection;
+        private UIManager uiManager;
 
         protected override void OnStart()
         {
             fowm = FogOfWarManager.Instance;
             capacityCollection = CapacitySOCollectionManager.Instance;
+            uiManager = UIManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
-            if(UIManager.Instance != null)UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
-            if(UIManager.Instance != null)UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
+            if (uiManager == null) return;
+            uiManager.InstantiateHealthBarForEntity(entityIndex);
+            uiManager.InstantiateResourceBarForEntity(entityIndex);
+            
+            UIManager.ClickOnItem += RequestAddItem;
         }
 
         protected override void OnUpdate()

@@ -7,9 +7,9 @@ namespace Entities.Inventory
     public abstract class Item
     {
         public bool consumable;
+        
         public int count;
         public float timer;
-        
         public Entity entityOfInventory;
         public IInventoryable inventory;
 
@@ -20,20 +20,27 @@ namespace Entities.Inventory
             return ItemCollectionManager.GetItemSObyIndex(indexOfSOInCollection);
         }
 
-        public virtual void OnItemAddedToInventory(Entity entity)
+        public void OnItemAddedToInventory(Entity entity)
         {
+            if (consumable) count++;
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
+            OnItemAddedEffects(entity);
             var capacityCollection = CapacitySOCollectionManager.Instance;
             // TODO - Add passives
         }
+
+        public abstract void OnItemAddedEffects(Entity entity);
 
         public virtual void OnItemAddedToInventoryFeedback(Entity entity)
         {
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
+            OnItemRemovedEffects(entity);
             // TODO - Add passives feedbacks
         }
+
+        public abstract void OnItemRemovedEffects(Entity entity);
 
         public virtual void OnItemRemovedFromInventory()
         {

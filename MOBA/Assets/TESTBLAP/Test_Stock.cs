@@ -23,14 +23,20 @@ public class Test_Stock : MonoBehaviour
         for (int a = 0; a < ItemCollectionManager.allItems.Count; a++)
         {
             ShopItemImagesUI[a].slotImage.sprite = ItemCollectionManager.allItems[a].sprite;
-            string referenceName = ItemCollectionManager.allItems[a].referenceName;
-            ShopItemImagesUI[a].buttonShop.onClick.AddListener(() => BuyItem(referenceName));
+            string referenceName = ItemCollectionManager.allItems[a].itemName;
+            foreach (var item in ItemCollectionManager.allItems)
+            {
+                if (item.itemName == referenceName)
+                {
+                    ShopItemImagesUI[a].buttonShop.onClick.AddListener(() => BuyItem(item.indexInCollection));
+                }
+            }
         }
     }
     
-    public void BuyItem(string referenceName)
+    public void BuyItem(byte indexItem)
     {
-        UIManager.Instance.OnClickOnItem(referenceName);
+        UIManager.Instance.OnClickOnItem(indexItem);
     }
     
     private void Start()
