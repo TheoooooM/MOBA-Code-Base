@@ -5,7 +5,7 @@ using UnityEngine;
 public partial class UIManager
 {
     [Header("ResourceBar Elements")]
-    [SerializeField] private readonly Dictionary<int, EntityResourceBar> entitiesResource = new Dictionary<int, EntityResourceBar>();
+    [SerializeField] public readonly Dictionary<int, EntityResourceBar> entitiesResource = new Dictionary<int, EntityResourceBar>();
     [SerializeField] private EntityResourceBar resourceBarPrefab;
     
     public void InstantiateResourceBarForEntity(int entityIndex)

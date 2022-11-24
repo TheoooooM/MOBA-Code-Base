@@ -6,9 +6,19 @@ public class EntityHealthBar : MonoBehaviour
     public static EntityHealthBar Instance;
     
     [SerializeField] private Image healthBar;
-    
-    public void SetHealth(float health)
+
+    public void SetHealth(float value)
     {
-        healthBar.fillAmount = health;
+        healthBar.fillAmount = value;
+    }
+    
+    public void SetHealth(int entityIndex, float value)
+    {
+        UIManager.Instance.entitiesHealth[entityIndex].healthBar.fillAmount = value;
+    }
+    
+    public void SetActive(int entityIndex, bool active)
+    {
+        UIManager.Instance.entitiesHealth[entityIndex].gameObject.SetActive(active);
     }
 }

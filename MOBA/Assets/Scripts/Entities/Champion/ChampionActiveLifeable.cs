@@ -100,7 +100,7 @@ namespace Entities.Champion
         public void SyncSetCurrentHpRPC(float value)
         {
             currentHp = value;
-            EntityHealthBar.Instance.SetHealth(entityIndex);
+            EntityHealthBar.Instance.SetHealth(entityIndex, value);
             OnSetCurrentHpFeedback?.Invoke(value);
         }
 

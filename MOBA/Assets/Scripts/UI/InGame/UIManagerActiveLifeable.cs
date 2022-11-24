@@ -5,7 +5,7 @@ using UnityEngine;
 public partial class UIManager
 {
     [Header("HealthBar Elements")]
-    [SerializeField] private readonly Dictionary<int, EntityHealthBar> entitiesHealth = new Dictionary<int, EntityHealthBar>();
+    [SerializeField] public readonly Dictionary<int, EntityHealthBar> entitiesHealth = new Dictionary<int, EntityHealthBar>();
     [SerializeField] private EntityHealthBar healthBarPrefab;
 
     public void InstantiateHealthBarForEntity(int entityIndex)

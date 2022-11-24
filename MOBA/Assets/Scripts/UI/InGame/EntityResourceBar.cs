@@ -7,8 +7,18 @@ public class EntityResourceBar : MonoBehaviour
     
     [SerializeField] private Image resourceBar;
     
-    public void SetResource(float health)
+    public void SetResource(float value)
     {
-        resourceBar.fillAmount = health;
+        resourceBar.fillAmount = value;
+    }
+    
+    public void SetResource(int entityIndex, float value)
+    {
+        UIManager.Instance.entitiesResource[entityIndex].resourceBar.fillAmount = value;
+    }
+    
+    public void SetActive(int entityIndex, bool active)
+    {
+        UIManager.Instance.entitiesResource[entityIndex].gameObject.SetActive(active);
     }
 }
