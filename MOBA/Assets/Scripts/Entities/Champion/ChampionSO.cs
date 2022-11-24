@@ -16,16 +16,16 @@ namespace Entities.Champion
         
         [Header("Attack")]
         public ActiveCapacitySO attackAbility;
-        [HideInInspector] public byte attackAbilityIndex;
+        public byte attackAbilityIndex;
         public float attackDamage;
         
         [Header("Abilities")]
         public PassiveCapacitySO[] passiveCapacities;
-        [HideInInspector] public byte[] passiveCapacitiesIndexes;
+        public byte[] passiveCapacitiesIndexes;
         public ActiveCapacitySO[] activeCapacities; 
-        [HideInInspector] public byte[] activeCapacitiesIndexes;
+        public byte[] activeCapacitiesIndexes;
         public ActiveCapacitySO ultimateAbility;
-        [HideInInspector] public byte ultimateAbilityIndex;
+        public byte ultimateAbilityIndex;
 
         public void SetIndexes()
         {

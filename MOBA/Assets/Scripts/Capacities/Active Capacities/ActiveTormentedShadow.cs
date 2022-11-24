@@ -69,7 +69,7 @@ namespace Entities.Capacities
 
         public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            Debug.Log("Morgana Gaming");
+            Debug.Log("Cast tormented shadow");
             
         }
     }
