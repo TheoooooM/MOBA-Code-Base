@@ -371,7 +371,7 @@ namespace GameStates
         {
             // We take data
             var (team, championSoIndex, _) = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
-            if (championSoIndex >= allTeams.Length)
+            if (championSoIndex >= allChampionsSo.Length)
             {
                 Debug.LogWarning("Make sure the mesh is valid. Selects default mesh.");
                 championSoIndex = 1;
@@ -386,11 +386,6 @@ namespace GameStates
 
             // We sync data and champion mesh
             champion.SyncApplyChampionSO(championSoIndex);
-
-            return;
-            Debug.Log("Instantiating champion for " + gameObject.name);
-            var championMesh = PhotonNetwork.Instantiate(championSo.championMeshPrefab.name, champion.championInitPoint.position, Quaternion.identity).transform;
-            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(champion);
         }
         
         [PunRPC]

@@ -47,8 +47,10 @@ namespace Entities.Champion
             attackDamage = championSo.attackDamage;
 
             // TODO - Implement Model/Prefab/Animator
-            //GetComponent<Renderer>().material.color = championSo.color;
             
+            Debug.Log("Instantiating champion for " + gameObject.name);
+            var championMesh = Instantiate(championSo.championMeshPrefab, championInitPoint.position, Quaternion.identity, championInitPoint);
+            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
             
         }
 
