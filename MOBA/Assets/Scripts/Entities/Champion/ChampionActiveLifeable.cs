@@ -60,9 +60,9 @@ namespace Entities.Champion
         [PunRPC]
         public void IncreaseMaxHpRPC(float amount)
         {
-            maxHp -= amount;
+            maxHp += amount;
             OnIncreaseMaxHp?.Invoke(amount);
-            photonView.RPC("SyncSetMaxHpRPC", RpcTarget.MasterClient, maxHp);
+            photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, maxHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
@@ -85,7 +85,7 @@ namespace Entities.Champion
         {
             maxHp -= amount;
             OnDecreaseMaxHp?.Invoke(amount);
-            photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.MasterClient, maxHp);
+            photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.All, maxHp);
         }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
@@ -130,7 +130,7 @@ namespace Entities.Champion
         public void SetCurrentHpPercentRPC(float value)
         {
             currentHp = value * maxHp;
-            OnSetCurrentHpPercentFeedback?.Invoke(value);
+            OnSetCurrentHpPercent?.Invoke(value);
             photonView.RPC("SetCurrentHpPercentRPC", RpcTarget.All, value);
         }
 
