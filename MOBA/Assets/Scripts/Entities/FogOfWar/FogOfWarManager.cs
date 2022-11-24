@@ -26,17 +26,12 @@ namespace Entities.FogOfWar
             //maskMatPlane.SetFloat("_Opacity", 0);
         }
 
-        /*public Dictionary<int, IFOWViewable> allViewables = new Dictionary<int, IFOWViewable>();
-        public List<IFOWViewable> allFOWViewable = new List<IFOWViewable>();
-        private Dictionary<Enums.Team, List<IFOWViewable>> teamFOWViewablesDict = new Dictionary<Enums.Team, List<IFOWViewable>>();
-        */
-
         /// <summary>
         /// List Of all IFogOfWarViewable for Fog of War render
         /// </summary>
         /// <param name="IFogOfWarViewable"> Interface for Entity </param>
         private Dictionary<int, Entity> allViewables = new Dictionary<int, Entity>();
-        private Dictionary<Enums.Team, List<Entity>> teamFOWViewablesDict = new Dictionary<Enums.Team, List<Entity>>();
+     
 
         /// <summary>
         /// Call In Update
@@ -51,6 +46,7 @@ namespace Entities.FogOfWar
         [Header("Fog Of War Parameter")] 
         [Tooltip("Color for the area where the player can't see")]
         public Color fogColor = new Color(0.25f, 0.25f, 0.25f, 1f);
+        public LayerMask layerTargetFogOfWar;
         [Tooltip("Material who is going to be render in the RenderPass")] 
         public Material fogMat;
         [Tooltip("Define the size of the map to make the texture fit the RenderPass")]
@@ -60,9 +56,9 @@ namespace Entities.FogOfWar
         //Parameter For Creating Field Of View Mesh
         public FOVSettings settingsFOV;
 
-        private void RenderFOW(Dictionary<int, Entity> viewables)
+        private void RenderFOW()
         {
-            foreach (var viewable in viewables)
+            foreach (var viewable in allViewables)
             {
                 DrawFieldOfView(viewable.Value);
             }
@@ -91,7 +87,8 @@ namespace Entities.FogOfWar
         {
             // prennent chaque viewable et tu regarde à quelle team ils appartiennent 
             //Take all viewables and chose the team 
-            RenderFOW(allViewables);
+
+            RenderFOW();
         }
 
         private void Update()
@@ -202,17 +199,26 @@ namespace Entities.FogOfWar
             Vector3 dir = DirFromAngle(globalAngle, true);
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, dir, out hit, entity.viewRange, entity.obstacleLayerFogOfWar))
+            Debug.Log("bonsoir");
+      
+            if (Physics.Raycast(entity.transform.position, dir, out hit, entity.viewRange, layerTargetFogOfWar))
             {
+                Debug.Log("Detect collision");
+                Debug.DrawRay(entity.transform.position, dir * entity.viewRange, Color.green, Time.deltaTime);
+                Entity candidateEntity = hit.collider.gameObject.GetComponent<Entity>();
+                if (candidateEntity != null)
+                {
+                    entity.AddShowable(candidateEntity);
+                }
                 return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
             }
             else
             {
-                return new ViewCastInfo(false, transform.position + dir * entity.viewRange, entity.viewRange, globalAngle);
+                return new ViewCastInfo(false,   dir * entity.viewRange, entity.viewRange, globalAngle);
             }
         }
 
-        public Vector3 DirFromAngle ( float angleInDegrees, bool angleIsGlobal )
+        private Vector3 DirFromAngle ( float angleInDegrees, bool angleIsGlobal )
         {
             if (!angleIsGlobal)
             {

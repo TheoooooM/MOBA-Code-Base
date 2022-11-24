@@ -17,7 +17,6 @@ namespace Entities
         [Range(0, 360)] public float viewAngle;
         public bool canView;
         public List<IFOWShowable> seenShowables = new List<IFOWShowable>();
-        public LayerMask obstacleLayerFogOfWar;
         public MeshFilter meshFilterFoV;
 
 

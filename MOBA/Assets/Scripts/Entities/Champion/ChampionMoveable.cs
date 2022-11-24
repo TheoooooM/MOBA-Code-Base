@@ -1,7 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.AI;
-using NavMeshBuilder = UnityEditor.AI.NavMeshBuilder;
+
 
 namespace Entities.Champion
 {
