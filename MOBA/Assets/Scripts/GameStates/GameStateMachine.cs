@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Controllers.Inputs;
@@ -6,6 +7,7 @@ using Entities.Inventory;
 using Photon.Pun;
 using GameStates.States;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameStates
 {
@@ -38,6 +40,15 @@ namespace GameStates
 
         public ChampionSO[] allChampionsSo;
         public Enums.Team[] allTeams;
+
+        public TeamColor[] teamColors;
+        
+        [Serializable]
+        public struct TeamColor
+        {
+            public Enums.Team team;
+            public Color color;
+        }
 
         private void Awake()
         {
@@ -81,6 +92,7 @@ namespace GameStates
         private void Update()
         {
             currentState?.UpdateState();
+            Debug.Log(currentState);
         }
 
         private void InitState()
@@ -343,30 +355,47 @@ namespace GameStates
             champion.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
             
             LinkController(champion);
-            
             LinkChampionData(champion);
         }
 
         private void LinkController(Champion champion)
         {
             var controller =  champion.GetComponent<PlayerInputController>();
+            
+            // We set local parameters
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
-            controller.TransferOwnerShipToMaster();
+            //controller.TransferOwnerShipToMaster();
         }
 
         private void LinkChampionData(Champion champion)
         {
+            // We take data
             var (team, championSoIndex, _) = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
+            if (championSoIndex >= allTeams.Length)
+            {
+                Debug.LogWarning("Make sure the mesh is valid. Selects default mesh.");
+                championSoIndex = 1;
+            }
             var championSo = allChampionsSo[championSoIndex];
             
+            // We state name
             champion.name += $" / {championSo.name}";
             
+            // We set team
             champion.RequestChangeTeam(team);
-            
-            // TODO - Link Champion SO, stats and graphs
+
+            // We sync data and champion mesh
             champion.SyncApplyChampionSO(championSoIndex);
+
+            return;
+            Debug.Log("Instantiating champion for " + gameObject.name);
+            var championMesh = PhotonNetwork.Instantiate(championSo.championMeshPrefab.name, champion.championInitPoint.position, Quaternion.identity).transform;
+            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(champion);
         }
+        
+        [PunRPC]
+        
 
         public void MoveToGameScene()
         {

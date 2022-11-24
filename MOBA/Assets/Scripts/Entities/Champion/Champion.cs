@@ -9,30 +9,47 @@ namespace Entities.Champion
     public partial class Champion : Entity
     {
         public ChampionSO championSo;
-        
+        public Transform championInitPoint;
+        public Transform championMesh;
+
         private FogOfWarManager fowm;
         private CapacitySOCollectionManager capacityCollection;
+
         protected override void OnStart()
         {
             fowm = FogOfWarManager.Instance;
             capacityCollection = CapacitySOCollectionManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
+            if(UIManager.Instance != null)UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
+            if(UIManager.Instance != null)UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
         }
 
         protected override void OnUpdate()
         {
-            MovePlayerMaster();
-            MovePlayerLocal();
-        }
-        public override void OnInstantiated()
-        {
-            
+            //MovePlayerMaster();
+            //MovePlayerLocal();
+            Move();
+            for (int i = 0; i < 1; i++)
+            {
+                //photonView.RPC("SPAM", RpcTarget.All, .2515f,.8745f);
+            }
+
         }
 
-        public override void OnInstantiatedFeedback()
+        [PunRPC]
+        void SPAM(float floa, float flo)
         {
-            
+            Debug.Log("ca ma casser les couilles");
         }
+
+        private void Move()
+        {
+            transform.position += moveDirection * currentMoveSpeed * Time.deltaTime;
+        }
+
+        public override void OnInstantiated() { }
+
+        public override void OnInstantiatedFeedback() { }
 
         [PunRPC]
         public void ApplyChampionSORPC(byte championSoIndex)
@@ -47,15 +64,16 @@ namespace Entities.Champion
             referenceMoveSpeed = championSo.referenceMoveSpeed;
             currentMoveSpeed = referenceMoveSpeed;
             attackDamage = championSo.attackDamage;
-            
+
             // TODO - Implement Model/Prefab/Animator
-            GetComponent<Renderer>().material.color = championSo.color;
+            //GetComponent<Renderer>().material.color = championSo.color;
+            
+            
         }
 
         public void SyncApplyChampionSO(byte championSoIndex)
         {
-            photonView.RPC("ApplyChampionSORPC",RpcTarget.All,championSoIndex);
-            
+            photonView.RPC("ApplyChampionSORPC", RpcTarget.All, championSoIndex);
         }
     }
 }

@@ -1,15 +1,20 @@
 using System;
-using Entities.Capacities;
 using UnityEngine;
 
-public class ActiveZappieSO : ActiveCapacitySO
+namespace Entities.Capacities
 {
-    public GameObject projectile;
-    public float damageAmount;
-    public float speed;
-    
-    public override Type AssociatedType()
+    [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/Zappie", fileName = "new Zappie")]
+    public class ActiveZappieSO : ActiveCapacitySO
     {
-        return typeof(ActiveZappie);
+        public GameObject projectile;
+        public float damageAmount;
+        public float speed;
+    
+        public override Type AssociatedType()
+        {
+            return typeof(ActiveZappie);
+        }
     }
 }
+
+

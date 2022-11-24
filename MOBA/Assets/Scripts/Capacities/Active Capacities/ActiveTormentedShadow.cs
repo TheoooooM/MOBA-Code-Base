@@ -28,6 +28,10 @@ namespace Entities.Capacities
         {
             tickDamageTimer += GameStateMachine.Instance.tickRate;
 
+            Debug.Log(so.zoneRadius);
+            
+            Gizmos.DrawWireSphere(position, so.zoneRadius);
+            
             if (tickDamageTimer >= so.tickDamage)
             {
                 ApplyDamage();
@@ -66,6 +70,7 @@ namespace Entities.Capacities
         public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             Debug.Log("Morgana Gaming");
+            
         }
     }
 }
