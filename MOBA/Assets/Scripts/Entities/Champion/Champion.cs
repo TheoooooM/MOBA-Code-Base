@@ -1,4 +1,4 @@
-using Controllers;
+using Entities.Capacities;
 using Entities.FogOfWar;
 using GameStates;
 using Photon.Pun;
@@ -11,9 +11,11 @@ namespace Entities.Champion
         public ChampionSO championSo;
         
         private FogOfWarManager fowm;
+        private CapacitySOCollectionManager capacityCollection;
         protected override void OnStart()
         {
             fowm = FogOfWarManager.Instance;
+            capacityCollection = CapacitySOCollectionManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
         }
 

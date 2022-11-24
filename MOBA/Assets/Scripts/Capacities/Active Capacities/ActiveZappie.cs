@@ -6,13 +6,8 @@ namespace Entities.Capacities
     {
         private ActiveZappieSO so;
         private Vector3 dir;
-        
-        public override ActiveCapacitySO AssociatedActiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetActiveCapacitySOByName(so.name);
-        }
 
-        public override bool TryCast(uint entityIndex, uint[] targets, Vector3[] position)
+        public override bool TryCast(int entityIndex, int[] targets, Vector3[] position)
         {
             so = (ActiveZappieSO)AssociatedActiveCapacitySO();
             

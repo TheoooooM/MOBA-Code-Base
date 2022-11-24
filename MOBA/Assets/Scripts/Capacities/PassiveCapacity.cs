@@ -4,7 +4,7 @@ namespace Entities.Capacities
 {
     public abstract class PassiveCapacity
     {
-        private int referenceIndex; //Index Reference in CapacitySOCollectionManager
+        private byte indexOfSo; //Index Reference in CapacitySOCollectionManager
 
         private int count; //Amount of Stacks
 

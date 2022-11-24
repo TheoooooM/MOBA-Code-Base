@@ -218,6 +218,34 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""MoveMouse"",
+            ""id"": ""a7ceacff-6044-40be-a466-6447c599e434"",
+            ""actions"": [
+                {
+                    ""name"": ""MousePos"",
+                    ""type"": ""Value"",
+                    ""id"": ""101c5f66-bd62-4b89-b5fd-0dcc2376f192"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9074bc1f-6077-45bd-89cd-62bd87652634"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePos"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -236,6 +264,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_LockToggle = m_Camera.FindAction("LockToggle", throwIfNotFound: true);
+        // MoveMouse
+        m_MoveMouse = asset.FindActionMap("MoveMouse", throwIfNotFound: true);
+        m_MoveMouse_MousePos = m_MoveMouse.FindAction("MousePos", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -439,6 +470,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         }
     }
     public CameraActions @Camera => new CameraActions(this);
+
+    // MoveMouse
+    private readonly InputActionMap m_MoveMouse;
+    private IMoveMouseActions m_MoveMouseActionsCallbackInterface;
+    private readonly InputAction m_MoveMouse_MousePos;
+    public struct MoveMouseActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public MoveMouseActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MousePos => m_Wrapper.m_MoveMouse_MousePos;
+        public InputActionMap Get() { return m_Wrapper.m_MoveMouse; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MoveMouseActions set) { return set.Get(); }
+        public void SetCallbacks(IMoveMouseActions instance)
+        {
+            if (m_Wrapper.m_MoveMouseActionsCallbackInterface != null)
+            {
+                @MousePos.started -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnMousePos;
+                @MousePos.performed -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnMousePos;
+                @MousePos.canceled -= m_Wrapper.m_MoveMouseActionsCallbackInterface.OnMousePos;
+            }
+            m_Wrapper.m_MoveMouseActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @MousePos.started += instance.OnMousePos;
+                @MousePos.performed += instance.OnMousePos;
+                @MousePos.canceled += instance.OnMousePos;
+            }
+        }
+    }
+    public MoveMouseActions @MoveMouse => new MoveMouseActions(this);
     public interface IAttackActions
     {
         void OnAttack(InputAction.CallbackContext context);
@@ -456,5 +520,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface ICameraActions
     {
         void OnLockToggle(InputAction.CallbackContext context);
+    }
+    public interface IMoveMouseActions
+    {
+        void OnMousePos(InputAction.CallbackContext context);
     }
 }

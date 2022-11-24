@@ -1,3 +1,5 @@
+using System;
+using Entities.Capacities;
 using UnityEngine;
 using Photon.Pun;
 
@@ -26,24 +28,31 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnSetCanCast;
         public event GlobalDelegates.FloatDelegate OnSetCanCastFeedback;
 
-        public void RequestCast(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        public void RequestCast(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             photonView.RPC("CastRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
         }
         
         [PunRPC]
-        public void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        public void CastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
-            Debug.Log($"Trying to cast ability at index {capacityIndex}");
+            var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
+            Debug.Log($"Trying to cast {activeCapacity.AssociatedActiveCapacitySO().name}");
+            if (activeCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
+            {
+                photonView.RPC("SyncCastRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
+            }
+            
         }
 
         [PunRPC]
-        public void SyncCastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        public void SyncCastRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
-            
+            var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
+            activeCapacity.PlayFeedback();
         }
         
-        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCast;
-        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCastFeedback;
+        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCast;
+        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCastFeedback;
     }
 }

@@ -125,7 +125,7 @@ namespace Entities
         public event GlobalDelegates.FloatDelegate OnSetBaseViewRange;
         public event GlobalDelegates.FloatDelegate OnSetBaseViewRangeFeedback;
         
-        public void AddShowable(uint seenEntityIndex)
+        public void AddShowable(int seenEntityIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
             if(entity == null) return;
@@ -152,7 +152,7 @@ namespace Entities
         }
         
         [PunRPC]
-        public void SyncAddShowableRPC(uint seenEntityIndex)
+        public void SyncAddShowableRPC(int seenEntityIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
             if(entity == null) return;
@@ -166,10 +166,10 @@ namespace Entities
             if(!PhotonNetwork.IsMasterClient) showable.TryAddFOWViewable(this);
         }
         
-        public event GlobalDelegates.UintDelegate OnAddShowable;
-        public event GlobalDelegates.UintDelegate OnAddShowableFeedback;
+        public event GlobalDelegates.IntDelegate OnAddShowable;
+        public event GlobalDelegates.IntDelegate OnAddShowableFeedback;
         
-        public void RemoveShowable(uint seenEntityIndex)
+        public void RemoveShowable(int seenEntityIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
             if(entity == null) return;
@@ -196,7 +196,7 @@ namespace Entities
         }
         
         [PunRPC]
-        public void SyncRemoveShowableRPC(uint seenEntityIndex)
+        public void SyncRemoveShowableRPC(int seenEntityIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(seenEntityIndex);
             if(entity == null) return;
@@ -210,8 +210,8 @@ namespace Entities
             if(!PhotonNetwork.IsMasterClient) showable.TryRemoveFOWViewable(this);
         }
         
-        public event GlobalDelegates.UintDelegate OnRemoveShowable;
-        public event GlobalDelegates.UintDelegate OnRemoveShowableFeedback;
+        public event GlobalDelegates.IntDelegate OnRemoveShowable;
+        public event GlobalDelegates.IntDelegate OnRemoveShowableFeedback;
 }       
 }       
         

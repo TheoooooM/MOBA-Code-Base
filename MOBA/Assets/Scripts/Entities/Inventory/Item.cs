@@ -9,7 +9,7 @@ namespace Entities.Inventory
         public string referenceName;
         public string itemName;
         public string description;
-        public uint usesLeft;
+        public int usesLeft;
 
         public byte[] passiveCapacitiesIndexes;
         public byte[] activeCapacitiesIndexes;
@@ -49,7 +49,7 @@ namespace Entities.Inventory
             
         }
 
-        public virtual void OnItemActivated(uint[] targets,Vector3[] positions)
+        public virtual void OnItemActivated(int[] targets,Vector3[] positions)
         {
             var castable = entityOfInventory.GetComponent<ICastable>();
             if(castable == null) return;
@@ -59,7 +59,7 @@ namespace Entities.Inventory
             }
         }
 
-        public virtual void OnItemActivatedFeedback(uint[] targets,Vector3[] positions)
+        public virtual void OnItemActivatedFeedback(int[] targets,Vector3[] positions)
         {
             var castable = entityOfInventory.GetComponent<ICastable>();
             if(castable == null) return;

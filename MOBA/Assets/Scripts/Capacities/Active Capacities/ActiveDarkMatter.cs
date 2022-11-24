@@ -9,12 +9,7 @@ public class ActiveDarkMatter : ActiveCapacity
     private ActiveDarkMatterSO activeCapacitySo;
     private Vector3[] dir;
 
-    public override ActiveCapacitySO AssociatedActiveCapacitySO()
-    {
-        return CapacitySOCollectionManager.Instance.GetActiveCapacitySOByName(activeCapacitySo.name);
-    }
-
-    public override bool TryCast(uint entityIndex, uint[] targets, Vector3[] position)
+    public override bool TryCast(int entityIndex, int[] targets, Vector3[] position)
     {
         if (Vector3.Distance(position[0], caster.transform.position) > activeCapacitySo.maxRange){return false;}
         

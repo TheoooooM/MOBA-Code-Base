@@ -18,16 +18,16 @@ namespace Entities.FogOfWar
         public void SetCanHideRPC(bool value);
         public event GlobalDelegates.BoolDelegate OnSetCanHide;
         public event GlobalDelegates.BoolDelegate OnSetCanHideFeedback;
-        public void TryAddFOWViewable(uint viewableIndex);
+        public void TryAddFOWViewable(int viewableIndex);
         public void TryAddFOWViewable(IFOWViewable viewable);
-        public void SyncTryAddViewableRPC(uint viewableIndex,bool show);
+        public void SyncTryAddViewableRPC(int viewableIndex,bool show);
         public void ShowElements();
         public event GlobalDelegates.NoParameterDelegate OnShowElement;
         public event GlobalDelegates.NoParameterDelegate OnShowElementFeedback;
 
-        public void TryRemoveFOWViewable(uint viewableIndex);
+        public void TryRemoveFOWViewable(int viewableIndex);
         public void TryRemoveFOWViewable(IFOWViewable viewable);
-        public void SyncTryRemoveViewableRPC(uint viewableIndex,bool hide);
+        public void SyncTryRemoveViewableRPC(int viewableIndex,bool hide);
         public void HideElements();
         public event GlobalDelegates.NoParameterDelegate OnHideElement;
         public event GlobalDelegates.NoParameterDelegate OnHideElementFeedback;

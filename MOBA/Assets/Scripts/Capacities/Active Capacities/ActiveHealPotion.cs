@@ -6,13 +6,8 @@ namespace Entities.Capacities
     {
         private ActiveHealPotionSO so;
         private IActiveLifeable lifeable;
-        
-        public override ActiveCapacitySO AssociatedActiveCapacitySO()
-        {
-            return CapacitySOCollectionManager.Instance.GetActiveCapacitySOByName(so.name);
-        }
 
-        public override bool TryCast(uint entityIndex, uint[] targets, Vector3[] position)
+        public override bool TryCast(int entityIndex, int[] targets, Vector3[] position)
         {
             lifeable = caster.GetComponent<IActiveLifeable>();
             

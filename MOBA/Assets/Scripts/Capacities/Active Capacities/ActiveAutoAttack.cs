@@ -8,14 +8,9 @@ public class ActiveAutoAttack : ActiveCapacity
     
     private ActiveAutoAttackSO activeAutoAttackSO; 
     private float attackTimer;
-    private uint target;
-    
-    public override ActiveCapacitySO AssociatedActiveCapacitySO()
-    {
-        return CapacitySOCollectionManager.Instance.GetActiveCapacitySOByName(activeAutoAttackSO.name);
-    }
+    private int target;
 
-    public override bool TryCast(uint entityIndex, uint[] targets, Vector3[] direction)
+    public override bool TryCast(int entityIndex, int[] targets, Vector3[] direction)
     {
         //if the time since the last attack is lower than the attack speed or the target is not in range, return false
         if (!IsTargetInRange(entityIndex, targets[0]))
@@ -30,7 +25,7 @@ public class ActiveAutoAttack : ActiveCapacity
         return true;
     }
 
-    private bool IsTargetInRange(uint entityIndex, uint target)
+    private bool IsTargetInRange(int entityIndex, int target)
     {
         //get the distance between the entity and the target
         float distance = Vector3.Distance(EntityCollectionManager.GetEntityByIndex(entityIndex).transform.position, EntityCollectionManager.GetEntityByIndex(target).transform.position);

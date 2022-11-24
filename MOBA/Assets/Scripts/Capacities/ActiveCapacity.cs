@@ -5,13 +5,16 @@ namespace Entities.Capacities
 {
     public abstract class ActiveCapacity
     {
-        private int referenceIndex;
+        public byte indexOfSOInCollection;
         
-        protected Entity caster;
+        public Entity caster;
         
-        public abstract ActiveCapacitySO AssociatedActiveCapacitySO();
-
-        public abstract bool TryCast(uint entityIndex,uint[] targets, Vector3[] position);
+        public ActiveCapacitySO AssociatedActiveCapacitySO()
+        {
+            return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
+        }
+        
+        public abstract bool TryCast(int entityIndex, int[] targets, Vector3[] position);
 
         public abstract void PlayFeedback();
     }

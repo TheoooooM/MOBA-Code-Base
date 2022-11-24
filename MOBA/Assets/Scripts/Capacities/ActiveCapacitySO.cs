@@ -21,6 +21,12 @@ namespace Entities.Capacities
         
         [Tooltip("All types of the capacity")] public List<Enums.CapacityType> types;
         
+        /// <summary>
+        /// return typeof(ActiveCapacity);
+        /// </summary>
+        /// <returns>the type of ActiveCapacity associated with this ActiveCapacitySO</returns>
         public abstract Type AssociatedType();
+
+        [HideInInspector] public byte indexInCollection;
     }
 }

@@ -34,15 +34,15 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
         public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
 
-        public void RequestAttack(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
+        public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions) { }
 
         [PunRPC]
-        public void SyncAttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
+        public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions) { }
 
         [PunRPC]
-        public void AttackRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
+        public void AttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions) { }
 
-        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnAttack;
-        public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnAttackFeedback;
+        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
+        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttackFeedback;
     }
 }

@@ -15,9 +15,15 @@ namespace Entities.Capacities
         [TextArea(4, 4)] [Tooltip("Description of the capacity")]
         public string description;
 
+        
+        /// <summary>
+        /// return typeof(PassiveCapacity);
+        /// </summary>
         /// <returns>the type of PassiveCapacity associated with this PassiveCapacitySO</returns>
         public abstract Type AssociatedType();
 
         [Tooltip("All types of the capacity")] public List<Enums.CapacityType> types;
+
+        [HideInInspector] public byte indexInCollection;
     }
 }
