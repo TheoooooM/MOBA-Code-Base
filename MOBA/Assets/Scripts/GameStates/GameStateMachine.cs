@@ -173,7 +173,7 @@ namespace GameStates
             OnTickFeedback?.Invoke();
         }
 
-        public Enums.Team GetPlayerTeam(int actorNumber)
+        private Enums.Team GetPlayerTeam(int actorNumber)
         {
             return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].team : Enums.Team.Neutral;
         }
@@ -296,7 +296,7 @@ namespace GameStates
         {
             photonView.RPC("SendDataDictionaryRPC", RpcTarget.MasterClient);
         }
-        
+
         [PunRPC]
         private void SendDataDictionaryRPC()
         {
@@ -370,6 +370,13 @@ namespace GameStates
             SwitchState(1);
         }
 
+        [PunRPC]
+        public void MoveToGameScene()
+        {
+            PhotonNetwork.IsMessageQueueRunning = false;
+            PhotonNetwork.LoadLevel(gameSceneName);
+        }
+
         /// <summary>
         /// Executed by MapLoaderManager on a GO on the scene 'gameSceneName', so only once the scene is loaded
         /// </summary>
@@ -398,7 +405,6 @@ namespace GameStates
         {
             var pos = new Vector3(Random.Range(0f, 10f), 1, Random.Range(0f, 10f));
             var champion = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, pos, Quaternion.identity);
-            champion.SendStartPosition(pos);
             champion.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
 
             LinkController(champion);
@@ -420,6 +426,7 @@ namespace GameStates
             // We take data
 
             var data = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
+
             if (data.championSOIndex >= allChampionsSo.Length)
             {
                 Debug.LogWarning("Make sure the mesh is valid. Selects default mesh.");
@@ -431,18 +438,19 @@ namespace GameStates
             // We state name
             champion.name += $" / {championSo.name}";
 
-            // We set team
-            champion.RequestChangeTeam(data.team);
-
             // We sync data and champion mesh
-            champion.SyncApplyChampionSO(data.championSOIndex);
+            champion.SyncApplyChampionSO(data.championSOIndex, data.team);
+        }
+
+        public void SendWinner(Enums.Team team)
+        {
+            photonView.RPC("SyncWinnerRPC", RpcTarget.All, (byte)team);
         }
 
         [PunRPC]
-        public void MoveToGameScene()
+        private void SyncWinnerRPC(byte team)
         {
-            PhotonNetwork.IsMessageQueueRunning = false;
-            PhotonNetwork.LoadLevel(gameSceneName);
+            winner = (Enums.Team)team;
         }
     }
 }

@@ -19,8 +19,8 @@ public class PoolNetworkManager : MonoBehaviour
     public static PoolNetworkManager Instance;
 
     [SerializeField] private List<ElementData> poolElements;
-
-    private static Dictionary<Entity, Queue<Entity>> queuesDictionary;
+    
+    public static Dictionary<Entity, Queue<Entity>> queuesDictionary;
 
     private void Awake()
     {

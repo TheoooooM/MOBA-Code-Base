@@ -17,7 +17,7 @@ public class PoolLocalManager : MonoBehaviour
 
     [SerializeField] private List<ElementData> poolElements;
 
-    private static Dictionary<GameObject, Queue<GameObject>> queuesDictionary;
+    public static Dictionary<GameObject, Queue<GameObject>> queuesDictionary;
 
     private void Awake()
     {
@@ -32,7 +32,6 @@ public class PoolLocalManager : MonoBehaviour
     private void Start()
     {
         SetupDictionary();
-        
     }
 
     private void SetupDictionary()
@@ -51,6 +50,13 @@ public class PoolLocalManager : MonoBehaviour
         }
     }
 
+    public void EnqueuePool(GameObject objectPrefab, GameObject go)
+    {
+        Debug.Log("Enqueue " + go);
+        queuesDictionary[objectPrefab].Enqueue(go);
+        go.SetActive(false);
+    }
+
     public GameObject PoolInstantiate(GameObject GORef, Vector3 position, Quaternion rotation, Transform parent = null)
     {
         GameObject returnGO;
@@ -67,6 +73,7 @@ public class PoolLocalManager : MonoBehaviour
                 returnGO = queue.Dequeue();
                 returnGO.transform.position = position;
                 returnGO.transform.rotation = rotation;
+                returnGO.SetActive(true);
             }
         }
         else

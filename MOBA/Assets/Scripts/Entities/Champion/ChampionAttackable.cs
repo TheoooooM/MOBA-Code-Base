@@ -47,6 +47,8 @@ namespace Entities.Champion
         
         public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
         public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
+        
+        
 
         public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
