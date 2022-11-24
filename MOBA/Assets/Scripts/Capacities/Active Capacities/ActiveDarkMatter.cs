@@ -11,13 +11,12 @@ public class ActiveDarkMatter : ActiveCapacity
 
     public override bool TryCast(int casterIndex, int[] targets, Vector3[] position)
     {
-        if (Vector3.Distance(position[0], caster.transform.position) > activeCapacitySo.maxRange){return false;}
-        
         activeCapacitySo = (ActiveDarkMatterSO)AssociatedActiveCapacitySO();
+        
+        if (Vector3.Distance(position[0], caster.transform.position) > activeCapacitySo.maxRange){return false;}
         
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
         
-        caster = EntityCollectionManager.GetEntityByIndex(casterIndex);
         dir = position;
 
         return true;

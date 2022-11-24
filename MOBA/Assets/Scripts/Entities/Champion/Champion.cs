@@ -49,12 +49,16 @@ namespace Entities.Champion
             referenceMoveSpeed = championSo.referenceMoveSpeed;
             currentMoveSpeed = referenceMoveSpeed;
             attackDamage = championSo.attackDamage;
-
-            var championMesh = Instantiate(championSo.championMeshPrefab, championInitPoint.position,
+            attackAbilityIndex = championSo.attackAbilityIndex;
+            abilitiesIndexes = championSo.activeCapacitiesIndexes;
+            ultimateAbilityIndex = championSo.ultimateAbilityIndex;
+            
+             var championMesh = Instantiate(championSo.championMeshPrefab, championInitPoint.position,
                 Quaternion.identity, championInitPoint);
 
             this.team = (Enums.Team)team;
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
+            
         }
 
         public void SyncApplyChampionSO(byte championSoIndex, Enums.Team team)
