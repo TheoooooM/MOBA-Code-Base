@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.AI;
 
 namespace Entities.Champion
 {
@@ -11,8 +12,10 @@ namespace Entities.Champion
         public bool canMove;
         private Vector3 moveDirection;
         
-        // League Of Legends
+        // === League Of Legends
         private int mouseTargetIndex;
+        //NavMesh
+        private NavMeshAgent agent;
 
         public bool CanMove()
         {
@@ -133,8 +136,15 @@ namespace Entities.Champion
 
         #region League Of Legends
 
-        
-        
+
+        void MoveToPosition(Vector3 position)
+        {
+            position.y = transform.position.y;
+            agent.SetDestination(position);
+            
+            if (agent.remainingDistance <= agent.stoppingDistance || Vector3.Distance(transform.position, position) < 0.1f)agent.SetDestination(transform.position);
+
+        }
 
         #endregion
         

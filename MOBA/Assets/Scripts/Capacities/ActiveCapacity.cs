@@ -44,9 +44,10 @@ namespace Entities.Capacities
                 if (targetsEntityIndexes.Length > 0)
                 {
                     target = targetsEntityIndexes[0];
-                    
-                    if (!IsTargetInRange())
+
+                    if (!IsTargetInRange() && AssociatedActiveCapacitySO().isTargeting)
                     {
+                        
                         return false;
                     }
                 }
