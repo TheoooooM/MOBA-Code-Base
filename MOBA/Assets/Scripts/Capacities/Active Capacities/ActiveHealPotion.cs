@@ -9,6 +9,8 @@ namespace Entities.Capacities
 
         public override bool TryCast(int casterIndex, int[] targets, Vector3[] position)
         {
+            so = (ActiveHealPotionSO)AssociatedActiveCapacitySO();
+            Debug.Log("try cast heal potion");
             lifeable = caster.GetComponent<IActiveLifeable>();
             
             lifeable.IncreaseCurrentHpRPC(so.healAmount);
@@ -18,7 +20,7 @@ namespace Entities.Capacities
 
         public override void PlayFeedback(int entityIndex, int[] targets, Vector3[] position)
         {
-            
+            Debug.Log("Play the potion feedback");
         }
     }
 }
