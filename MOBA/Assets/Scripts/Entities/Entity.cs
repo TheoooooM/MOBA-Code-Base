@@ -40,7 +40,7 @@ namespace Entities
         /// <summary>
         /// Replaces the Start() method.
         /// </summary>
-        protected abstract void OnStart();
+        protected virtual void OnStart(){}
 
         private void Update()
         {
@@ -50,7 +50,7 @@ namespace Entities
         /// <summary>
         /// Replaces the Update() method.
         /// </summary>
-        protected abstract void OnUpdate();
+        protected virtual void OnUpdate(){}
 
         #region MasterMethods
 
@@ -60,7 +60,7 @@ namespace Entities
             OnInstantiated();
         }
         
-        public abstract void OnInstantiated();
+        public virtual void OnInstantiated(){}
         
         [PunRPC]
         public void SyncInstantiateRPC(Vector3 position, Quaternion rotation)
@@ -70,7 +70,7 @@ namespace Entities
             OnInstantiatedFeedback();
         }
         
-        public abstract void OnInstantiatedFeedback();
+        public virtual void OnInstantiatedFeedback(){}
 
         /// <summary>
         /// Sends an RPC to the master to set the value canAddPassiveCapacity.
