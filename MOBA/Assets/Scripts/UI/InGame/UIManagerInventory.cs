@@ -13,6 +13,7 @@ public partial class UIManager
     [SerializeField] private List<InventoryPanel> inventoriesPanel = new List<InventoryPanel>();
     [SerializeField] private List<LocalInventorySlots> ListLocalInventorySlots = new List<LocalInventorySlots>();
     [SerializeField] private RectTransform InventoryCanvas;
+    [SerializeField] private RectTransform ShopCanvas;
     
     private Dictionary<int,InventoryPanel> inventoryPanelsDict = new Dictionary<int, InventoryPanel>();
     
@@ -46,6 +47,12 @@ public partial class UIManager
     {
         InventoryCanvas.gameObject.SetActive(show);
     }
+    
+    public void ShowHideShop()
+    {
+        ShopCanvas.gameObject.SetActive(!ShopCanvas.gameObject.activeSelf);
+    }
+    
     public void InitInventoryUI()
     {
         inventoriesPanel.Clear();

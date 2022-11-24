@@ -196,6 +196,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ShowHideShop",
+                    "type": "Button",
+                    "id": "5da3651d-bad5-49a5-82ab-367f853b0c22",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -240,6 +249,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ShowHideInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "55cf922e-a410-4a8a-9dbe-2f2e5a1bf70e",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShowHideShop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

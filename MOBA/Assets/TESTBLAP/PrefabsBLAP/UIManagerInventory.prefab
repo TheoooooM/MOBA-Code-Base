@@ -441,6 +441,7 @@ MonoBehaviour:
   - slotImages: {fileID: 2902239125359363027}
     slotButton: {fileID: 5940086018044920530}
   InventoryCanvas: {fileID: 7498691665753908636}
+  ShopCanvas: {fileID: 7498691667280078573}
   resourceBarPrefab: {fileID: 5630961168596188745, guid: 005e9dc584e3abd4db884d636a71c910, type: 3}
 --- !u!114 &1174079734156847840
 MonoBehaviour:
@@ -2821,7 +2822,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7498691665753908636
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3515,7 +3516,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7498691667280078573
 RectTransform:
   m_ObjectHideFlags: 0
