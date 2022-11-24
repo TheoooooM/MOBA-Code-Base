@@ -61,6 +61,7 @@ namespace Controllers.Inputs
         {
             champion.RequestActivateItem(0,selectedEntity,cursorWorldPos);
         }
+        
         /// <summary>
         /// Actions Performed on Item 1 Activation
         /// </summary>
@@ -170,7 +171,9 @@ namespace Controllers.Inputs
             }
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;
-
+            
+            inputs.Inventory.ShowHideInventory.started += context => UIManager.Instance.ShowHideInventory(true);
+            inputs.Inventory.ShowHideInventory.canceled += context => UIManager.Instance.ShowHideInventory(false);
             inputs.Inventory.ActivateItem0.performed += OnActivateItem0;
             inputs.Inventory.ActivateItem1.performed += OnActivateItem1;
             inputs.Inventory.ActivateItem2.performed += OnActivateItem2;
@@ -187,7 +190,7 @@ namespace Controllers.Inputs
             
             inputs.Movement.Move.performed -= OnMoveChange;
             inputs.Movement.Move.canceled -= OnMoveChange;
-            
+
             inputs.MoveMouse.MousePos.performed -= OnMouseMove;
 
             CameraController.Instance.UnLinkCamera();

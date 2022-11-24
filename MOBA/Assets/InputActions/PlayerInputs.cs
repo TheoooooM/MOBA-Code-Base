@@ -209,6 +209,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShowHideInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""9c1bae78-20ad-4650-8f18-6dca8a7e31ac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -242,6 +251,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ActivateItem2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32496955-de5e-4a8e-8614-aee2153d3b44"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowHideInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -342,6 +362,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Inventory_ActivateItem0 = m_Inventory.FindAction("ActivateItem0", throwIfNotFound: true);
         m_Inventory_ActivateItem1 = m_Inventory.FindAction("ActivateItem1", throwIfNotFound: true);
         m_Inventory_ActivateItem2 = m_Inventory.FindAction("ActivateItem2", throwIfNotFound: true);
+        m_Inventory_ShowHideInventory = m_Inventory.FindAction("ShowHideInventory", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_LockToggle = m_Camera.FindAction("LockToggle", throwIfNotFound: true);
@@ -526,6 +547,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Inventory_ActivateItem0;
     private readonly InputAction m_Inventory_ActivateItem1;
     private readonly InputAction m_Inventory_ActivateItem2;
+    private readonly InputAction m_Inventory_ShowHideInventory;
     public struct InventoryActions
     {
         private @PlayerInputs m_Wrapper;
@@ -533,6 +555,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @ActivateItem0 => m_Wrapper.m_Inventory_ActivateItem0;
         public InputAction @ActivateItem1 => m_Wrapper.m_Inventory_ActivateItem1;
         public InputAction @ActivateItem2 => m_Wrapper.m_Inventory_ActivateItem2;
+        public InputAction @ShowHideInventory => m_Wrapper.m_Inventory_ShowHideInventory;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -551,6 +574,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ActivateItem2.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnActivateItem2;
                 @ActivateItem2.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnActivateItem2;
                 @ActivateItem2.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnActivateItem2;
+                @ShowHideInventory.started -= m_Wrapper.m_InventoryActionsCallbackInterface.OnShowHideInventory;
+                @ShowHideInventory.performed -= m_Wrapper.m_InventoryActionsCallbackInterface.OnShowHideInventory;
+                @ShowHideInventory.canceled -= m_Wrapper.m_InventoryActionsCallbackInterface.OnShowHideInventory;
             }
             m_Wrapper.m_InventoryActionsCallbackInterface = instance;
             if (instance != null)
@@ -564,6 +590,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ActivateItem2.started += instance.OnActivateItem2;
                 @ActivateItem2.performed += instance.OnActivateItem2;
                 @ActivateItem2.canceled += instance.OnActivateItem2;
+                @ShowHideInventory.started += instance.OnShowHideInventory;
+                @ShowHideInventory.performed += instance.OnShowHideInventory;
+                @ShowHideInventory.canceled += instance.OnShowHideInventory;
             }
         }
     }
@@ -661,6 +690,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnActivateItem0(InputAction.CallbackContext context);
         void OnActivateItem1(InputAction.CallbackContext context);
         void OnActivateItem2(InputAction.CallbackContext context);
+        void OnShowHideInventory(InputAction.CallbackContext context);
     }
     public interface ICameraActions
     {
