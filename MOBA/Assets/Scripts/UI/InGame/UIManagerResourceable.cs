@@ -4,7 +4,9 @@ using UnityEngine;
 
 public partial class UIManager
 {
-    [SerializeField] private Dictionary<int, Canvas> entitiesResource = new Dictionary<int, Canvas>();
+    [Header("ResourceBar Elements")]
+    [SerializeField] private readonly Dictionary<int, Canvas> entitiesResource = new Dictionary<int, Canvas>();
+    [SerializeField] private Vector3 offsetResourceBar = new Vector3(0, 2.0f, 0);
     [SerializeField] private EntityResourceBar resourceBarPrefab;
     
     public void InstantiateResourceBarForEntity(int entityIndex)
@@ -13,8 +15,8 @@ public partial class UIManager
         {
             Transform entityTransform = EntityCollectionManager.GetEntityByIndex(entityIndex).transform;
             Canvas canvas = Instantiate(canvasPrefab, entityTransform);
-            EntityResourceBar resourceBar = Instantiate(resourceBarPrefab, canvas.transform);
-            resourceBar.transform.LookAt(Camera.main.transform);
+            if (Camera.main != null) canvas.transform.LookAt(Camera.main.transform);
+            EntityResourceBar resourceBar = Instantiate(resourceBarPrefab, Vector3.zero + offsetResourceBar, Quaternion.identity, canvas.transform);
             entitiesResource.Add(entityIndex, canvas);
             resourceBar.SetResource(entityIndex);
         }
