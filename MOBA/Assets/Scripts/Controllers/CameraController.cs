@@ -16,7 +16,7 @@ namespace Controllers
 
         [SerializeField] private Vector3 offset;
         [SerializeField] private float lerpSpeed;
-
+        [SerializeField] private float rotationY;
         public void Awake()
         {
             if (Instance != null && Instance != this)
@@ -66,30 +66,31 @@ namespace Controllers
             else
             {
                 nextPos = transform.position;
-
-                //if the mouse is at the edge of the screen the camera moves
+                
                 if (Input.mousePosition.x >= Screen.width - 1)
                 {
-                    nextPos += new Vector3(cameraSpeed, 0, -cameraSpeed).normalized;
+                    nextPos += transform.right * cameraSpeed;
                 }
-
+                
                 if (Input.mousePosition.x <= 0)
                 {
-                    nextPos += new Vector3(-cameraSpeed, 0, cameraSpeed).normalized;
+                    nextPos -= transform.right * cameraSpeed;
                 }
-
+                
                 if (Input.mousePosition.y >= Screen.height - 1)
                 {
-                    nextPos += new Vector3(cameraSpeed, 0, cameraSpeed).normalized;
+                    nextPos += transform.forward * cameraSpeed;
                 }
-
+                
                 if (Input.mousePosition.y <= 0)
                 {
-                    nextPos += new Vector3(-cameraSpeed, 0, -cameraSpeed).normalized;
+                    nextPos -= transform.forward * cameraSpeed;
                 }
-
+                
                 transform.position = Vector3.Lerp(transform.position, nextPos, Time.deltaTime * lerpSpeed);
+                
             }
+            transform.rotation = Quaternion.Euler(transform.rotation.x, rotationY, transform.rotation.z);
         }
     }
 }
