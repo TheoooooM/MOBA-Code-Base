@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 66387207781892278}
   - component: {fileID: 2131553985546965360}
   - component: {fileID: 6751264261895473307}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,9 @@ MonoBehaviour:
   canCast: 0
   isAlive: 0
   canDie: 0
+  timer: 10
   canBeDisplaced: 0
+  items: []
   isBattlerite: 0
   referenceMoveSpeed: 10
   currentMoveSpeed: 10
@@ -183,7 +185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1874783859807748408}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: ChampionMeshInitPoint
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}

@@ -37,8 +37,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Entity
+  - Obstacle
   - FoW
   m_SortingLayers:
   - name: Default

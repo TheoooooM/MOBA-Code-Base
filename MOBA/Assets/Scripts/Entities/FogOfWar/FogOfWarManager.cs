@@ -199,8 +199,12 @@ namespace Entities.FogOfWar
             Vector3 dir = DirFromAngle(globalAngle, true);
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, dir, out hit, entity.viewRange, layerTargetFogOfWar))
+            Debug.Log("bonsoir");
+      
+            if (Physics.Raycast(entity.transform.position, dir, out hit, entity.viewRange, layerTargetFogOfWar))
             {
+                Debug.Log("Detect collision");
+                Debug.DrawRay(entity.transform.position, dir * entity.viewRange, Color.green, Time.deltaTime);
                 Entity candidateEntity = hit.collider.gameObject.GetComponent<Entity>();
                 if (candidateEntity != null)
                 {
@@ -210,7 +214,7 @@ namespace Entities.FogOfWar
             }
             else
             {
-                return new ViewCastInfo(false, transform.position + dir * entity.viewRange, entity.viewRange, globalAngle);
+                return new ViewCastInfo(false,   dir * entity.viewRange, entity.viewRange, globalAngle);
             }
         }
 

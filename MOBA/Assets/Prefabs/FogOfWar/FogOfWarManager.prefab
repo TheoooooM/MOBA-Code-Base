@@ -176,6 +176,9 @@ MonoBehaviour:
   - _InGameScene
   - _FogOfWarDebugTestTry
   fogColor: {r: 1, g: 0, b: 0, a: 1}
+  layerTargetFogOfWar:
+    serializedVersion: 2
+    m_Bits: 1610612736
   fogMat: {fileID: 2100000, guid: 269845f80d310d74db13180ca168d3e1, type: 2}
   worldSize: 50
   worldSizeGizmos: 1
