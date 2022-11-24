@@ -10,8 +10,9 @@ namespace Entities.Champion
         public float currentRotateSpeed;
         public bool canMove;
         private Vector3 moveDirection;
-        private Vector3 truePosition;
-        private bool truePositionSet;
+        
+        // League Of Legends
+        private int mouseTargetIndex;
 
         public bool CanMove()
         {
@@ -105,18 +106,12 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
 
-        public void SendStartPosition(Vector3 position)
-        {
-            photonView.RPC("SetStartPosition", RpcTarget.All, position);
-        }
+        
 
-        [PunRPC]
-        void SetStartPosition(Vector3 pos)
-        {
-            truePosition = pos;
-            truePositionSet = true;
-        }
+       
 
+        #region Battlerite
+        
         private void Move()
         {
             transform.position += moveDirection * (currentMoveSpeed * Time.deltaTime);
@@ -134,6 +129,15 @@ namespace Entities.Champion
             moveDirection = direction;
         }
 
+        #endregion
+
+        #region League Of Legends
+
+        
+        
+
+        #endregion
+        
         public event GlobalDelegates.Vector3Delegate OnMove;
         public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
     }

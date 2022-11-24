@@ -94,7 +94,7 @@ namespace Controllers.Inputs
         /// </summary>
         /// <param name="mousePos"></param>
         /// <returns></returns>
-        private int GetMouseOverEntity(Vector2 mousePos)
+        public int GetMouseOverEntity(Vector2 mousePos)
         {
             Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -112,7 +112,7 @@ namespace Controllers.Inputs
         /// </summary>
         /// <param name="mousePos"></param>
         /// <returns></returns>
-        private Vector3 GetMouseOverWorldPos(Vector2 mousePos)
+        public Vector3 GetMouseOverWorldPos(Vector2 mousePos)
         {
             Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
 
