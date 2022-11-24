@@ -13,7 +13,7 @@ public class MinionSpawner : MonoBehaviour
     private readonly float spawnSpeed = 30;
     public Color minionColor;
     public List<Transform> pathfinding = new List<Transform>();
-    public List<Objectives> enemyTowers = new List<Objectives>();
+    public List<Building> enemyTowers = new List<Building>();
     public string unitTag;
     
     private void Update()

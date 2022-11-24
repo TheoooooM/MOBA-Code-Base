@@ -13,7 +13,7 @@ public class MinionTest : Entity, IMoveable
     
     [Header("Pathfinding")] 
     public List<Transform> myWaypoints = new List<Transform>();
-    public List<Objectives> TowersList = new List<Objectives>();
+    public List<Building> TowersList = new List<Building>();
     public int wayPointIndex;
     public int towerIndex;
 
