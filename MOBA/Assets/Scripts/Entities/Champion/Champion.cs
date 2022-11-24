@@ -22,7 +22,7 @@ namespace Entities.Champion
         protected override void OnUpdate()
         {
             MovePlayerMaster();
-            MovePlayerLocal();
+            //MovePlayerLocal();
         }
         public override void OnInstantiated()
         {
