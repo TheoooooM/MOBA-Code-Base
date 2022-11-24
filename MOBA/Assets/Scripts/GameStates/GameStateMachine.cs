@@ -365,7 +365,7 @@ namespace GameStates
             // We set local parameters
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
-            controller.TransferOwnerShipToMaster();
+            //controller.TransferOwnerShipToMaster();
         }
 
         private void LinkChampionData(Champion champion)

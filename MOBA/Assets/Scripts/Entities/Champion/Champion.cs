@@ -26,8 +26,25 @@ namespace Entities.Champion
 
         protected override void OnUpdate()
         {
-            MovePlayerMaster();
+            //MovePlayerMaster();
             //MovePlayerLocal();
+            Move();
+            for (int i = 0; i < 1; i++)
+            {
+                //photonView.RPC("SPAM", RpcTarget.All, .2515f,.8745f);
+            }
+
+        }
+
+        [PunRPC]
+        void SPAM(float floa, float flo)
+        {
+            Debug.Log("ca ma casser les couilles");
+        }
+
+        private void Move()
+        {
+            transform.position += moveDirection * currentMoveSpeed * Time.deltaTime;
         }
 
         public override void OnInstantiated() { }

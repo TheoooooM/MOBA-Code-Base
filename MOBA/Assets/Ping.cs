@@ -6,16 +6,18 @@ using UnityEngine;
 
 public class Ping : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private TextMeshProUGUI ping;
+    [SerializeField] private TextMeshProUGUI master;
     // Start is called before the first frame update
     void Start()
     {
-        text = GetComponent<TextMeshProUGUI>();
+        ping = GetComponent<TextMeshProUGUI>();
+        master.text = $"Master : {PhotonNetwork.IsMasterClient}";
     }
 
     // Update is called once per frame
     void Update()
     {
-        text.text = $"Ping : {PhotonNetwork.GetPing()}";
+        ping.text = $"Ping : {PhotonNetwork.GetPing()}";
     }
 }
