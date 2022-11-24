@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Controllers.Inputs;
@@ -6,6 +7,7 @@ using Entities.Inventory;
 using Photon.Pun;
 using GameStates.States;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameStates
 {
@@ -38,6 +40,15 @@ namespace GameStates
 
         public ChampionSO[] allChampionsSo;
         public Enums.Team[] allTeams;
+
+        public TeamColor[] teamColors;
+        
+        [Serializable]
+        public struct TeamColor
+        {
+            public Enums.Team team;
+            public Color color;
+        }
 
         private void Awake()
         {
@@ -343,13 +354,14 @@ namespace GameStates
             champion.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
             
             LinkController(champion);
-            
             LinkChampionData(champion);
         }
 
         private void LinkController(Champion champion)
         {
             var controller =  champion.GetComponent<PlayerInputController>();
+            
+            // We set local parameters
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
             controller.TransferOwnerShipToMaster();
@@ -357,15 +369,21 @@ namespace GameStates
 
         private void LinkChampionData(Champion champion)
         {
+            // We take data
             var (team, championSoIndex, _) = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
             var championSo = allChampionsSo[championSoIndex];
             
+            // We state name
             champion.name += $" / {championSo.name}";
             
+            // We set team
             champion.RequestChangeTeam(team);
-            
-            // TODO - Link Champion SO, stats and graphs
+
+            // We sync data and champion mesh
             champion.SyncApplyChampionSO(championSoIndex);
+            Debug.Log("Instantiating champion for " + gameObject.name);
+            var championMesh = PhotonNetwork.Instantiate(championSo.championMeshPrefab.name, champion.championInitPoint.position, Quaternion.identity).transform;
+            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(champion);
         }
 
         public void MoveToGameScene()
