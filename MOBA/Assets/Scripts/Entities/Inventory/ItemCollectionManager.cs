@@ -47,14 +47,13 @@ namespace Entities.Inventory
                 if (item != null)
                 {
                     item.consumable = so.consumable;
-                    item.OnItemAddedToInventory(entity);
                     return item;
                 }
             }
             item = (Item) Activator.CreateInstance(allItems[soIndex].AssociatedType());
             item.consumable = so.consumable;
             item.indexOfSOInCollection = soIndex;
-            item.OnItemAddedToInventory(entity);
+            
             return item;
         }
         

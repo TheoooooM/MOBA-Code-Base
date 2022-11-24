@@ -383,6 +383,11 @@ namespace GameStates
 
             InstantiateChampion();
 
+            foreach (var actorNumber in playersReadyDict.Keys)
+            {
+                UIManager.Instance.AssignInventory(actorNumber);
+            }
+
             SendSetToggleReady(true);
         }
 

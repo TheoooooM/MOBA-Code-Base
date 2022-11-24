@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Entities.Inventory
 {
+    [System.Serializable]
     public abstract class Item
     {
         public bool consumable;
@@ -30,26 +31,33 @@ namespace Entities.Inventory
             // TODO - Add passives
         }
 
-        public abstract void OnItemAddedEffects(Entity entity);
+        protected abstract void OnItemAddedEffects(Entity entity);
 
-        public virtual void OnItemAddedToInventoryFeedback(Entity entity)
+        public void OnItemAddedToInventoryFeedback(Entity entity)
         {
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
-            OnItemRemovedEffects(entity);
+            OnItemAddedEffectsFeedback(entity);
             // TODO - Add passives feedbacks
         }
 
-        public abstract void OnItemRemovedEffects(Entity entity);
+        protected abstract void OnItemAddedEffectsFeedback(Entity entity);
 
-        public virtual void OnItemRemovedFromInventory()
+
+        public void OnItemRemovedFromInventory(Entity entity)
         {
+            OnItemRemovedEffects(entity);
         }
 
-        public virtual void OnItemRemovedInventoryFeedback()
+        protected abstract void OnItemRemovedEffects(Entity entity);
+
+        public void OnItemRemovedFromInventoryFeedback(Entity entity)
         {
+            OnItemRemovedEffectsFeedback(entity);
         }
 
+        protected abstract void OnItemRemovedEffectsFeedback(Entity entity);
+        
         public virtual void OnItemActivated(int[] targets, Vector3[] positions)
         {
         }
