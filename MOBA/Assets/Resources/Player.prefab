@@ -106,6 +106,7 @@ MonoBehaviour:
   canBeDisplaced: 0
   referenceMoveSpeed: 10
   currentMoveSpeed: 10
+  currentRotateSpeed: 0
   canMove: 0
   maxResource: 0
   currentResource: 0

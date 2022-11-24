@@ -7,11 +7,12 @@ namespace Entities.Champion
     {
         public float referenceMoveSpeed;
         public float currentMoveSpeed;
+        public float currentRotateSpeed;
         public bool canMove;
         private Vector3 moveDirection;
         private Vector3 truePosition;
         private bool truePositionSet;
-        
+
         public bool CanMove()
         {
             return canMove;
@@ -115,43 +116,25 @@ namespace Entities.Champion
             truePosition = pos;
             truePositionSet = true;
         }
-        
-        
-        public void RequestMoveDir(Vector3 direction)
-        {
-            moveDirection = direction;
-            //photonView.RPC("MoveRPC", RpcTarget.MasterClient, direction);
-            //PhotonNetwork.SendAllOutgoingCommands();
 
-        }
-
-        [PunRPC]
-        public void SyncMoveRPC(Vector3 position)
-        {
-            truePosition = position;
-            
-        }
-
-        [PunRPC]
-        public void MoveRPC(Vector3 direction)
-        {
-            Debug.Log("Send Move to Master");
-            moveDirection = direction;
-        }
-        
-        void MovePlayerMaster()
+        private void Move()
         {
             transform.position += moveDirection * (currentMoveSpeed * Time.deltaTime);
         }
 
-        /*void MovePlayerLocal()
+        private void Rotate()
         {
-            if (truePositionSet && Vector3.Distance(transform.position, truePosition) > (currentMoveSpeed * Time.deltaTime))
-                transform.position += (truePosition - transform.position).normalized * currentMoveSpeed * Time.deltaTime;
-        }*/
+            if (moveDirection.magnitude < .1f) return;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(moveDirection),
+                Time.deltaTime * currentRotateSpeed);
+        }
+
+        public void SetMoveDirection(Vector3 direction)
+        {
+            moveDirection = direction;
+        }
 
         public event GlobalDelegates.Vector3Delegate OnMove;
         public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
     }
 }
-
