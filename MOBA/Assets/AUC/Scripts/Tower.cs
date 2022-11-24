@@ -6,5 +6,9 @@ using UnityEngine;
 public class Tower : Building
 {
     public float detectionRange;
-    //public List<Entities>
+    public List<Building> enemiesInRange = new List<Building>();
+    
+    //public Transform 
+    
+    
 }

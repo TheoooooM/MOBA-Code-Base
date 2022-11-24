@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Entities;
+using Entities.Capacities;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MinionTest : Entity, IMoveable
+public class MinionTest : Entity, IMoveable, IAttackable
 {
     #region MinionVariables
     
@@ -135,14 +138,85 @@ public class MinionTest : Entity, IMoveable
     private void AttackTarget(GameObject target) // Attaque de l'entité référencée 
     {
         Debug.Log("Attack");
-        //var targetDamageable = target.GetComponent<IAttackable>();
-        //targetDamageable?.AttackRPC(attackDamage);
+        int[] targetEntity = new[] { target.GetComponent<Entity>().entityIndex };
+        
+        AttackRPC(2, targetEntity, Array.Empty<Vector3>() );
+    }
+    
+    [PunRPC]
+    public void AttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    {
+        var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
+
+        if (!attackCapacity.TryCast(entityIndex, targetedEntities, targetedPositions)) return;
+            
+        OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
+        photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
+    }
+
+    public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
+    public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttackFeedback;
+
+    public bool CanAttack()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void RequestSetCanAttack(bool value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void SetCanAttackRPC(bool value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void SyncSetCanAttackRPC(bool value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public event GlobalDelegates.BoolDelegate OnSetCanAttack;
+    public event GlobalDelegates.BoolDelegate OnSetCanAttackFeedback;
+    public float GetAttackDamage()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void RequestSetAttackDamage(float value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void SyncSetAttackDamageRPC(float value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void SetAttackDamageRPC(float value)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
+    public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
+
+    public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    [PunRPC]
+    public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
+    {
+        var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
+        attackCapacity.PlayFeedback(capacityIndex,targetedEntities,targetedPositions);
+        OnAttackFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
     }
     
     //------
-
-
-
+    
     public override void OnInstantiated()
     {
         throw new System.NotImplementedException();
