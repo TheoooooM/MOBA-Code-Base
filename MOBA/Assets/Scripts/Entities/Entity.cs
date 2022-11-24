@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Entities
 {
     [RequireComponent(typeof(PhotonView))]
-    public abstract partial class Entity : MonoBehaviourPun
+    public abstract partial class Entity : MonoBehaviourPun, ITeamable
     {
         /// <summary>
         /// The viewID of the photonView of the entity.
@@ -33,7 +33,7 @@ namespace Entities
         {
             entityIndex = photonView.ViewID;
             EntityCollectionManager.AddEntity(this);
-
+            //FogOfWarManager.Instance.AddFOWViewable(this);
             OnStart();
         }
 
