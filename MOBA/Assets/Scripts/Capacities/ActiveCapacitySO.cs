@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Entities.Capacities
 {
@@ -30,5 +31,8 @@ namespace Entities.Capacities
         public abstract Type AssociatedType();
 
         [HideInInspector] public byte indexInCollection;
+
+        public float feedbackDuration;
+        public GameObject feedbackPrefab;
     }
 }

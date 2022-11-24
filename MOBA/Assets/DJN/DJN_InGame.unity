@@ -1227,7 +1227,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d33c13896b757a4c84337b7219d2733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolElements: []
+  poolElements:
+  - Element: {fileID: 3248323131726062708, guid: 9365fdce127720748a1a73011482ddeb, type: 3}
+    amount: 5
 --- !u!114 &835053567282550736
 MonoBehaviour:
   m_ObjectHideFlags: 0
