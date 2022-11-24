@@ -19,17 +19,18 @@ public class Test_Stock : MonoBehaviour
     private IEnumerator InitUIShop()
     {
         //yield return new WaitUntil(() => PhotonNetwork.CountOfPlayers == 2);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(0.5f);
         for (int a = 0; a < ItemCollectionManager.allItems.Count; a++)
         {
             ShopItemImagesUI[a].slotImage.sprite = ItemCollectionManager.allItems[a].sprite;
-            ShopItemImagesUI[a].buttonShop.onClick.AddListener(() => BuyItem(ItemCollectionManager.allItems[a]));
+            string referenceName = ItemCollectionManager.allItems[a].referenceName;
+            ShopItemImagesUI[a].buttonShop.onClick.AddListener(() => BuyItem(referenceName));
         }
     }
     
-    public void BuyItem(ItemSO item)
+    public void BuyItem(string referenceName)
     {
-        UIManager.Instance.OnClickOnItem(item);
+        UIManager.Instance.OnClickOnItem(referenceName);
     }
     
     private void Start()

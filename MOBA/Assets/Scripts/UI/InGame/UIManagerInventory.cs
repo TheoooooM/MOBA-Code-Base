@@ -11,9 +11,7 @@ public partial class UIManager
 {
     [SerializeField] private List<InventoryPanel> inventoriesPanel = new List<InventoryPanel>();
     private Dictionary<int,InventoryPanel> inventoryPanelsDict = new Dictionary<int, InventoryPanel>();
-
-    private int[] inventoryIndex = { -1, -1, -1, -1 };
-
+    
     [System.Serializable]
     public class InventoryPanel
     {
@@ -36,32 +34,20 @@ public partial class UIManager
         inventoriesPanel.Clear();
     }
 
-    public void OnClickOnItem(ItemSO item)
+    public void OnClickOnItem(string item)
     {
-        int indexInt = int.Parse(item.referenceName);
+        int indexInt = int.Parse(item);
         ClickOnItem?.Invoke((byte)indexInt);
-    }
-
-    public bool InventoryAssigned(int index)
-    {
-        for (int i = 0; i < inventoriesPanel.Count; i++)
-        {
-            if (inventoriesPanel[i].available)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public void AssignInventory(int playerIndex)
     {
-        int inventoryIndex = (int)EntityCollectionManager.GetEntityByIndex(playerIndex).team;
+        int inventoryIndex = ((byte)EntityCollectionManager.GetEntityByIndex(playerIndex).team - 1) / 2;
 
-        //inventoryPanelsDict.Add(playerIndex,);
-        //inventoryIndex[playerIndex - 1] = playerInventoryIndex;
-        //inventoriesPanel[playerInventoryIndex].playerNameText.text = "J" + (playerIndex);
+        inventoryIndex += (inventoriesPanel[inventoryIndex].available) ? 0 : 1;
+        inventoryPanelsDict.Add(playerIndex,inventoriesPanel[inventoryIndex]);
+        
+        inventoriesPanel[inventoryIndex].playerNameText.text = "J" + ((playerIndex - 1) / 1000 );
     }
 
     public void UpdateInventory(Item[] items, int PlayerIndex)
