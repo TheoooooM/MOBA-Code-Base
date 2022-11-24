@@ -28,7 +28,6 @@ namespace Entities.Champion
             {
                 uiManager.InstantiateHealthBarForEntity(entityIndex);
                 uiManager.InstantiateResourceBarForEntity(entityIndex);
-                uiManager.ClickOnItem += RequestAddItem;
             }
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
