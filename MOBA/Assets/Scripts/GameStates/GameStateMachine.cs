@@ -27,12 +27,15 @@ namespace GameStates
         public Enums.Team winner = Enums.Team.Neutral;
         public List<int> allPlayersIDs = new List<int>();
 
+        /// <summary>
+        /// Key : actorNumber, Values : Team, ChampionSOindex, ready
+        /// </summary>
         private readonly Dictionary<int, (Enums.Team, byte, bool)> playersReadyDict =
             new Dictionary<int, (Enums.Team, byte, bool)>();
 
         public uint expectedPlayerCount = 4;
 
-        public ChampionSO[] allChampions;
+        public ChampionSO[] allChampionsSo;
         public Enums.Team[] allTeams;
 
         private void Awake()
@@ -313,7 +316,7 @@ namespace GameStates
         public void LoadMap()
         {
             // TODO - init pools
-            // Init more stuff
+            LinkChampionCapacityIndexes();
             
             // We set players' data
             // TODO - instantiate players (with their champion)
@@ -322,23 +325,45 @@ namespace GameStates
             SendSetToggleReady(true);
         }
 
+        private void LinkChampionCapacityIndexes()
+        {
+            foreach (var championSo in allChampionsSo)
+            {
+                championSo.SetIndexes();
+            }
+        }
+
         private void InstantiateChampion()
         {
             var pos = new Vector3(Random.Range(0f, 10f), 1, Random.Range(0f, 10f));
-            var go = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, pos, Quaternion.identity);
-            go.SendStartPosition(pos);
-            var controller =  go.GetComponent<PlayerInputController>();
+            var champion = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, pos, Quaternion.identity);
+            champion.SendStartPosition(pos);
+            champion.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
+            
+            LinkController(champion);
+            
+            LinkChampionData(champion);
+        }
+
+        private void LinkController(Champion champion)
+        {
+            var controller =  champion.GetComponent<PlayerInputController>();
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
             controller.TransferOwnerShipToMaster();
-            go.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
+        }
 
-            var data = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
+        private void LinkChampionData(Champion champion)
+        {
+            var (team, championSoIndex, _) = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
+            var championSo = allChampionsSo[championSoIndex];
             
-            go.RequestChangeTeam(data.Item1);
+            champion.name += $" / {championSo.name}";
+            
+            champion.RequestChangeTeam(team);
             
             // TODO - Link Champion SO, stats and graphs
-            go.name += $" / {data.Item2}";
+            champion.SyncApplyChampionSO(championSoIndex);
         }
 
         public void MoveToGameScene()

@@ -7,6 +7,7 @@ namespace Entities.Champion
     {
         public byte attackAbilityIndex;
         public bool canAttack;
+        public float attackDamage;
 
         public bool CanAttack()
         {
@@ -23,6 +24,15 @@ namespace Entities.Champion
 
         public event GlobalDelegates.BoolDelegate OnSetCanAttack;
         public event GlobalDelegates.BoolDelegate OnSetCanAttackFeedback;
+        public float GetAttackDamage() => attackDamage;
+        public void RequestSetAttackDamage(float value) { }
+
+        public void SyncSetAttackDamageRPC(float value) { }
+
+        public void SetAttackDamageRPC(float value) { }
+
+        public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
+        public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
 
         public void RequestAttack(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
 

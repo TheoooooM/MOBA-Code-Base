@@ -23,6 +23,24 @@ namespace Entities
         public event GlobalDelegates.BoolDelegate OnSetCanAttack;
         public event GlobalDelegates.BoolDelegate OnSetCanAttackFeedback;
         
+        /// <returns>the entity's attack damage</returns>
+        public float GetAttackDamage();
+        /// <summary>
+        /// Sends an RPC to the master to set the entity's attack damage.
+        /// </summary>
+        public void RequestSetAttackDamage(float value);
+        /// <summary>
+        /// Sends an RPC to all clients to set the entity's attack damage.
+        /// </summary>
+        public void SyncSetAttackDamageRPC(float value);
+        /// <summary>
+        /// Sets the entity's attack damage.
+        /// </summary>
+        public void SetAttackDamageRPC(float value);
+
+        public event GlobalDelegates.FloatDelegate OnSetAttackDamage;
+        public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
+        
         /// <summary>
         /// Sends an RPC to the master to Attack.
         /// </summary>

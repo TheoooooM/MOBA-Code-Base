@@ -26,14 +26,23 @@ namespace Entities.Champion
         public event GlobalDelegates.FloatDelegate OnSetCanCast;
         public event GlobalDelegates.FloatDelegate OnSetCanCastFeedback;
 
-        public void RequestCast(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
+        public void RequestCast(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        {
+            photonView.RPC("CastRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
+        }
+        
+        [PunRPC]
+        public void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        {
+            Debug.Log($"Trying to cast ability at index {capacityIndex}");
+        }
 
         [PunRPC]
-        public void SyncCastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
-
-        [PunRPC]
-        public void CastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions) { }
-
+        public void SyncCastRPC(byte capacityIndex, uint[] targetedEntities, Vector3[] targetedPositions)
+        {
+            
+        }
+        
         public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCast;
         public event GlobalDelegates.ByteUintArrayVector3ArrayDelegate OnCastFeedback;
     }

@@ -1,17 +1,9 @@
-using Entities;
 using Photon.Pun;
 
 namespace Controllers.Inputs
 {
     public abstract class PlayerInputController : Controller
     {
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-            //SetupInputMap();
-            //Link(controlledEntity);
-        }
-
         /// <summary>
         /// Setup the InputMap of The Player inputs
         /// </summary>

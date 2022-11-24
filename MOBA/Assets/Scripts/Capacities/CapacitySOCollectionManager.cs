@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,6 +48,11 @@ namespace Entities.Capacities
 
         //=========================ACTIVE=====================================
 
+        public static byte GetActiveCapacitySOIndex(ActiveCapacitySO so)
+        {
+            return (byte)Instance.allActiveCapacities.IndexOf(so);
+        }
+        
         /// <summary>
         /// Sets the activeCapacityIndexReferenceDict Dictionary values 
         /// </summary>
@@ -90,6 +96,11 @@ namespace Entities.Capacities
 
         //=========================PASSIF=====================================
 
+        public static byte GetPassiveCapacitySOIndex(PassiveCapacitySO so)
+        {
+            return (byte)Instance.allPassiveCapacities.IndexOf(so);
+        }
+        
         /// <summary>
         /// Sets the passiveCapacityIndexReferenceDict Dictionary values 
         /// </summary>

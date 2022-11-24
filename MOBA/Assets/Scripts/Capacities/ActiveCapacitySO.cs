@@ -19,7 +19,7 @@ namespace Entities.Capacities
         
         [Tooltip("Maximum range")] public float maxRange;
         
-        [Tooltip("All types of the capacity")] private List<Enums.CapacityType> types;
+        [Tooltip("All types of the capacity")] public List<Enums.CapacityType> types;
         
         public abstract Type AssociatedType();
     }

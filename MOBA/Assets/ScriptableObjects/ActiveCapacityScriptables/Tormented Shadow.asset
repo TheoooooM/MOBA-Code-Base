@@ -19,6 +19,7 @@ MonoBehaviour:
     lower health they are.
   cooldown: 12
   maxRange: 9
+  types: 0000000003000000
   zoneRadius: 2.75
   damageAmount: 6
   tickDamage: 0.5
