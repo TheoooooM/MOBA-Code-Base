@@ -9,7 +9,7 @@ namespace Entities.Capacities
     public abstract class ActiveCapacitySO : ScriptableObject
     {
         [Tooltip("GP Name")] public string referenceName;
-
+  
         [Tooltip("GD Name")] public string descriptionName;
 
         [TextArea(4, 4)] [Tooltip("Description of the capacity")]
@@ -19,8 +19,14 @@ namespace Entities.Capacities
         
         [Tooltip("Maximum range")] public float maxRange;
         
-        [Tooltip("All types of the capacity")] private List<Enums.CapacityType> types;
+        [Tooltip("All types of the capacity")] public List<Enums.CapacityType> types;
         
+        /// <summary>
+        /// return typeof(ActiveCapacity);
+        /// </summary>
+        /// <returns>the type of ActiveCapacity associated with this ActiveCapacitySO</returns>
         public abstract Type AssociatedType();
+
+        [HideInInspector] public byte indexInCollection;
     }
 }

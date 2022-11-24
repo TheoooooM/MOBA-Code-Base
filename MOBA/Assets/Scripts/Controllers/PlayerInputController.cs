@@ -1,38 +1,38 @@
+using Photon.Pun;
+
 namespace Controllers.Inputs
 {
     public abstract class PlayerInputController : Controller
     {
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-            if(!controlledEntity.photonView.IsMine) return;
-            
-            SetupInputMap();
-            Link();
-        }
-
+        protected PlayerInputs inputs;
+        
         /// <summary>
         /// Setup the InputMap of The Player inputs
         /// </summary>
-        void SetupInputMap()
+        private void SetupInputMap()
         {
             InputManager.PlayerMap = new PlayerInputs();
             InputManager.PlayerMap.Enable();
+            inputs = InputManager.PlayerMap;
+        }
+        
+        public void LinkControlsToPlayer()
+        {
+            if(!controlledEntity.photonView.IsMine) return;
+            SetupInputMap();
+            Link(controlledEntity);
         }
 
-        /// <summary>
-        /// Link Inputs to CallBacks Actions
-        /// </summary>
-        protected virtual void Link() 
+        public void LinkCameraToPlayer()
         {
+            if(!controlledEntity.photonView.IsMine) return;
+            CameraController.Instance.LinkCamera(controlledEntity.transform);
         }
 
-        /// <summary>
-        /// Unlink Inputs to CallBacks Actions
-        /// </summary>
-        protected virtual void Unlink()
+        public void TransferOwnerShipToMaster()
         {
-
+            if(!controlledEntity.photonView.IsMine) return;
+            photonView.TransferOwnership(PhotonNetwork.MasterClient.ActorNumber);
         }
     }
 }

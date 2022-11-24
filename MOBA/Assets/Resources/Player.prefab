@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4592691154818611573}
   - component: {fileID: 6728838932469448538}
   - component: {fileID: 66387207781892278}
+  - component: {fileID: 2131553985546965360}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -136,12 +137,13 @@ MonoBehaviour:
   viewRange: 0
   canView: 0
   championSo: {fileID: 0}
-  attackAbilityIndex: 0
-  abilitiesIndexes: 0000
-  ultimateAbilityIndex: 0
   maxHp: 0
   currentHp: 0
+  attackAbilityIndex: 0
   canAttack: 0
+  attackDamage: 0
+  abilitiesIndexes: 0000
+  ultimateAbilityIndex: 0
   canCast: 0
   isAlive: 0
   canDie: 0
@@ -167,12 +169,29 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 2131553985546965360}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &2131553985546965360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145891968548686272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
 --- !u!1 &2078933325802894963
 GameObject:
   m_ObjectHideFlags: 0

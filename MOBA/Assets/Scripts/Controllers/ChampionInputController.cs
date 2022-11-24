@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
@@ -9,32 +8,22 @@ namespace Controllers.Inputs
     public class ChampionInputController : PlayerInputController
     {
         private Champion champion;
-        private uint[] selectedEntity;
-        private Vector3 cursorWorldPos;
+        private int[] selectedEntity;
+        private Vector3[] cursorWorldPos;
         private bool isMoving;
+        private Vector2 mousePos;
         private Vector2 moveInput;
         private Vector3 moveVector;
-
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-        }
-
-        private void Start()
-        {
-            champion = controlledEntity as Champion;
-        }
-
-        private void Update()
-        {
-        }
-
-
+        private Camera cam;
+        
         /// <summary>
         /// Actions Performed on Attack Activation
         /// </summary>
         /// <param name="ctx"></param>
-        private void OnAttack(InputAction.CallbackContext ctx){}
+        private void OnAttack(InputAction.CallbackContext ctx)
+        {
+            champion.RequestAttack(champion.attackAbilityIndex,selectedEntity,cursorWorldPos);
+        }
         
         /// <summary>
         /// Actions Performed on Capacity 0 Activation
@@ -42,6 +31,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateCapacity0(InputAction.CallbackContext ctx)
         {
+            champion.RequestCast(champion.abilitiesIndexes[0],selectedEntity,cursorWorldPos);
         }
         /// <summary>
         /// Actions Performed on Capacity 1 Activation
@@ -49,13 +39,15 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateCapacity1(InputAction.CallbackContext ctx)
         {
+            champion.RequestCast(champion.abilitiesIndexes[1],selectedEntity,cursorWorldPos);
         }
         /// <summary>
         /// Actions Performed on Capacity 2 Activation
         /// </summary>
         /// <param name="ctx"></param>
-        private void OnActivateCapacity2(InputAction.CallbackContext ctx)
+        private void OnActivateUltimateAbility(InputAction.CallbackContext ctx)
         {
+            champion.RequestCast(champion.ultimateAbilityIndex,selectedEntity,cursorWorldPos);
         }
 
         /// <summary>
@@ -64,6 +56,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateItem0(InputAction.CallbackContext ctx)
         {
+            champion.RequestActivateItem(0,selectedEntity,cursorWorldPos);
         }
         /// <summary>
         /// Actions Performed on Item 1 Activation
@@ -71,6 +64,7 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateItem1(InputAction.CallbackContext ctx)
         {
+            champion.RequestActivateItem(1,selectedEntity,cursorWorldPos);
         }
         /// <summary>
         /// Actions Performed on Item 2 Activation
@@ -78,19 +72,35 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateItem2(InputAction.CallbackContext ctx)
         {
+            champion.RequestActivateItem(2,selectedEntity,cursorWorldPos);
+        }
+
+        private void OnMouseMove(InputAction.CallbackContext ctx)
+        {
+            mousePos = ctx.ReadValue<Vector2>();
+            var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
+            
+            if (!Physics.Raycast(mouseRay, out RaycastHit hit)) return;
+            cursorWorldPos[0] = hit.point;
+            
+            var ent = hit.transform.GetComponent<Entity>();
+            if(ent == null) return;
+            selectedEntity[0] = ent.entityIndex;
+
         }
 
         /// <summary>
-        /// Get Entity(ies) point by mouse
+        /// Get Entity(ies) and worldPos point by mouse
         /// </summary>
         /// <param name="mousePos"></param>
         /// <returns></returns>
-        private uint GetMouseOverEntity(Vector2 mousePos)
+        private int GetMouseOverEntity(Vector2 mousePos)
         {
-            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(mouseRay, out RaycastHit hit))
             {
+                cursorWorldPos[0] = hit.point;
                 var ent = hit.transform.GetComponent<Entity>();
                 if (ent) return ent.entityIndex;
             }
@@ -104,7 +114,7 @@ namespace Controllers.Inputs
         /// <returns></returns>
         private Vector3 GetMouseOverWorldPos(Vector2 mousePos)
         {
-            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(mouseRay, out RaycastHit hit))
             {
@@ -126,29 +136,45 @@ namespace Controllers.Inputs
             champion.RequestMoveDir(moveVector);
         }
 
-        protected override void Link()
+        protected override void Link(Entity entity)
         {
-            InputManager.PlayerMap.Attack.Attack.performed += OnAttack;
+            base.Link(entity);
             
-            InputManager.PlayerMap.Capacity.Capacity0.performed += OnActivateCapacity0;
-            InputManager.PlayerMap.Capacity.Capacity1.performed += OnActivateCapacity1;
-            InputManager.PlayerMap.Capacity.Capacity2.performed += OnActivateCapacity2;
+            cam = Camera.main;
+            champion = controlledEntity as Champion;
+            selectedEntity = new int[1];
+            cursorWorldPos = new Vector3[1];
+            
+            inputs.Attack.Attack.performed += OnAttack;
+            
+            inputs.Capacity.Capacity0.performed += OnActivateCapacity0;
+            inputs.Capacity.Capacity1.performed += OnActivateCapacity1;
+            inputs.Capacity.Capacity2.performed += OnActivateUltimateAbility;
 
-            InputManager.PlayerMap.Movement.Move.performed += OnMoveChange;
-            InputManager.PlayerMap.Movement.Move.canceled += OnMoveChange;
-            CameraController.Instance.LinkCamera(controlledEntity.transform);
+            inputs.Movement.Move.performed += OnMoveChange;
+            inputs.Movement.Move.canceled += OnMoveChange;
+
+            inputs.MoveMouse.MousePos.performed += OnMouseMove;
+
+            inputs.Inventory.ActivateItem0.performed += OnActivateItem0;
+            inputs.Inventory.ActivateItem1.performed += OnActivateItem1;
+            inputs.Inventory.ActivateItem2.performed += OnActivateItem2;
+
         }
         
         protected override void Unlink()
         {
-            InputManager.PlayerMap.Attack.Attack.performed -= OnAttack;
+            inputs.Attack.Attack.performed -= OnAttack;
             
-            InputManager.PlayerMap.Capacity.Capacity0.performed -= OnActivateCapacity0;
-            InputManager.PlayerMap.Capacity.Capacity1.performed -= OnActivateCapacity1;
-            InputManager.PlayerMap.Capacity.Capacity2.performed -= OnActivateCapacity2;
+            inputs.Capacity.Capacity0.performed -= OnActivateCapacity0;
+            inputs.Capacity.Capacity1.performed -= OnActivateCapacity1;
+            inputs.Capacity.Capacity2.performed -= OnActivateUltimateAbility;
             
-            InputManager.PlayerMap.Movement.Move.performed -= OnMoveChange;
-            InputManager.PlayerMap.Movement.Move.canceled -= OnMoveChange;
+            inputs.Movement.Move.performed -= OnMoveChange;
+            inputs.Movement.Move.canceled -= OnMoveChange;
+            
+            inputs.MoveMouse.MousePos.performed -= OnMouseMove;
+
             CameraController.Instance.UnLinkCamera();
         }
     }

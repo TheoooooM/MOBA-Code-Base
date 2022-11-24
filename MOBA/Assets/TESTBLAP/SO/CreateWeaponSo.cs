@@ -7,8 +7,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ItemSO", fileName = "new ItemSO")]
 public class CreateWeaponSo : ItemSO
 {
-    public override Type GetAssociatedItemType()
+    public override Type AssociatedType()
     {
-        return typeof(CreateWeaponSo);
+        throw new NotImplementedException();
     }
 }

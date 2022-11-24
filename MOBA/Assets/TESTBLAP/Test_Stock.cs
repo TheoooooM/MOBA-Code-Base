@@ -15,7 +15,7 @@ public class Test_Stock : MonoBehaviour
         yield return new WaitForSeconds(3);
         for (int a = 0; a < ItemCollectionManager.allItems.Count; a++)
         {
-            ShopItemImagesUI[a].sprite = ItemCollectionManager.allItems[a].SpriteOfItem;
+            ShopItemImagesUI[a].sprite = ItemCollectionManager.allItems[a].sprite;
             ShopItemImagesUI[a].gameObject.AddComponent<Button>().onClick.AddListener(() => BuyItem(ItemCollectionManager.allItems[a]));
         }
     }

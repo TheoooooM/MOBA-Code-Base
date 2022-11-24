@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,8 +46,34 @@ namespace Entities.Capacities
             Instance = this;
         }
 
+        private void Start()
+        {
+            for (byte i = 0; i < allActiveCapacities.Count; i++)
+            {
+                allActiveCapacities[i].indexInCollection = i;
+            }
+            for (byte i = 0; i < allPassiveCapacities.Count; i++)
+            {
+                allPassiveCapacities[i].indexInCollection = i;
+            }
+        }
+
         //=========================ACTIVE=====================================
 
+        public static byte GetActiveCapacitySOIndex(ActiveCapacitySO so)
+        {
+            return (byte)Instance.allActiveCapacities.IndexOf(so);
+        }
+
+        public static ActiveCapacity CreateActiveCapacity(byte soIndex,Entity caster)
+        {
+            var active =
+                (ActiveCapacity) Activator.CreateInstance(Instance.allActiveCapacities[soIndex].AssociatedType());
+            active.indexOfSOInCollection = soIndex;
+            active.caster = caster;
+            return active;
+        }
+        
         /// <summary>
         /// Sets the activeCapacityIndexReferenceDict Dictionary values 
         /// </summary>
@@ -73,9 +100,9 @@ namespace Entities.Capacities
         /// </summary>
         /// <param name="index">Capacity Index</param>
         /// <returns></returns>
-        public ActiveCapacitySO GetActiveCapacitySOByIndex(byte index)
+        public static ActiveCapacitySO GetActiveCapacitySOByIndex(byte index)
         {
-            return allActiveCapacities[index];
+            return Instance.allActiveCapacities[index];
         }
 
         /// <summary>
@@ -90,6 +117,11 @@ namespace Entities.Capacities
 
         //=========================PASSIF=====================================
 
+        public static byte GetPassiveCapacitySOIndex(PassiveCapacitySO so)
+        {
+            return (byte)Instance.allPassiveCapacities.IndexOf(so);
+        }
+        
         /// <summary>
         /// Sets the passiveCapacityIndexReferenceDict Dictionary values 
         /// </summary>

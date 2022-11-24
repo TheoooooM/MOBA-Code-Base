@@ -7,7 +7,7 @@ namespace Entities
 {
     public class EntityCollectionManager : MonoBehaviourPun
     {
-        private static readonly Dictionary<uint, Entity> allEntitiesDict = new Dictionary<uint, Entity>();
+        private static readonly Dictionary<int, Entity> allEntitiesDict = new Dictionary<int, Entity>();
 
         private static PhotonView view;
 
@@ -23,7 +23,7 @@ namespace Entities
         /// </summary>
         /// <param name="index">Key of the Entity in the allEntitiesDict</param>
         /// <returns>The entity which corresponds to the index, or null if the index is invalid</returns>
-        public static Entity GetEntityByIndex(uint index)
+        public static Entity GetEntityByIndex(int index)
         {
             return !allEntitiesDict.ContainsKey(index) ? null : allEntitiesDict[index];
         }
@@ -49,7 +49,7 @@ namespace Entities
         /// </summary>
         /// <param name="index">The entityIndex of the entity to remove</param>
         [PunRPC]
-        public static void RemoveEntityByIndexRPC(uint index)
+        public static void RemoveEntityByIndexRPC(int index)
         {
             if (allEntitiesDict.ContainsKey(index)) allEntitiesDict.Remove(index);
         }
@@ -69,7 +69,7 @@ namespace Entities
         /// Sends an RPC to all clients to remove an entity from the allEntitiesDict.
         /// </summary>
         /// <param name="index">The entityIndex of the entity to remove</param>
-        public static void RemoveEntity(uint index)
+        public static void RemoveEntity(int index)
         {
             view.RPC("RemoveEntityByIndexRPC", RpcTarget.All, index);
         }

@@ -66,7 +66,7 @@ namespace  Entities
         public event GlobalDelegates.BoolDelegate OnSetCanHide;
         public event GlobalDelegates.BoolDelegate OnSetCanHideFeedback;
         
-        public void TryAddFOWViewable(uint viewableIndex)
+        public void TryAddFOWViewable(int viewableIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(viewableIndex);
             if(entity == null) return;
@@ -92,7 +92,7 @@ namespace  Entities
         }
         
         [PunRPC]
-        public void SyncTryAddViewableRPC(uint viewableIndex,bool show)
+        public void SyncTryAddViewableRPC(int viewableIndex,bool show)
         {
             var viewable = EntityCollectionManager.GetEntityByIndex(viewableIndex).GetComponent<IFOWViewable>();
             if (viewable == null) return;
@@ -110,7 +110,7 @@ namespace  Entities
         public event GlobalDelegates.NoParameterDelegate OnShowElement;
         public event GlobalDelegates.NoParameterDelegate OnShowElementFeedback;
         
-        public void TryRemoveFOWViewable(uint viewableIndex)
+        public void TryRemoveFOWViewable(int viewableIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(viewableIndex);
             if(entity == null) return;
@@ -136,7 +136,7 @@ namespace  Entities
         }
 
         [PunRPC]
-        public void SyncTryRemoveViewableRPC(uint viewableIndex,bool hide)
+        public void SyncTryRemoveViewableRPC(int viewableIndex,bool hide)
         {
             var viewable = EntityCollectionManager.GetEntityByIndex(viewableIndex).GetComponent<IFOWViewable>();
             if (viewable == null) return;

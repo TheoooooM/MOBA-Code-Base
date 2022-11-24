@@ -13,6 +13,6 @@ public class Enums
     /// </summary>
     public enum CapacityType
     {
-        Kit, Item, Positive, Negative, Attack 
+        Kit, Item, Positive, Negative, BasicAttack 
     }
 }

@@ -15,6 +15,7 @@ public class GameInstantiate : MonoBehaviourPun
 
    private void Start()
    {
+      return;
       Vector3 pos = new Vector3(Random.Range(0f, 10f), 1, Random.Range(0f, 10f));
       Debug.Log(playerPref);
       Champion go = (Champion)PoolNetworkManager.Instance.PoolInstantiate(playerPref, pos, Quaternion.identity);

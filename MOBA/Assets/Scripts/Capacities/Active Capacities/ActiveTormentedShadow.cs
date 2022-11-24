@@ -6,21 +6,19 @@ namespace Entities.Capacities
     public class ActiveTormentedShadow : ActiveCapacity
     {
         private Vector3 position;
-        private ActiveTormentedShadowSO so;
+        public ActiveTormentedShadowSO so;
         public float tickDamageTimer;
         public float durationTimer;
         
-        public override ActiveCapacitySO AssociatedActiveCapacitySO()
+        public override bool TryCast(int casterIndex, int[] targets, Vector3[] pos)
         {
-            return CapacitySOCollectionManager.Instance.GetActiveCapacitySOByName(so.name);
-        }
-
-        public override bool TryCast(uint entityIndex, uint[] targets, Vector3[] pos)
-        {
-            if (Vector3.Distance(pos[0], caster.transform.position) > so.maxRange) return false;
-            
             so = (ActiveTormentedShadowSO)AssociatedActiveCapacitySO();
-            
+            Debug.Log($"Caster is {caster.name}, so is {so.name}");
+            Debug.Log($"Transform is {caster.transform}, at position {caster.transform.position}");
+            Debug.Log($"MaxRange is {so.maxRange}");
+            Debug.Log($"Pos is {pos[0]} ");
+            if (Vector3.Distance(pos[0], caster.transform.position) > so.maxRange) return false;
+
             ApplyDamage();
 
             GameStateMachine.Instance.OnTick += PoolOfShadow;
@@ -69,9 +67,9 @@ namespace Entities.Capacities
             }
         }
 
-        public override void PlayFeedback()
+        public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Morgana Gaming");
         }
     }
 }

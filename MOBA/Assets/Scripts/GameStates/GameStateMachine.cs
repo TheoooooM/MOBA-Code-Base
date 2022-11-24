@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Controllers.Inputs;
 using Entities.Champion;
+using Entities.Inventory;
 using Photon.Pun;
 using GameStates.States;
 using UnityEngine;
@@ -26,12 +28,15 @@ namespace GameStates
         public Enums.Team winner = Enums.Team.Neutral;
         public List<int> allPlayersIDs = new List<int>();
 
+        /// <summary>
+        /// Key : actorNumber, Values : Team, ChampionSOindex, ready
+        /// </summary>
         private readonly Dictionary<int, (Enums.Team, byte, bool)> playersReadyDict =
             new Dictionary<int, (Enums.Team, byte, bool)>();
 
         public uint expectedPlayerCount = 4;
 
-        public ChampionSO[] allChampions;
+        public ChampionSO[] allChampionsSo;
         public Enums.Team[] allTeams;
 
         private void Awake()
@@ -167,23 +172,23 @@ namespace GameStates
         }
 
         [PunRPC]
-        private void AddPlayerRPC(int photonID)
+        private void AddPlayerRPC(int actorNumber)
         {
-            photonView.RPC("SyncAddPlayerRPC", RpcTarget.All, photonID);
+            photonView.RPC("SyncAddPlayerRPC", RpcTarget.All, actorNumber);
         }
 
         [PunRPC]
-        private void SyncAddPlayerRPC(int photonID)
+        private void SyncAddPlayerRPC(int actorNumber)
         {
-            if (playersReadyDict.ContainsKey(photonID))
+            if (playersReadyDict.ContainsKey(actorNumber))
             {
                 Debug.LogWarning($"This player already exists (on {PhotonNetwork.LocalPlayer.ActorNumber})!");
             }
             else
             {
                 Debug.Log($"A player has been added (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
-                playersReadyDict.Add(photonID, (Enums.Team.Neutral, 255, false));
-                allPlayersIDs.Add(photonID);
+                playersReadyDict.Add(actorNumber, (Enums.Team.Neutral, 255, false));
+                allPlayersIDs.Add(actorNumber);
             }
         }
 
@@ -305,14 +310,62 @@ namespace GameStates
             SwitchState(1);
         }
 
+        
+        /// <summary>
+        /// Executed by MapLoaderManager on a GO on the scene 'gameSceneName', so only once the scene is loaded
+        /// </summary>
         public void LoadMap()
         {
-            // Load scene
-            // Init pools
-            // Init more stuff
+            // TODO - init pools
             
-            // We set players' data
+            LinkChampionCapacityIndexes();
+            
+            ItemCollectionManager.LinkCapacityIndexes();
+            
+            InstantiateChampion();
+            
             SendSetToggleReady(true);
+        }
+
+        private void LinkChampionCapacityIndexes()
+        {
+            foreach (var championSo in allChampionsSo)
+            {
+                championSo.SetIndexes();
+            }
+        }
+
+        private void InstantiateChampion()
+        {
+            var pos = new Vector3(Random.Range(0f, 10f), 1, Random.Range(0f, 10f));
+            var champion = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, pos, Quaternion.identity);
+            champion.SendStartPosition(pos);
+            champion.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
+            
+            LinkController(champion);
+            
+            LinkChampionData(champion);
+        }
+
+        private void LinkController(Champion champion)
+        {
+            var controller =  champion.GetComponent<PlayerInputController>();
+            controller.LinkControlsToPlayer();
+            controller.LinkCameraToPlayer();
+            controller.TransferOwnerShipToMaster();
+        }
+
+        private void LinkChampionData(Champion champion)
+        {
+            var (team, championSoIndex, _) = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
+            var championSo = allChampionsSo[championSoIndex];
+            
+            champion.name += $" / {championSo.name}";
+            
+            champion.RequestChangeTeam(team);
+            
+            // TODO - Link Champion SO, stats and graphs
+            champion.SyncApplyChampionSO(championSoIndex);
         }
 
         public void MoveToGameScene()
