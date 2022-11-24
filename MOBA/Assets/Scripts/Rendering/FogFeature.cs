@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine.SceneManagement;
+
 namespace UnityEngine.Rendering.Universal
 {
     public enum BufferType
@@ -14,6 +18,7 @@ namespace UnityEngine.Rendering.Universal
             public RenderPassEvent renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
             public Material blitMaterial;
             public int blitMaterialPassIndex = -1;
+            public List<string> sceneToRenderFog;
         }
 
         public Settings settings = new Settings();

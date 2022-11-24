@@ -8,8 +8,6 @@ using UnityEngine;
 
 public class Test_entity : Entity, IInventoryable
 {
-    public int teamTMP = -1;
-    
     protected override void OnStart()
     {
         
@@ -120,42 +118,38 @@ public class Test_entity : Entity, IInventoryable
     public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItemFeedback;
 
 
-    [PunRPC]
-    public void AssignInventory(int index, int team)
-    {
-        int indexInventory = team;
+    private int teamTMP = 1;
 
-        indexInventory += Convert.ToInt32(UIManager.Instance.InventoryAssigned(team));
-        UIManager.Instance.AssignInventory(index, indexInventory);
-    }
-    
-    IEnumerator Pomme()
+        IEnumerator Pomme()
     {
-        yield return new WaitUntil(() => PhotonNetwork.CountOfPlayers == 2);
-        yield return new WaitForSeconds(10);
-        if (GetComponent<Entity>().photonView.IsMine)
-         GetComponent<Entity>().photonView.RPC("AssignInventory", RpcTarget.AllViaServer, PhotonNetwork.LocalPlayer.ActorNumber,
-             ((int)teamTMP - 1) * 2);
+        //yield return new WaitUntil(() => PhotonNetwork.CountOfPlayers == 4);
+        yield return new WaitForSeconds(4);
+        EntityCollectionManager.AddEntity(this);
+        
+        //UIManager.Instance.AssignInventory((int)entityIndex, teamTMP);
     }
-    
-    private void Start()
+        protected void Start()
     {
-        //UIManager.Instance.ClickOnItem += RequestAddItem;
-        switch (PhotonNetwork.LocalPlayer.ActorNumber)
+        UIManager.ClickOnItem += RequestAddItem;
+
+        entityIndex = photonView.ViewID;
+
+        switch (entityIndex)
         {
-            case 1:
+            case 1001:
                 teamTMP = 1;
                 break;
-            case 2:
+            case 2001:
                 teamTMP = 2;
                 break;
-            case 3:
+            case 3001:
                 teamTMP = 1;
                 break;
-            case 4:
+            case 4001:
                 teamTMP = 2;
                 break;
         }
+
         StartCoroutine(Pomme());
-    }
+    }        
 }
