@@ -7,7 +7,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MinionTest : Entity, IMoveable, IAttackable
+public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeable
 {
     #region MinionVariables
     
@@ -20,11 +20,11 @@ public class MinionTest : Entity, IMoveable, IAttackable
     public int wayPointIndex;
     public int towerIndex;
 
-    public enum minionAggroState { None, Tower, Minion, Champion };
-    public enum minionAggroPreferences { Tower, Minion, Champion }
+    public enum MinionAggroState { None, Tower, Minion, Champion };
+    public enum MinionAggroPreferences { Tower, Minion, Champion }
     [Header ("Attack Logic")]
-    public minionAggroState currentAggroState = minionAggroState.None;
-    public minionAggroPreferences whoAggro = minionAggroPreferences.Tower;
+    public MinionAggroState currentAggroState = MinionAggroState.None;
+    public MinionAggroPreferences whoAggro = MinionAggroPreferences.Tower;
     public LayerMask enemyMinionMask;
     public GameObject currentAttackTarget;
     public List<GameObject> whoIsAttackingMe = new List<GameObject>();
@@ -43,10 +43,6 @@ public class MinionTest : Entity, IMoveable, IAttackable
         myAgent = GetComponent<NavMeshAgent>();
         myController = GetComponent<MinionController>();
         currentHealth = maxHealth;
-    }
-    
-    protected override void OnUpdate()
-    {
     }
 
     //------ State Methods
@@ -85,14 +81,13 @@ public class MinionTest : Entity, IMoveable, IAttackable
         else
         {
             myController.currentState = MinionController.MinionState.LookingForPathing;
-            currentAggroState = minionAggroState.None;
+            currentAggroState = MinionAggroState.None;
             currentAttackTarget = null;
             towerIndex++;
         }
     }
     
     //------Others Methods
-    
     private void CheckMyWayPoints()
     {
         if (Vector3.Distance(transform.position, myWaypoints[wayPointIndex].transform.position) <= myAgent.stoppingDistance /* Definir range de detection des waypoints en variable si besoin*/) 
@@ -122,7 +117,7 @@ public class MinionTest : Entity, IMoveable, IAttackable
         {
             myAgent.SetDestination(transform.position);
             myController.currentState = MinionController.MinionState.Attacking;
-            currentAggroState = minionAggroState.Tower;
+            currentAggroState = MinionAggroState.Tower;
             currentAttackTarget = TowersList[towerIndex].gameObject;
         }
     }
@@ -137,10 +132,10 @@ public class MinionTest : Entity, IMoveable, IAttackable
     
     private void AttackTarget(GameObject target) // Attaque de l'entité référencée 
     {
-        Debug.Log("Attack");
+        Debug.Log("Attack by " + gameObject.name);
         int[] targetEntity = new[] { target.GetComponent<Entity>().entityIndex };
         
-        AttackRPC(2, targetEntity, Array.Empty<Vector3>() );
+        AttackRPC(2, targetEntity, Array.Empty<Vector3>());
     }
     
     [PunRPC]
@@ -153,7 +148,10 @@ public class MinionTest : Entity, IMoveable, IAttackable
         OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
         photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
     }
+}
 
+public partial class MinionTest
+{
     public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
     public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttackFeedback;
 
@@ -383,4 +381,139 @@ public class MinionTest : Entity, IMoveable, IAttackable
 
     public event GlobalDelegates.Vector3Delegate OnMove;
     public event GlobalDelegates.Vector3Delegate OnMoveFeedback;
+    public float GetMaxHp()
+    {
+        throw new NotImplementedException();
+    }
+
+    public float GetCurrentHp()
+    {
+        throw new NotImplementedException();
+    }
+
+    public float GetCurrentHpPercent()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RequestSetMaxHp(float value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncSetMaxHpRPC(float value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetMaxHpRPC(float value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.FloatDelegate OnSetMaxHp;
+    public event GlobalDelegates.FloatDelegate OnSetMaxHpFeedback;
+    public void RequestIncreaseMaxHp(float amount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncIncreaseMaxHpRPC(float amount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void IncreaseMaxHpRPC(float amount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.FloatDelegate OnIncreaseMaxHp;
+    public event GlobalDelegates.FloatDelegate OnIncreaseMaxHpFeedback;
+    public void RequestDecreaseMaxHp(float amount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncDecreaseMaxHpRPC(float amount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DecreaseMaxHpRPC(float amount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.FloatDelegate OnDecreaseMaxHp;
+    public event GlobalDelegates.FloatDelegate OnDecreaseMaxHpFeedback;
+    public void RequestSetCurrentHp(float value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncSetCurrentHpRPC(float value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetCurrentHpRPC(float value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.FloatDelegate OnSetCurrentHp;
+    public event GlobalDelegates.FloatDelegate OnSetCurrentHpFeedback;
+    public void RequestSetCurrentHpPercent(float value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncSetCurrentHpPercentRPC(float value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetCurrentHpPercentRPC(float value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercent;
+    public event GlobalDelegates.FloatDelegate OnSetCurrentHpPercentFeedback;
+    public void RequestIncreaseCurrentHp(float amount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncIncreaseCurrentHpRPC(float amount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void IncreaseCurrentHpRPC(float amount)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
+    public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+    public void RequestDecreaseCurrentHp(float amount)
+    {
+        photonView.RPC("DecreaseCurrentHpRPC", RpcTarget.MasterClient, amount);
+    }
+
+    public void SyncDecreaseCurrentHpRPC(float amount)
+    {
+        currentHealth = (int)amount;
+    }
+
+    public void DecreaseCurrentHpRPC(float amount)
+    {
+        currentHealth -= (int)amount;
+        photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHealth);
+    }
+
+    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
+    public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
 }
