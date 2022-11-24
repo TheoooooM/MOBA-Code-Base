@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Controllers.Inputs;
 using Entities.Champion;
 using Entities.Inventory;
@@ -33,8 +34,8 @@ namespace GameStates
         /// <summary>
         /// Key : actorNumber, Values : Team, ChampionSOindex, ready
         /// </summary>
-        private readonly Dictionary<int, (Enums.Team, byte, bool)> playersReadyDict =
-            new Dictionary<int, (Enums.Team, byte, bool)>();
+        private readonly Dictionary<int, PlayerData> playersReadyDict =
+            new Dictionary<int, PlayerData>();
 
         public uint expectedPlayerCount = 4;
 
@@ -42,13 +43,23 @@ namespace GameStates
         public Enums.Team[] allTeams;
 
         public TeamColor[] teamColors;
-        
+
         [Serializable]
         public struct TeamColor
         {
             public Enums.Team team;
             public Color color;
         }
+
+        [Serializable]
+        public class PlayerData
+        {
+            public Enums.Team team;
+            public byte championSOIndex;
+            public bool playerReady;
+        }
+
+        public string currentStateDebugString;
 
         private void Awake()
         {
@@ -80,7 +91,6 @@ namespace GameStates
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                Debug.Log("Master initializes");
                 InitState();
             }
             else
@@ -111,6 +121,7 @@ namespace GameStates
         {
             currentState.ExitState();
             currentState = gamesStates[stateIndex];
+            currentStateDebugString = gamesStates[stateIndex].ToString();
             currentState.StartState();
         }
 
@@ -141,7 +152,7 @@ namespace GameStates
         private void SyncStartCurrentStateRPC(byte index)
         {
             if (currentState != null) return; // We don't want to sync a client already synced
-            
+
             currentState = gamesStates[index];
             currentState.StartState();
         }
@@ -160,7 +171,7 @@ namespace GameStates
 
         public Enums.Team GetPlayerTeam(int actorNumber)
         {
-            return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].Item1 : Enums.Team.Neutral;
+            return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].team : Enums.Team.Neutral;
         }
 
         public Enums.Team GetPlayerTeam()
@@ -170,7 +181,7 @@ namespace GameStates
 
         public byte GetPlayerChampionSOIndex(int actorNumber)
         {
-            return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].Item2 : (byte)0;
+            return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].championSOIndex : (byte)0;
         }
 
         public byte GetPlayerChampionSOIndex()
@@ -198,8 +209,12 @@ namespace GameStates
             }
             else
             {
-                Debug.Log($"A player has been added (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
-                playersReadyDict.Add(actorNumber, (Enums.Team.Neutral, 255, false));
+                playersReadyDict.Add(actorNumber, new PlayerData
+                {
+                    team = Enums.Team.Neutral,
+                    championSOIndex = 255,
+                    playerReady = false
+                });
                 allPlayersIDs.Add(actorNumber);
             }
         }
@@ -245,10 +260,7 @@ namespace GameStates
                 return;
             }
 
-            Debug.Log(
-                $"Player {photonID} set their team, {(Enums.Team)team} (on {PhotonNetwork.LocalPlayer.ActorNumber}).");
-            playersReadyDict[photonID] = ((Enums.Team)team, playersReadyDict[photonID].Item2,
-                playersReadyDict[photonID].Item3);
+            playersReadyDict[photonID].team = (Enums.Team)team;
         }
 
         public void RequestSetChampion(byte champion)
@@ -267,7 +279,7 @@ namespace GameStates
         {
             if (!playersReadyDict.ContainsKey(photonID)) return;
 
-            playersReadyDict[photonID] = (playersReadyDict[photonID].Item1, champion, playersReadyDict[photonID].Item3);
+            playersReadyDict[photonID].championSOIndex = champion;
         }
 
         public void SendSetToggleReady(bool ready)
@@ -278,23 +290,24 @@ namespace GameStates
         [PunRPC]
         private void SetReadyRPC(int photonID, bool ready)
         {
+            foreach (var kvp in playersReadyDict)
+            {
+                Debug.Log(
+                    $"{kvp.Key}, Team : {kvp.Value.team}, Champion : {kvp.Value.championSOIndex}, Ready : {kvp.Value.playerReady}");
+            }
+
             if (!playersReadyDict.ContainsKey(photonID))
             {
                 Debug.LogError("This key is not valid.");
                 return;
             }
 
-            playersReadyDict[photonID] = (playersReadyDict[photonID].Item1,
-                playersReadyDict[photonID].Item2,
-                ready);
+            playersReadyDict[photonID].playerReady = ready;
 
-            if (!playersReadyDict[photonID].Item3) return;
+            if (!playersReadyDict[photonID].playerReady) return;
             if (!IsEveryPlayerReady()) return;
 
-            foreach (var key in allPlayersIDs)
-                playersReadyDict[key] = (playersReadyDict[photonID].Item1,
-                    playersReadyDict[photonID].Item2,
-                    false);
+            foreach (var key in allPlayersIDs) playersReadyDict[key].playerReady = false;
 
             currentState.OnAllPlayerReady();
         }
@@ -307,9 +320,9 @@ namespace GameStates
             var team2Count = 0;
             foreach (var kvp in playersReadyDict)
             {
-                if (!kvp.Value.Item3) return false;
-                if (kvp.Value.Item1 == Enums.Team.Team1) team1Count++;
-                if (kvp.Value.Item1 == Enums.Team.Team2) team2Count++;
+                if (!kvp.Value.playerReady) return false;
+                if (kvp.Value.team == Enums.Team.Team1) team1Count++;
+                if (kvp.Value.team == Enums.Team.Team2) team2Count++;
             }
 
             return team1Count == team2Count && team1Count == 2;
@@ -322,20 +335,19 @@ namespace GameStates
             SwitchState(1);
         }
 
-        
         /// <summary>
         /// Executed by MapLoaderManager on a GO on the scene 'gameSceneName', so only once the scene is loaded
         /// </summary>
         public void LoadMap()
         {
             // TODO - init pools
-            
+
             LinkChampionCapacityIndexes();
-            
+
             ItemCollectionManager.LinkCapacityIndexes();
-            
+
             InstantiateChampion();
-            
+
             SendSetToggleReady(true);
         }
 
@@ -353,15 +365,15 @@ namespace GameStates
             var champion = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, pos, Quaternion.identity);
             champion.SendStartPosition(pos);
             champion.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
-            
+
             LinkController(champion);
             LinkChampionData(champion);
         }
 
         private void LinkController(Champion champion)
         {
-            var controller =  champion.GetComponent<PlayerInputController>();
-            
+            var controller = champion.GetComponent<PlayerInputController>();
+
             // We set local parameters
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
@@ -371,27 +383,27 @@ namespace GameStates
         private void LinkChampionData(Champion champion)
         {
             // We take data
-            var (team, championSoIndex, _) = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
-            if (championSoIndex >= allChampionsSo.Length)
+            
+            var data = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
+            if (data.championSOIndex >= allChampionsSo.Length)
             {
                 Debug.LogWarning("Make sure the mesh is valid. Selects default mesh.");
-                championSoIndex = 1;
+                data.championSOIndex = 1;
             }
-            var championSo = allChampionsSo[championSoIndex];
-            
+
+            var championSo = allChampionsSo[data.championSOIndex];
+
             // We state name
             champion.name += $" / {championSo.name}";
-            
+
             // We set team
-            champion.RequestChangeTeam(team);
+            champion.RequestChangeTeam(data.team);
 
             // We sync data and champion mesh
-            champion.SyncApplyChampionSO(championSoIndex);
+            champion.SyncApplyChampionSO(data.championSOIndex);
         }
-        
-        [PunRPC]
-        
 
+        [PunRPC]
         public void MoveToGameScene()
         {
             PhotonNetwork.IsMessageQueueRunning = false;

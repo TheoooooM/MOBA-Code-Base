@@ -22,31 +22,16 @@ namespace Entities.Champion
             //fowm.allViewables.Add(entityIndex,this);
             if(UIManager.Instance != null)UIManager.Instance.InstantiateHealthBarForEntity(entityIndex);
             if(UIManager.Instance != null)UIManager.Instance.InstantiateResourceBarForEntity(entityIndex);
+
+            currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
         }
 
         protected override void OnUpdate()
         {
-            //MovePlayerMaster();
-            //MovePlayerLocal();
             Move();
-            for (int i = 0; i < 1; i++)
-            {
-                //photonView.RPC("SPAM", RpcTarget.All, .2515f,.8745f);
-            }
-
+            Rotate();
         }
-
-        [PunRPC]
-        void SPAM(float floa, float flo)
-        {
-            Debug.Log("ca ma casser les couilles");
-        }
-
-        private void Move()
-        {
-            transform.position += moveDirection * currentMoveSpeed * Time.deltaTime;
-        }
-
+        
         public override void OnInstantiated() { }
 
         public override void OnInstantiatedFeedback() { }
@@ -64,13 +49,9 @@ namespace Entities.Champion
             referenceMoveSpeed = championSo.referenceMoveSpeed;
             currentMoveSpeed = referenceMoveSpeed;
             attackDamage = championSo.attackDamage;
-
-            // TODO - Implement Model/Prefab/Animator
             
-            Debug.Log("Instantiating champion for " + gameObject.name);
             var championMesh = Instantiate(championSo.championMeshPrefab, championInitPoint.position, Quaternion.identity, championInitPoint);
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
-            
         }
 
         public void SyncApplyChampionSO(byte championSoIndex)
