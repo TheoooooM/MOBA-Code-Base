@@ -13,7 +13,6 @@ public partial class UIManager
         if (EntityCollectionManager.GetEntityByIndex(entityIndex) != null && EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<IResourceable>() != null)
         {
             Transform entityTransform = EntityCollectionManager.GetEntityByIndex(entityIndex).transform;
-            Vector3 direction = Camera.main.transform.position - entityTransform.position;
             EntityResourceBar canvasResource = Instantiate(resourceBarPrefab, entityTransform.position + offset, Quaternion.identity, entityTransform);
             canvasResource.transform.LookAt(canvasResource.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
             entitiesResource.Add(entityIndex, canvasResource);
