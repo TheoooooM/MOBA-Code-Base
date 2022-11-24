@@ -123,7 +123,6 @@ namespace Entities.Champion
         public void SyncSetCurrentHpPercentRPC(float value)
         {
             currentHp = value;
-            uiManager.entitiesHealth[entityIndex].SetHealthByValue(value);
             OnSetCurrentHpPercentFeedback?.Invoke(value);
         }
 
