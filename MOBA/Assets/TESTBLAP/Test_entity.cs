@@ -122,7 +122,7 @@ public class Test_entity : Entity, IInventoryable
 
         IEnumerator Pomme()
     {
-        //yield return new WaitUntil(() => PhotonNetwork.CountOfPlayers == 2);
+        //yield return new WaitUntil(() => PhotonNetwork.CountOfPlayers == 4);
         yield return new WaitForSeconds(4);
         EntityCollectionManager.AddEntity(this);
         

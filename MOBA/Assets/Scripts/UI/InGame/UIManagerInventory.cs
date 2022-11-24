@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Entities;
 using Entities.Inventory;
 using TMPro;
 using UnityEngine;
@@ -19,7 +20,7 @@ public partial class UIManager
         public TextMeshProUGUI playerNameText;
         public List<Image> slotImages;
         public Enums.Team team;
-        [HideInInspector] public bool available = true;
+        [HideInInspector] public bool available = false;
     }
 
     #region delegateInventoryUI
@@ -43,9 +44,9 @@ public partial class UIManager
 
     public bool InventoryAssigned(int index)
     {
-        for (int i = 0; i < inventoryIndex.Length; i++)
+        for (int i = 0; i < inventoriesPanel.Count; i++)
         {
-            if (inventoryIndex[i] == index)
+            if (inventoriesPanel[i].available)
             {
                 return true;
             }
@@ -56,8 +57,8 @@ public partial class UIManager
 
     public void AssignInventory(int playerIndex)
     {
-        
-        
+        int inventoryIndex = (int)EntityCollectionManager.GetEntityByIndex(playerIndex).team;
+
         //inventoryPanelsDict.Add(playerIndex,);
         //inventoryIndex[playerIndex - 1] = playerInventoryIndex;
         //inventoriesPanel[playerInventoryIndex].playerNameText.text = "J" + (playerIndex);
@@ -65,7 +66,7 @@ public partial class UIManager
 
     public void UpdateInventory(Item[] items, int PlayerIndex)
     {
-        InventoryPanel panel = inventoriesPanel[inventoryIndex[PlayerIndex - 1]];
+        InventoryPanel panel = inventoryPanelsDict[PlayerIndex];
         for (int i = -1; i < panel.slotImages.Count; i++)
         {
             panel.slotImages[i].GetComponent<Image>().sprite =

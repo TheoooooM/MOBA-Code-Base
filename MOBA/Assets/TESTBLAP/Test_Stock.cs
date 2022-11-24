@@ -1,31 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using Entities.Inventory;
+using ExitGames.Client.Photon.StructWrapping;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Test_Stock : MonoBehaviour
 {
-    [SerializeField] private List<Image> ShopItemImagesUI;
+    [SerializeField] private List<StockPanel> ShopItemImagesUI;
 
-    IEnumerator InitUIShop()
+    [System.Serializable]
+    public class StockPanel
+    {
+        public Image slotImage;
+        public Button buttonShop;
+    }
+
+    private IEnumerator InitUIShop()
     {
         //yield return new WaitUntil(() => PhotonNetwork.CountOfPlayers == 2);
         yield return new WaitForSeconds(3);
         for (int a = 0; a < ItemCollectionManager.allItems.Count; a++)
         {
-            ShopItemImagesUI[a].sprite = ItemCollectionManager.allItems[a].sprite;
-            ShopItemImagesUI[a].gameObject.AddComponent<Button>().onClick.AddListener(() => BuyItem(ItemCollectionManager.allItems[a]));
+            ShopItemImagesUI[a].slotImage.sprite = ItemCollectionManager.allItems[a].sprite;
+            ShopItemImagesUI[a].buttonShop.onClick.AddListener(() => BuyItem(ItemCollectionManager.allItems[a]));
         }
     }
     
     public void BuyItem(ItemSO item)
     {
         UIManager.Instance.OnClickOnItem(item);
-        Debug.Log(item.referenceName);
     }
     
-    void Start()
+    private void Start()
     {
         StartCoroutine(InitUIShop());
     }
