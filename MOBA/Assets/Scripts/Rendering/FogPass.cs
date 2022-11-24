@@ -1,5 +1,6 @@
 using Entities.FogOfWar;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 namespace UnityEngine.Rendering.Universal
 {
@@ -54,27 +55,26 @@ namespace UnityEngine.Rendering.Universal
         /// <inheritdoc/>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            if (!Application.isPlaying)
+            if (!Application.isPlaying)return;
+            if (mFog != null)
             {
-                return;
+                if(!mFog.sceneToRenderFog.Contains(SceneManager.GetActiveScene().name)) return;
             }
-
-            //Setup the scene where we don't want to render the Fog Of War
-            //if(SceneManager.GetActiveScene().name == "GameScene" ||
-            //   SceneManager.GetActiveScene().name == "FogOfWarDebug")
-            //{
-                //fog
-                SendShaderValue();
-
-                CommandBuffer cmd = CommandBufferPool.Get(m_ProfilerTag);
-
-                Blit(cmd, _source, destination, settings.blitMaterial, settings.blitMaterialPassIndex);
-                Blit(cmd, destination, _source);
-
-                context.ExecuteCommandBuffer(cmd);
-                CommandBufferPool.Release(cmd);
-            //}
-        }
+            else
+            {
+                if (!settings.sceneToRenderFog.Contains(SceneManager.GetActiveScene().name)) return;
+            }
+            //fog
+            SendShaderValue();
+            
+            CommandBuffer cmd = CommandBufferPool.Get(m_ProfilerTag);
+            
+            Blit(cmd, _source, destination, settings.blitMaterial, settings.blitMaterialPassIndex);
+            Blit(cmd, destination, _source);
+            
+            context.ExecuteCommandBuffer(cmd);
+            CommandBufferPool.Release(cmd);
+        }   
 
         /// <inheritdoc/>
         public override void FrameCleanup(CommandBuffer cmd)

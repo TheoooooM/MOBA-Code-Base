@@ -44,8 +44,9 @@ namespace Entities.FogOfWar
         /// </summary>
         /// <param name="viewData">List of Vector2 pos + radius for view Informations</param>
 
-        [Header("Camera Setup")] 
+        [Header("Camera and Scene Setup")] 
         public Camera cameraFog;
+        public List<string> sceneToRenderFog;
 
         [Header("Fog Of War Parameter")] 
         [Tooltip("Color for the area where the player can't see")]
@@ -201,7 +202,7 @@ namespace Entities.FogOfWar
             Vector3 dir = DirFromAngle(globalAngle, true);
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, dir, out hit, entity.viewRange, settingsFOV.obstacleMask))
+            if (Physics.Raycast(transform.position, dir, out hit, entity.viewRange, entity.obstacleLayerFogOfWar))
             {
                 return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
             }
@@ -262,8 +263,6 @@ namespace Entities.FogOfWar
 [System.Serializable]
 public class FOVSettings
 {
-    public LayerMask obstacleMask;
-    
     public float meshResolution;
     public int edgeResolveIterations;
     public float edgeDstThreshold;

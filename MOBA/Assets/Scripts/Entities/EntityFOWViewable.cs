@@ -12,13 +12,16 @@ namespace Entities
         public bool canChangeTeam;
         public Enums.Team team;
         
+        [Header("Field Of View Settings")]
         public float baseViewRange;
         public float viewRange;
-        [Range(0,360)] public float viewAngle;
+        [Range(0,360)] 
+        public float viewAngle;
         public bool canView;
         public List<IFOWShowable> seenShowables = new List<IFOWShowable>();
-
+        public LayerMask obstacleLayerFogOfWar;
         public MeshFilter meshFilterFoV;
+        
         
         public Enums.Team GetTeam()
         {
