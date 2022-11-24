@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Entities;
+using Entities.Capacities;
 using Entities.Champion;
 
 namespace Controllers.Inputs
@@ -31,6 +32,8 @@ namespace Controllers.Inputs
         /// <param name="ctx"></param>
         private void OnActivateCapacity0(InputAction.CallbackContext ctx)
         {
+            ActiveCapacitySO capacity0 = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(champion.abilitiesIndexes[0]);
+
             champion.RequestCast(champion.abilitiesIndexes[0],selectedEntity,cursorWorldPos);
         }
         /// <summary>
