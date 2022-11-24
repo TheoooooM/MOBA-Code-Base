@@ -92,7 +92,7 @@ namespace GameStates
         private void Update()
         {
             currentState?.UpdateState();
-            Debug.Log(currentState);
+            //Debug.Log(currentState);
         }
 
         private void InitState()
