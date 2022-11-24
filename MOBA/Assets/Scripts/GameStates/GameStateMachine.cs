@@ -173,7 +173,7 @@ namespace GameStates
             OnTickFeedback?.Invoke();
         }
 
-        public Enums.Team GetPlayerTeam(int actorNumber)
+        private Enums.Team GetPlayerTeam(int actorNumber)
         {
             return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].team : Enums.Team.Neutral;
         }
@@ -427,8 +427,7 @@ namespace GameStates
             // We take data
 
             var data = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
-            Debug.Log($"for {champion.name}, data is : team {data.team}");
-            
+
             if (data.championSOIndex >= allChampionsSo.Length)
             {
                 Debug.LogWarning("Make sure the mesh is valid. Selects default mesh.");
@@ -442,6 +441,17 @@ namespace GameStates
 
             // We sync data and champion mesh
             champion.SyncApplyChampionSO(data.championSOIndex, data.team);
+        }
+
+        public void SendWinner(Enums.Team team)
+        {
+            photonView.RPC("SyncWinnerRPC", RpcTarget.All, (byte)team);
+        }
+
+        [PunRPC]
+        private void SyncWinnerRPC(byte team)
+        {
+            winner = (Enums.Team)team;
         }
     }
 }
