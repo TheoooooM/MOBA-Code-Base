@@ -61,7 +61,6 @@ namespace Entities.Champion
 
             this.team = (Enums.Team)team;
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
-            
         }
 
         public void SyncApplyChampionSO(byte championSoIndex, Enums.Team team)
