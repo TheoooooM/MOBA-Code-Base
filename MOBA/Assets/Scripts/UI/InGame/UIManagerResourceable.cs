@@ -5,8 +5,7 @@ using UnityEngine;
 public partial class UIManager
 {
     [Header("ResourceBar Elements")]
-    [SerializeField] private readonly Dictionary<int, Canvas> entitiesResource = new Dictionary<int, Canvas>();
-    [SerializeField] private Vector3 offsetResourceBar = new Vector3(0, 2.0f, 0);
+    [SerializeField] private readonly Dictionary<int, EntityResourceBar> entitiesResource = new Dictionary<int, EntityResourceBar>();
     [SerializeField] private EntityResourceBar resourceBarPrefab;
     
     public void InstantiateResourceBarForEntity(int entityIndex)
@@ -14,11 +13,11 @@ public partial class UIManager
         if (EntityCollectionManager.GetEntityByIndex(entityIndex) != null && EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<IResourceable>() != null)
         {
             Transform entityTransform = EntityCollectionManager.GetEntityByIndex(entityIndex).transform;
-            Canvas canvas = Instantiate(canvasPrefab, entityTransform);
-            if (Camera.main != null) canvas.transform.LookAt(Camera.main.transform);
-            EntityResourceBar resourceBar = Instantiate(resourceBarPrefab, Vector3.zero + offsetResourceBar, Quaternion.identity, canvas.transform);
-            entitiesResource.Add(entityIndex, canvas);
-            resourceBar.SetResource(entityIndex);
+            Vector3 direction = Camera.main.transform.position - entityTransform.position;
+            EntityResourceBar canvasResource = Instantiate(resourceBarPrefab, entityTransform.position + offset, Quaternion.identity, entityTransform);
+            canvasResource.transform.LookAt(canvasResource.transform.position + Camera.main.transform.rotation * Vector3.forward, Camera.main.transform.rotation * Vector3.up);
+            entitiesResource.Add(entityIndex, canvasResource);
+            canvasResource.SetResource(entityIndex);
         }
     }
 }
