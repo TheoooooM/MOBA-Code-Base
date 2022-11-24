@@ -24,10 +24,13 @@ namespace Entities.Champion
             capacityCollection = CapacitySOCollectionManager.Instance;
             uiManager = UIManager.Instance;
             //fowm.allViewables.Add(entityIndex,this);
-            if(uiManager != null)
+            if(uiManager != null && photonView.IsMine)
             {
                 uiManager.InstantiateHealthBarForEntity(entityIndex);
                 uiManager.InstantiateResourceBarForEntity(entityIndex);
+
+                UIManager.ClickOnItem += RequestAddItem;
+                UIManager.RemoveOnItem += RequestRemoveItem;
             }
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
@@ -40,7 +43,15 @@ namespace Entities.Champion
             CheckMoveDistance(); // Lol
         }
 
-        public override void OnInstantiated() { }
+        public override void OnInstantiated()
+        {
+            uiManager = UIManager.Instance;
+            if (uiManager != null)
+            {
+                uiManager.InstantiateHealthBarForEntity(entityIndex);
+                uiManager.InstantiateResourceBarForEntity(entityIndex);
+            }
+        }
 
         public override void OnInstantiatedFeedback() { }
 

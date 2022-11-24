@@ -27,6 +27,15 @@ namespace Controllers.Inputs
         }
         
         /// <summary>
+        /// Actions Performed on Show or Hide Shop
+        /// </summary>
+        /// <param name="ctx"></param>
+        private void OnShowHideShop(InputAction.CallbackContext ctx)
+        {
+            UIManager.Instance.ShowHideShop();
+        }
+        
+        /// <summary>
         /// Actions Performed on Capacity 0 Activation
         /// </summary>
         /// <param name="ctx"></param>
@@ -61,6 +70,7 @@ namespace Controllers.Inputs
         {
             champion.RequestActivateItem(0,selectedEntity,cursorWorldPos);
         }
+        
         /// <summary>
         /// Actions Performed on Item 1 Activation
         /// </summary>
@@ -170,10 +180,13 @@ namespace Controllers.Inputs
             }
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;
-
+            
             inputs.Inventory.ActivateItem0.performed += OnActivateItem0;
             inputs.Inventory.ActivateItem1.performed += OnActivateItem1;
             inputs.Inventory.ActivateItem2.performed += OnActivateItem2;
+            inputs.Inventory.ShowHideInventory.started += context => UIManager.Instance.ShowHideInventory(true);
+            inputs.Inventory.ShowHideInventory.canceled += context => UIManager.Instance.ShowHideInventory(false);
+            inputs.Inventory.ShowHideShop.performed += OnShowHideShop;
 
         }
         
@@ -184,10 +197,11 @@ namespace Controllers.Inputs
             inputs.Capacity.Capacity0.performed -= OnActivateCapacity0;
             inputs.Capacity.Capacity1.performed -= OnActivateCapacity1;
             inputs.Capacity.Capacity2.performed -= OnActivateUltimateAbility;
-            
+            inputs.Inventory.ShowHideShop.performed -= OnShowHideShop;
+
             inputs.Movement.Move.performed -= OnMoveChange;
             inputs.Movement.Move.canceled -= OnMoveChange;
-            
+
             inputs.MoveMouse.MousePos.performed -= OnMouseMove;
 
             CameraController.Instance.UnLinkCamera();
