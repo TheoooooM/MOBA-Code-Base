@@ -138,13 +138,7 @@ namespace Entities.Champion
         
         void MovePlayerMaster()
         {
-            transform.position += moveDirection * (currentMoveSpeed * Time.deltaTime);
-        }
-
-        void MovePlayerLocal()
-        {
-           // if (truePositionSet && Vector3.Distance(transform.position, truePosition) > (currentMoveSpeed * Time.deltaTime))
-                transform.position += (truePosition - transform.position).normalized * currentMoveSpeed * Time.deltaTime;
+            transform.position += moveDirection * (currentMoveSpeed);
         }
 
         public event GlobalDelegates.Vector3Delegate OnMove;
