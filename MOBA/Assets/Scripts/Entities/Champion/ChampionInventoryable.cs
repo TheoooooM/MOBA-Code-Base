@@ -47,15 +47,6 @@ namespace Entities.Champion
             if(item == null) return;
             item.OnItemAddedToInventoryFeedback(this);
             OnAddItemFeedback?.Invoke(index);
-            
-            
-            
-            
-            
-            
-            
-            
-            uiManager.UpdateInventory(ItemCollectionManager.allItems, entityIndex);
         }
         
         public event GlobalDelegates.ByteDelegate OnAddItem;
