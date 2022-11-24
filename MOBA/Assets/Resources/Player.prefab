@@ -93,6 +93,7 @@ MonoBehaviour:
   championSo: {fileID: 0}
   championInitPoint: {fileID: 1874783859807748408}
   championMesh: {fileID: 0}
+  camera: {fileID: 0}
   maxHp: 0
   currentHp: 0
   attackAbilityIndex: 0

@@ -133,11 +133,13 @@ namespace Entities.Champion
 
         private void Rotate()
         {
+            if (!photonView.IsMine) return;
             var ray = camera.ScreenPointToRay(Input.mousePosition);
 
             if (!Physics.Raycast(ray, out var hit, float.PositiveInfinity)) return;
 
             var rotateDirection = -(transform.position - hit.point);
+            rotateDirection.y = 0;
             
             transform.rotation = Quaternion.Lerp(transform.rotation,
                 Quaternion.LookRotation(rotateDirection),
