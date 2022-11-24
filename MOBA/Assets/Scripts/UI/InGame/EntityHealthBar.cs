@@ -21,7 +21,7 @@ public class EntityHealthBar : MonoBehaviour
     
     public void SetHealthByIndex(int entityIndex)
     {
-        healthBar.fillAmount = EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<Champion>().GetCurrentHpPercent();
+        healthBar.fillAmount = EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<IActiveLifeable>().GetCurrentHpPercent();
     }
     
     public void SetActive(bool active)

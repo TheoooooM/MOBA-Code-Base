@@ -1,4 +1,5 @@
 using Photon.Pun;
+using UnityEngine;
 
 namespace Entities.Champion
 {
@@ -6,6 +7,7 @@ namespace Entities.Champion
     {
         public bool isAlive;
         public bool canDie;
+        public float timer = 10f;
 
         public bool IsAlive()
         {
@@ -79,6 +81,11 @@ namespace Entities.Champion
         [PunRPC]
         public void ReviveRPC()
         {
+            // timer before revive
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+            }
             OnRevive?.Invoke();
             photonView.RPC("SyncReviveRPC", RpcTarget.All);
         }

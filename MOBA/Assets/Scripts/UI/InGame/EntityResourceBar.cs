@@ -21,7 +21,7 @@ public class EntityResourceBar : MonoBehaviour
     
     public void SetResourceByIndex(int entityIndex)
     {
-        resourceBar.fillAmount = EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<Champion>().GetCurrentResourcePercent();
+        resourceBar.fillAmount = EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<IResourceable>().GetCurrentResourcePercent();
     }
     
     public void SetActive(bool active)
