@@ -6,8 +6,8 @@ namespace Entities.Capacities
     {
         private PassiveDotEffectSO so;
         private IActiveLifeable lifeable;
-        private float tickDamageTimer;
-        private float durationTimer;
+        private double tickDamageTimer;
+        private double durationTimer;
         
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {

@@ -6,7 +6,7 @@ namespace GameStates.States
     {
         public InGameState(GameStateMachine sm) : base(sm) { }
 
-        private float timer;
+        private double timer;
 
         public override void StartState()
         {
@@ -25,9 +25,9 @@ namespace GameStates.States
                 return;
             }
 
-            if (timer >= 1f / sm.tickRate)
+            if (timer >= 1.0 / sm.tickRate)
             {
-                timer = 0f;
+                timer -= 1.0 / sm.tickRate;
                 sm.Tick();
             }
             else timer += Time.deltaTime;

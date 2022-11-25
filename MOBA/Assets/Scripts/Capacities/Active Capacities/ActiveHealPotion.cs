@@ -28,17 +28,17 @@ namespace Entities.Capacities
             InitializeFeedbackCountdown();
         }
 
-        public override void InitializeFeedbackCountdown()
+        protected override void InitializeFeedbackCountdown()
         {
             base.InitializeFeedbackCountdown();
         }
 
-        public override void FeedbackCountdown()
+        protected override void FeedbackCountdown()
         {
             base.FeedbackCountdown();
         }
 
-        public override void DisableFeedback()
+        protected override void DisableFeedback()
         {
             base.DisableFeedback();
         }

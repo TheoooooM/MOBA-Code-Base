@@ -23,7 +23,7 @@ namespace GameStates
         private GameState currentState;
         private GameState[] gamesStates;
 
-        [Tooltip("Ticks per second")] public float tickRate = 1;
+        [Tooltip("Ticks per second")] public double tickRate = 1;
 
         public event GlobalDelegates.NoParameterDelegate OnTick;
         public event GlobalDelegates.NoParameterDelegate OnTickFeedback;

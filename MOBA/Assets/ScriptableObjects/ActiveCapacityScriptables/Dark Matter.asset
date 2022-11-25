@@ -15,8 +15,13 @@ MonoBehaviour:
   referenceName: DarkMatterSO
   descriptionName: Dark Matter
   description: 
-  cooldown: 0
-  maxRange: 0
-  zoneRadius: 0
+  cooldown: 2
+  isTargeting: 0
+  maxRange: 22.16
+  types: 
+  indexInCollection: 1
+  feedbackDuration: 0
+  feedbackPrefab: {fileID: 0}
+  zoneRadius: 2.83
   damageAmount: 0
-  delay: 0
+  delay: 3

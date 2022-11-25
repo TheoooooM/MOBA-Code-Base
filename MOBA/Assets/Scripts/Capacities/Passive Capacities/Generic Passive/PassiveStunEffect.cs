@@ -6,7 +6,7 @@ namespace Entities.Capacities
     {
         private PassiveStunEffectSO so;
         private IMoveable moveable;
-        private float timer;
+        private double timer;
     
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {

@@ -4,8 +4,8 @@ namespace Entities.Capacities
 {
     public class PassivePerseverance : PassiveCapacity
     {
-        private float timeSinceLastAttack;
-        private float timeSinceLastHeal;
+        private double timeSinceLastAttack;
+        private double timeSinceLastHeal;
         private PassivePerseveranceSO passiveCapacitySo;
         private IActiveLifeable activeLifeable;
         
