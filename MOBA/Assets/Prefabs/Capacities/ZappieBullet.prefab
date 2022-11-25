@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1669470103438996595}
   - component: {fileID: 7633240263386714436}
   - component: {fileID: 5609641437325422689}
+  - component: {fileID: 8718447523665114042}
   - component: {fileID: 2997575324098939119}
   m_Layer: 0
   m_Name: ZappieBullet
@@ -48,6 +49,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa478d3e90438f641895ed2f1f1dc31d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entityIndex: 0
+  canAddPassiveCapacity: 0
+  canRemovePassiveCapacity: 0
+  uiTransform: {fileID: 0}
+  offset: {x: 0, y: 2, z: 0}
+  canShow: 0
+  canHide: 0
+  elementsToShow: []
+  canChangeTeam: 0
+  team: 0
+  baseViewRange: 0
+  viewRange: 0
+  viewAngle: 0
+  canView: 0
+  meshFilterFoV: {fileID: 0}
   caster: {fileID: 0}
   damage: 0
   dir: {x: 0, y: 0, z: 0}
@@ -133,10 +149,27 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8718447523665114042}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &8718447523665114042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5556055349926743607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!54 &2997575324098939119
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 namespace Entities.Capacities
@@ -19,10 +20,11 @@ namespace Entities.Capacities
             
             dir = (position[0] - casterPos).normalized;
             
-            var instantiateObj = PoolLocalManager.Instance.PoolInstantiate(so.projectile, caster.transform.position, Quaternion.identity);
+            var instantiateObj = PoolNetworkManager.Instance.PoolInstantiate(so.projectile, caster.transform.position, Quaternion.identity);
             var damageOnCollide = instantiateObj.GetComponent<DamageOnCollide>();
             
             damageOnCollide.damage = so.damageAmount;
+            damageOnCollide.caster = caster;
             
             instantiateObj.GetComponent<Rigidbody>().AddForce(dir * so.speed, ForceMode.Impulse);
             
