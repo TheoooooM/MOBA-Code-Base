@@ -7,7 +7,6 @@ namespace UIComponents
     public class EntityHealthBar : MonoBehaviour
     {
         [SerializeField] private Image healthBar;
-        private Entity linkedEntity;
         private IActiveLifeable lifeable;
         private IDeadable deadable;
         private Camera cam;
@@ -19,7 +18,6 @@ namespace UIComponents
     
         public void InitHealthBar(Entity entity)
         {
-            linkedEntity = entity;
             lifeable = entity.GetComponent<IActiveLifeable>();
             deadable = entity.GetComponent<IDeadable>();
         
@@ -29,6 +27,8 @@ namespace UIComponents
             lifeable.OnSetCurrentHpPercentFeedback += UpdateFillPercentByPercent;
             lifeable.OnIncreaseCurrentHpFeedback += UpdateFillPercent;
             lifeable.OnDecreaseCurrentHpFeedback += UpdateFillPercent;
+            lifeable.OnIncreaseMaxHpFeedback += UpdateFillPercent;
+            lifeable.OnDecreaseMaxHpFeedback += UpdateFillPercent;
             deadable.OnSetCanDieFeedback += DeactivateHealth;
             deadable.OnReviveFeedback += ActivateHealth;
         }
