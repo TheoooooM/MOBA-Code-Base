@@ -14,6 +14,8 @@ namespace Entities.Capacities
 
         [TextArea(4, 4)] [Tooltip("Description of the capacity")]
         public string description;
+        
+        public bool stackable;
 
         
         /// <summary>

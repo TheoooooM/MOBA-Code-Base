@@ -127,17 +127,18 @@ namespace Entities.Champion
             if(itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
             if(item == null) return;
-            var successes = new bool[item.AssociatedItemSO().activeCapacitiesIndexes.Length];
+            
+            var successesActives = new bool[item.AssociatedItemSO().activeCapacitiesIndexes.Length];
             var bytes = item.AssociatedItemSO().activeCapacitiesIndexes;
             for (var i = 0; i < bytes.Length; i++)
             {
                 var capacityIndex = bytes[i];
                 var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
-                successes[i] = activeCapacity.TryCast(entityIndex, selectedEntities, positions);
+                successesActives[i] = activeCapacity.TryCast(entityIndex, selectedEntities, positions);
             }
             items[itemIndexInInventory].OnItemActivated(selectedEntities,positions);
             OnActivateItem?.Invoke(itemIndexInInventory,selectedEntities,positions);
-            photonView.RPC("SyncActivateItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions,successes.ToArray());
+            photonView.RPC("SyncActivateItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions,successesActives.ToArray());
             
 
         }

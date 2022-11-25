@@ -402,8 +402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e2557b85405f624f9804eec7d8f08b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 2, z: 0}
   healthBarPrefab: {fileID: 8706198591103583553, guid: 420738969e4e1c84ebd9c03da8134be2, type: 3}
+  championOverlays: []
   inventoriesPanel:
   - playerNameText: {fileID: 685302985280346719}
     slotImages:
@@ -2821,7 +2821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7498691665753908636
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3534,7 +3534,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -631, y: -309}
+  m_AnchoredPosition: {x: 546, y: -100}
   m_SizeDelta: {x: 600, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7498691667280078570
