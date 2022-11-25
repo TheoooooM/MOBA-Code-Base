@@ -7,7 +7,7 @@ namespace Entities.Capacities
     {
         private Vector3 position;
         public ActiveTormentedShadowSO so;
-        public float tickDamageTimer;
+        public double tickDamageTimer;
         public float durationTimer;
         
         public override bool TryCast(int casterIndex, int[] targets, Vector3[] pos)
@@ -29,8 +29,6 @@ namespace Entities.Capacities
             tickDamageTimer += GameStateMachine.Instance.tickRate;
 
             Debug.Log(so.zoneRadius);
-            
-            Gizmos.DrawWireSphere(position, so.zoneRadius);
             
             if (tickDamageTimer >= so.tickDamage)
             {
