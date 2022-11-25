@@ -13,7 +13,7 @@ public class ActiveMinionAuto : ActiveCapacity
     {
         _minion = caster.GetComponent<MinionTest>();
         _target = _minion.currentAttackTarget.GetComponent<Entity>();
-
+        
         if (Vector3.Distance(_minion.transform.position, _target.transform.position) > _minion.attackRange){return false;}
         
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
@@ -35,10 +35,13 @@ public class ActiveMinionAuto : ActiveCapacity
             GameStateMachine.Instance.OnTick -= DelayWaitingTick;
         }
     }
-    
+
     private void ApplyEffect()
     {
-        IActiveLifeable entityActiveLifeable = _target.GetComponent<IActiveLifeable>();
-        entityActiveLifeable.DecreaseCurrentHpRPC(_minion.attackDamage); 
+        if (Vector3.Distance(_target.transform.position, _minion.transform.position) < _minion.attackRange)
+        {
+            IActiveLifeable entityActiveLifeable = _target.GetComponent<IActiveLifeable>();
+            entityActiveLifeable.DecreaseCurrentHpRPC(_minion.attackDamage);
+        }
     }
 }
