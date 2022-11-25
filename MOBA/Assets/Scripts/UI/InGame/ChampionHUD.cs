@@ -129,7 +129,8 @@ public class ChampionHUD : MonoBehaviour
         Debug.Log(so.ultimateAbilityIndex);
         spellHolderDict.Add(so.activeCapacitiesIndexes[0], spellOneHolder);
         spellHolderDict.Add(so.activeCapacitiesIndexes[1], spellTwoHolder);
-        spellHolderDict.Add(so.ultimateAbilityIndex, ultimateHolder);
+        if(!spellHolderDict.ContainsKey(so.ultimateAbilityIndex))spellHolderDict.Add(so.ultimateAbilityIndex, ultimateHolder);
+        else Debug.Log("A FIXE, CA BUG ");
         
         passiveHolder.Setup(so.passiveCapacities[0].icon);
         spellOneHolder.Setup(so.activeCapacities[0].icon);
