@@ -19,9 +19,10 @@ MonoBehaviour:
   isTargeting: 0
   maxRange: 0
   types: 
-  indexInCollection: 0
+  shootType: 0
+  indexInCollection: 3
   feedbackDuration: 0
   feedbackPrefab: {fileID: 0}
   projectile: {fileID: 5556055349926743607, guid: 15a987334465ce742ab2dc481e3cedea, type: 3}
   damageAmount: 1
-  speed: 3
+  speed: 25
