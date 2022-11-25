@@ -92,36 +92,35 @@ namespace Controllers.Inputs
         private void OnMouseMove(InputAction.CallbackContext ctx)
         {
             mousePos = ctx.ReadValue<Vector2>();
-//            var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
-            
-            // if (!Physics.Raycast(mouseRay, out RaycastHit hit)) return;
-            // cursorWorldPos[0] = hit.point;
-            
-            // var ent = hit.transform.GetComponent<Entity>();
-            // if(ent == null) return;
-            // selectedEntity[0] = ent.entityIndex;
-            if (isActivebuttonPress)
+            var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
+
+            if (!Physics.Raycast(mouseRay, out var hit)) return;
+            cursorWorldPos[0] = hit.point;
+            selectedEntity[0] = -1;
+            var ent = hit.transform.GetComponent<Entity>();
+            if(ent != null)
+            { 
+                selectedEntity[0] = ent.entityIndex;
+                cursorWorldPos[0] = ent.transform.position;
+            }
+
+            if(isActivebuttonPress)
             {
-                MouseActiveActions();
+                champion.MoveToPosition(GetMouseOverWorldPos());
             }
         }
-
-        /// <summary>
-        /// Get Entity(ies) and worldPos point by mouse
-        /// </summary>
-        public int GetMouseOverEntity()
+        
+        void OnMouseClick(InputAction.CallbackContext ctx)
         {
-            Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(mouseRay, out RaycastHit hit))
+            Debug.Log("MoveClick");
+            champion.MoveToPosition(GetMouseOverWorldPos());
+            if (selectedEntity[0] != -1)
             {
-                cursorWorldPos[0] = hit.point;
-                var ent = hit.transform.GetComponent<Entity>();
-                if (ent) return ent.entityIndex;
+                champion.RequestAttack(champion.attackAbilityIndex, selectedEntity, cursorWorldPos);
             }
-
-            return 999999;
         }
+
+        
         
         /// <summary>
         /// Get World Position of mouse
@@ -150,22 +149,8 @@ namespace Controllers.Inputs
             moveVector = new Vector3(moveInput.x, 0, moveInput.y);
             champion.SetMoveDirection(moveVector);
         }
+        
 
-        void OnMoveClick(InputAction.CallbackContext ctx)
-        {
-            Debug.Log("MoveClick");
-            MouseActiveActions();
-        }
-
-        void MouseActiveActions()
-        {
-            int entity = GetMouseOverEntity();
-            if (entity != 999999)
-            {
-                if(CapacitySOCollectionManager.GetActiveCapacitySOByIndex(champion.attackAbilityIndex).)
-            }
-            else champion.MoveToPosition(GetMouseOverWorldPos());
-        }
 
         protected override void Link(Entity entity)
         {
@@ -189,7 +174,7 @@ namespace Controllers.Inputs
             }
             else
             {
-                inputs.MoveMouse.ActiveButton.performed += OnMoveClick;
+                inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
                 inputs.MoveMouse.ActiveButton.started += context => isActivebuttonPress = true;
                 inputs.MoveMouse.ActiveButton.canceled += context => isActivebuttonPress = false;
             }
@@ -221,7 +206,7 @@ namespace Controllers.Inputs
             }
             else
             {
-                inputs.MoveMouse.ActiveButton.performed -= OnMoveClick;
+                inputs.MoveMouse.ActiveButton.performed -= OnMouseClick;
             }
 
             inputs.MoveMouse.MousePos.performed -= OnMouseMove;

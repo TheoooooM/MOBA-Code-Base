@@ -24,6 +24,8 @@ namespace Entities.Capacities
         
         [Tooltip("All types of the capacity")] public List<Enums.CapacityType> types;
         
+        public Enums.CapacityShootType shootType;
+        
         /// <summary>
         /// return typeof(ActiveCapacity);
         /// </summary>
