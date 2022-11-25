@@ -13,6 +13,7 @@ namespace Entities.Capacities
         
         [Range(0, 1)] public float percentage;
         public float timeBeforeHeal;
+        public GameObject healEffectPrefab;
     }
 }
 

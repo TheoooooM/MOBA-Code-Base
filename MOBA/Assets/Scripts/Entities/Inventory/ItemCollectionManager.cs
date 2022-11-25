@@ -7,39 +7,33 @@ namespace Entities.Inventory
     public class ItemCollectionManager : MonoBehaviourPun
     {
         public List<ItemSO> allItemSOs = new List<ItemSO>();
-        public static readonly List<ItemSO> allItems = new List<ItemSO>();
-        public static readonly List<ItemSO> currentItems = new List<ItemSO>();
-        public static PhotonView view;
+        public readonly List<ItemSO> currentItems = new List<ItemSO>();
+        public static ItemCollectionManager Instance;
 
-        private void Start()
+        private void Awake()
         {
-            view = photonView;
-            SetAllItems();
+            if (Instance != null && Instance != this)
+            {
+                DestroyImmediate(this);
+                return;
+            }
+            Instance = this;
         }
 
-        private void SetAllItems()
+        public void LinkCapacityIndexes()
         {
-            allItems.Clear();
-            foreach (var itemSO in allItemSOs)
+            for (byte index = 0; index < allItemSOs.Count; index++)
             {
-                allItems.Add(itemSO);
+                allItemSOs[index].SetIndexes(index);
             }
         }
 
-        public static void LinkCapacityIndexes()
-        {
-            foreach (var itemSO in allItems)
-            {
-                itemSO.SetIndexes();
-            }
-        }
-
-        public static Item CreateItem(byte soIndex,Entity entity)
+        public Item CreateItem(byte soIndex,Entity entity)
         {
             var inventory = entity.GetComponent<IInventoryable>();
             if (inventory == null) return null;
-            if(soIndex>= allItems.Count) return null;
-            var so = allItems[soIndex];
+            if(soIndex>= allItemSOs.Count) return null;
+            var so = allItemSOs[soIndex];
             Item item;
             if (so.consumable)
             {
@@ -50,56 +44,56 @@ namespace Entities.Inventory
                     return item;
                 }
             }
-            item = (Item) Activator.CreateInstance(allItems[soIndex].AssociatedType());
+            item = (Item) Activator.CreateInstance(allItemSOs[soIndex].AssociatedType());
             item.consumable = so.consumable;
             item.indexOfSOInCollection = soIndex;
             
             return item;
         }
         
-        public static ItemSO GetItemSObyIndex(byte index)
+        public ItemSO GetItemSObyIndex(byte index)
         {
-            return allItems[index];
+            return allItemSOs[index];
         }
 
-        public static bool IsInCurrentItems(ItemSO itemSO)
+        public bool IsInCurrentItems(ItemSO itemSO)
         {
             return currentItems.Contains(itemSO);
         }
 
-        public static bool IsInCurrentItems(Item item)
+        public bool IsInCurrentItems(Item item)
         {
             return IsInCurrentItems(item.AssociatedItemSO());
         }
 
-        public static bool IsInCurrentItems(byte itemSoIndex)
+        public bool IsInCurrentItems(byte itemSoIndex)
         {
-            if (itemSoIndex >= allItems.Count) return false;
-            return IsInCurrentItems(allItems[itemSoIndex]);
+            if (itemSoIndex >= allItemSOs.Count) return false;
+            return IsInCurrentItems(allItemSOs[itemSoIndex]);
         }
 
-        public static void TryAddToCurrentItems(byte itemSoIndex)
+        public void TryAddToCurrentItems(byte itemSoIndex)
         {
-            if (itemSoIndex >= allItems.Count) return;
-            view.RPC("AddToCurrentItemsRPC",RpcTarget.All,itemSoIndex);
+            if (itemSoIndex >= allItemSOs.Count) return;
+            photonView.RPC("AddToCurrentItemsRPC",RpcTarget.All,itemSoIndex);
         }
 
-        [PunRPC] public static void AddToCurrentItemsRPC(byte itemSoIndex)
+        [PunRPC] public void AddToCurrentItemsRPC(byte itemSoIndex)
         {
-            if (itemSoIndex >= allItems.Count) return;
-            currentItems.Add(allItems[itemSoIndex]);
+            if (itemSoIndex >= allItemSOs.Count) return;
+            currentItems.Add(allItemSOs[itemSoIndex]);
         }
 
-        public static void TryRemoveFromCurrentItems(byte itemSoIndex)
+        public void TryRemoveFromCurrentItems(byte itemSoIndex)
         {
-            if (itemSoIndex >= allItems.Count) return;
-            view.RPC("RemoveToCurrentItemsRPC",RpcTarget.All,itemSoIndex);
+            if (itemSoIndex >= allItemSOs.Count) return;
+            photonView.RPC("RemoveToCurrentItemsRPC",RpcTarget.All,itemSoIndex);
         }
         
-        [PunRPC] public static void RemoveToCurrentItemsRPC(byte itemSoIndex)
+        [PunRPC] public void RemoveToCurrentItemsRPC(byte itemSoIndex)
         {
-            if (itemSoIndex >= allItems.Count) return;
-            var itemSo = allItems[itemSoIndex];
+            if (itemSoIndex >= allItemSOs.Count) return;
+            var itemSo = allItemSOs[itemSoIndex];
             if(currentItems.Contains(itemSo)) currentItems.Remove(itemSo);
         }
     }

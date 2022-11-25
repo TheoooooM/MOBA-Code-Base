@@ -4,34 +4,31 @@ namespace Entities.Capacities
 {
     public class PassiveKnockbackEffect : PassiveCapacity
     {
-        private PassiveKnockbackEffectSO so;
         public Vector3 direction;
         
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByName(so.name);
+            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
         }
 
-        public override void OnAdded(Entity target)
+        protected override void OnAddedEffects(Entity target)
         {
-            base.OnAdded(target);
-            
             //TODO Rigidbody PassiveKnockbackEffect
         }
 
-        public override void OnAddedFeedback()
+        protected override void OnAddedFeedbackEffects(Entity target)
         {
-            base.OnAddedFeedback();
+            
         }
 
-        public override void OnRemoved()
+        protected override void OnRemovedEffects(Entity target)
         {
-            base.OnRemoved();
+            
         }
 
-        public override void OnRemoveFeedback()
+        protected override void OnRemovedFeedbackEffects(Entity target)
         {
-            base.OnRemoveFeedback();
+            
         }
     }
 }

@@ -16,9 +16,11 @@ MonoBehaviour:
   descriptionName: Potion de Soin
   description: 
   cooldown: 3
+  isTargeting: 0
   maxRange: 0
   types: 0000000002000000
+  shootType: 0
   indexInCollection: 2
-  feedbackDuration: 1
+  feedbackDuration: 100
   feedbackPrefab: {fileID: 3248323131726062708, guid: 9365fdce127720748a1a73011482ddeb, type: 3}
   healAmount: 1

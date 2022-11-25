@@ -13,6 +13,8 @@ namespace Entities.Capacities
   
         [Tooltip("GD Name")] public string descriptionName;
 
+        [Tooltip("Capacity Icon")] public Sprite icon;
+        
         [TextArea(4, 4)] [Tooltip("Description of the capacity")]
         public string description;
 

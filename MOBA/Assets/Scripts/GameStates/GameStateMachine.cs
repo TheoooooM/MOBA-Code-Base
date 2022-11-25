@@ -89,8 +89,6 @@ namespace GameStates
             gamesStates[3] = new PostGameState(this);
 
             DontDestroyOnLoad(gameObject);
-
-            OnTick += () => Debug.Log("Tick!");
         }
 
         private void Start()
@@ -407,7 +405,7 @@ namespace GameStates
 
             LinkChampionSOCapacityIndexes();
 
-            ItemCollectionManager.LinkCapacityIndexes();
+            ItemCollectionManager.Instance.LinkCapacityIndexes();
 
             InstantiateChampion();
             
@@ -492,6 +490,8 @@ namespace GameStates
         private void SetupUI()
         {
             if (UIManager.Instance == null) return;
+            
+            UIManager.Instance.InstantiateChampionHUD();
             
             foreach (var actorNumber in playersReadyDict)
             {

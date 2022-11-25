@@ -17,9 +17,10 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 7ec4e25daa1fe8943a84479144a787fe, type: 3}
   consumable: 0
   activationCooldown: 0
-  passiveCapacities: []
+  passiveCapacities:
+  - {fileID: 11400000, guid: 4892e9fd3d893d04b8b520812f3c9710, type: 2}
   passiveCapacitiesIndexes: 
   activeCapacities: []
   activeCapacitiesIndexes: 
-  indexInCollection: 0
+  indexInCollection: 1
   healthMod: 15
