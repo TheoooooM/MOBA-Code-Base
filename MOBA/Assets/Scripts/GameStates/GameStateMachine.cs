@@ -89,8 +89,6 @@ namespace GameStates
             gamesStates[3] = new PostGameState(this);
 
             DontDestroyOnLoad(gameObject);
-
-            OnTick += () => Debug.Log("Tick!");
         }
 
         private void Start()
