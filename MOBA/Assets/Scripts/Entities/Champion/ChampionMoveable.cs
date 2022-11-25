@@ -36,6 +36,7 @@ namespace Entities.Champion
         void SetupNavMesh()
         {
             agent = GetComponent<NavMeshAgent>();
+            if (!photonView.IsMine) agent.enabled = false;
             //NavMeshBuilder.ClearAllNavMeshes();
             //NavMeshBuilder.BuildNavMesh();
         }
@@ -199,6 +200,8 @@ namespace Entities.Champion
                 agent.SetDestination(transform.position);
             }
         }
+
+        
 
         #endregion
 

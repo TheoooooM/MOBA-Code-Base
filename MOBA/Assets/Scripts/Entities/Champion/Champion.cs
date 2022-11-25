@@ -36,8 +36,9 @@ namespace Entities.Champion
         {
             Move();
             Rotate();
-            CheckMoveDistance();
             if (isFollowing) FollowEntity(); // Lol
+            if (!photonView.IsMine) return;
+            CheckMoveDistance();
         }
 
         public override void OnInstantiated()

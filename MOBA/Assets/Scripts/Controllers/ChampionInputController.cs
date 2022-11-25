@@ -98,10 +98,12 @@ namespace Controllers.Inputs
             cursorWorldPos[0] = hit.point;
             selectedEntity[0] = -1;
             var ent = hit.transform.GetComponent<Entity>();
+            if (ent == null && hit.transform.parent != null) hit.transform.parent.GetComponent<Entity>();
             if(ent != null)
             { 
                 selectedEntity[0] = ent.entityIndex;
                 cursorWorldPos[0] = ent.transform.position;
+                Debug.Log(ent.name);
             }
 
             if(isActivebuttonPress)
@@ -173,6 +175,7 @@ namespace Controllers.Inputs
             }
             else
             {
+                if(!champion.photonView.IsMine){champion.GetComponent<NavMeshAgent>().enabled = false;}
                 inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
                 inputs.MoveMouse.ActiveButton.started += context => isActivebuttonPress = true;
                 inputs.MoveMouse.ActiveButton.canceled += context => isActivebuttonPress = false;
