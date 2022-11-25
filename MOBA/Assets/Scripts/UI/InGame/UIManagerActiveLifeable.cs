@@ -12,7 +12,7 @@ public partial class UIManager
         var entity = EntityCollectionManager.GetEntityByIndex(entityIndex);
         if (entity == null) return;
         if (entity.GetComponent<IActiveLifeable>() == null) return;
-        var canvasHealth = Instantiate(healthBarPrefab, entity.uiTransform.position + offset, Quaternion.identity, entity.uiTransform);
+        var canvasHealth = Instantiate(healthBarPrefab, entity.uiTransform.position + entity.offset, Quaternion.identity, entity.uiTransform);
         canvasHealth.InitHealthBar(entity);
     }
 }

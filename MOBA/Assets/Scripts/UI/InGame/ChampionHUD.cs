@@ -1,4 +1,5 @@
 using Entities;
+using Entities.Champion;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,8 @@ public class ChampionHUD : MonoBehaviour
         healthBar.fillAmount = lifeable.GetCurrentHpPercent();
         resourceBar.fillAmount = resourceable.GetCurrentResourcePercent();
         
+        // TODO: Set cooldowns effects
+
         lifeable.OnSetCurrentHpFeedback += UpdateFillPercentHealth;
         lifeable.OnSetCurrentHpPercentFeedback += UpdateFillPercentByPercentHealth;
         lifeable.OnIncreaseCurrentHpFeedback += UpdateFillPercentHealth;
