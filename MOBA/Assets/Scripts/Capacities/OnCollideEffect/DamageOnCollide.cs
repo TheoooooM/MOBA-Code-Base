@@ -13,12 +13,6 @@ namespace Entities.Capacities
         [HideInInspector] public float speed;
         [SerializeField] private List<byte> effectIndex = new List<byte>();
 
-
-        private void Update()
-        {
-            transform.position += dir * (speed * Time.deltaTime);
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             Entity entity = other.GetComponent<Entity>();
@@ -30,7 +24,9 @@ namespace Entities.Capacities
                 if (PhotonNetwork.IsMasterClient)
                 {
                     activeLifeable.DecreaseCurrentHpRPC(damage);
-
+                    
+                    gameObject.SetActive(false);
+                    
                     foreach (byte index in effectIndex)
                     {
                         //TODO entity.AddPassive(index)

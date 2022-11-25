@@ -79,6 +79,8 @@ MonoBehaviour:
   entityIndex: 0
   canAddPassiveCapacity: 0
   canRemovePassiveCapacity: 0
+  uiTransform: {fileID: 0}
+  offset: {x: 0, y: 2, z: 0}
   canShow: 0
   canHide: 0
   elementsToShow:
@@ -104,7 +106,7 @@ MonoBehaviour:
   canCast: 0
   isAlive: 0
   canDie: 0
-  timer: 10
+  timerToRespawn: 10
   canBeDisplaced: 0
   items: []
   isBattlerite: 1
