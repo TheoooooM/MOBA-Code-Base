@@ -62,7 +62,6 @@ namespace Entities.FogOfWar
             {
                 if (GameStates.GameStateMachine.Instance.GetPlayerTeam() == viewable.team)
                 {
-                    Debug.Log("test");
                     DrawFieldOfView(viewable);
                 }
             }
@@ -110,7 +109,6 @@ namespace Entities.FogOfWar
             foreach (var viewable in allViewables)
             {
                 var seenShowables = viewable.seenShowables;
-                Debug.Log("Count : " + seenShowables.Count);
                 for (int i = seenShowables.Count-1; i >= 0; i--)
                 {
                     if (!currentViewablesWithEntitiesShowables[viewable].Contains((Entity)seenShowables[i]))
