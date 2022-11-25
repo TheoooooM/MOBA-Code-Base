@@ -27,12 +27,7 @@ namespace Entities.Champion
             uiManager = UIManager.Instance;
             camera = Camera.main;
             //fowm.allViewables.Add(entityIndex,this);
-            if(uiManager != null && photonView.IsMine)
-            {
-                // UI : wait
-                //uiManager.InstantiateHealthBarForEntity(entityIndex);
-                //uiManager.InstantiateResourceBarForEntity(entityIndex);
-            }
+            
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
         }
@@ -41,12 +36,12 @@ namespace Entities.Champion
         {
             Move();
             Rotate();
-            CheckMoveDistance(); // Lol
+            CheckMoveDistance();
+            if(isFollowing)FollowEntity();// Lol
         }
 
         public override void OnInstantiated()
         {
-            uiManager = UIManager.Instance;
             if (uiManager != null)
             {
                 uiManager.InstantiateHealthBarForEntity(entityIndex);

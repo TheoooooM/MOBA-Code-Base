@@ -16,6 +16,7 @@ namespace Controllers.Inputs
         private Vector2 moveInput;
         private Vector3 moveVector;
         private Camera cam;
+        private bool isActivebuttonPress;
         
         /// <summary>
         /// Actions Performed on Attack Activation
@@ -92,34 +93,34 @@ namespace Controllers.Inputs
         {
             mousePos = ctx.ReadValue<Vector2>();
             var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
-            
             if (!Physics.Raycast(mouseRay, out var hit)) return;
             cursorWorldPos[0] = hit.point;
             selectedEntity[0] = -1;
             var ent = hit.transform.GetComponent<Entity>();
-            if(ent == null) return;
-            selectedEntity[0] = ent.entityIndex;
-            cursorWorldPos[0] = ent.transform.position;
-        }
-
-        /// <summary>
-        /// Get Entity(ies) and worldPos point by mouse
-        /// </summary>
-        /// <param name="mousePos"></param>
-        /// <returns></returns>
-        public int GetMouseOverEntity(Vector2 mousePos)
-        {
-            Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(mouseRay, out RaycastHit hit))
-            {
-                cursorWorldPos[0] = hit.point;
-                var ent = hit.transform.GetComponent<Entity>();
-                if (ent) return ent.entityIndex;
+            if(ent != null)
+            { 
+                selectedEntity[0] = ent.entityIndex;
+                cursorWorldPos[0] = ent.transform.position;
             }
 
-            return 999999;
+            if(isActivebuttonPress)
+            {
+                champion.MoveToPosition(GetMouseOverWorldPos());
+            }
         }
+        
+        void OnMouseClick(InputAction.CallbackContext ctx)
+        {
+            Debug.Log("MoveClick");
+            champion.MoveToPosition(cursorWorldPos[0]);
+            if (selectedEntity[0] != -1)
+            {
+                champion.RequestAttack(champion.attackAbilityIndex, selectedEntity, cursorWorldPos);
+            }
+        }
+
+        
+        
         /// <summary>
         /// Get World Position of mouse
         /// </summary>
@@ -138,7 +139,7 @@ namespace Controllers.Inputs
         }
 
         /// <summary>
-        /// Actions Performed on Move direction Change
+        /// Actions Performed on Move inputs direction Change
         /// </summary>
         /// <param name="ctx"></param>
         void OnMoveChange(InputAction.CallbackContext ctx)
@@ -147,19 +148,14 @@ namespace Controllers.Inputs
             moveVector = new Vector3(moveInput.x, 0, moveInput.y);
             champion.SetMoveDirection(moveVector);
         }
-
-        void OnMoveClick(InputAction.CallbackContext ctx)
-        {
-            Debug.Log("MoveClick");
-            champion.MoveToPosition(GetMouseOverWorldPos());
-        }
+        
 
         protected override void Link(Entity entity)
         {
+            champion = controlledEntity as Champion;
             base.Link(entity);
             
             cam = Camera.main;
-            champion = controlledEntity as Champion;
             selectedEntity = new int[1];
             cursorWorldPos = new Vector3[1];
             
@@ -176,7 +172,9 @@ namespace Controllers.Inputs
             }
             else
             {
-                inputs.MoveMouse.ActiveButton.performed += OnMoveClick;
+                inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
+                inputs.MoveMouse.ActiveButton.started += context => isActivebuttonPress = true;
+                inputs.MoveMouse.ActiveButton.canceled += context => isActivebuttonPress = false;
             }
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;
@@ -199,8 +197,15 @@ namespace Controllers.Inputs
             inputs.Capacity.Capacity2.performed -= OnActivateUltimateAbility;
             inputs.Inventory.ShowHideShop.performed -= OnShowHideShop;
 
-            inputs.Movement.Move.performed -= OnMoveChange;
-            inputs.Movement.Move.canceled -= OnMoveChange;
+            if (champion.isBattlerite)
+            {
+                inputs.Movement.Move.performed -= OnMoveChange; 
+                inputs.Movement.Move.canceled -= OnMoveChange;
+            }
+            else
+            {
+                inputs.MoveMouse.ActiveButton.performed -= OnMouseClick;
+            }
 
             inputs.MoveMouse.MousePos.performed -= OnMouseMove;
 

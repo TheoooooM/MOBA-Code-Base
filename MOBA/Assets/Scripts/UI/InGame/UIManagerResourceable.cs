@@ -12,8 +12,7 @@ public partial class UIManager
         var entity = EntityCollectionManager.GetEntityByIndex(entityIndex);
         if (entity == null) return;
         if (entity.GetComponent<IResourceable>() == null) return;
-        var entityTransform = entity.transform;
-        var canvasResource = Instantiate(resourceBarPrefab, entityTransform.position + offset, Quaternion.identity, entityTransform);
+        var canvasResource = Instantiate(resourceBarPrefab, entity.uiTransform.position + entity.offset, Quaternion.identity, entity.uiTransform);
         canvasResource.InitResourceBar(entity);
     }
 }
