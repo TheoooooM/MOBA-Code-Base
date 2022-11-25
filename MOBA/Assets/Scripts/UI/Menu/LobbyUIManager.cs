@@ -37,12 +37,15 @@ public class LobbyUIManager : MonoBehaviourPun
     private Enums.Team currentTeam;
     private bool isReady;
 
+    [Header("Debug")] public Button debugButton;
+
     [Serializable]
     private struct ClientInformation
     {
         public GameObject obj;
         public TextMeshProUGUI clientChampionNameText;
         public Image clientTeamColorfulImage;
+        public Image clientReadyStateImage;
     }
 
     private void Awake()
@@ -96,6 +99,9 @@ public class LobbyUIManager : MonoBehaviourPun
 
         // We send request to Master
         sm.SendSetToggleReady(isReady);
+        
+        // Send information to other players
+        RequestShow();
     }
 
     public void OnChampionClick(int index)
@@ -159,6 +165,8 @@ public class LobbyUIManager : MonoBehaviourPun
     [PunRPC]
     private void SyncStartGameRPC()
     {
+        debugButton.interactable = false;
+        
         waitingTextObject.SetActive(false);
         goTextObject.SetActive(true);
     }
@@ -166,17 +174,17 @@ public class LobbyUIManager : MonoBehaviourPun
     private void RequestShow()
     {
         photonView.RPC("ShowRPC", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.ActorNumber, (byte)currentTeam,
-            currentChampion);
+            currentChampion, isReady);
     }
 
     [PunRPC]
-    private void ShowRPC(int photonID, byte team, byte champion)
+    private void ShowRPC(int photonID, byte team, byte champion, bool ready)
     {
-        photonView.RPC("SyncShowRPC", RpcTarget.All, photonID, team, champion);
+        photonView.RPC("SyncShowRPC", RpcTarget.All, photonID, team, champion, ready);
     }
 
     [PunRPC]
-    private void SyncShowRPC(int photonID, byte team, byte champion)
+    private void SyncShowRPC(int photonID, byte team, byte champion, bool ready)
     {
         if (photonID > allClientsInformation.Length)
         {
@@ -200,6 +208,8 @@ public class LobbyUIManager : MonoBehaviourPun
             2 => secondTeamColor,
             _ => allClientsInformation[photonID].clientTeamColorfulImage.color
         };
+
+        allClientsInformation[photonID - 1].clientReadyStateImage.color = ready ? Color.green : Color.red;
     }
 
     private void RequestGetConnectedPlayersInformation()

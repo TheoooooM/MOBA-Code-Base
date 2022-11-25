@@ -7,7 +7,7 @@ public class ActiveTowerAuto : ActiveCapacity
 {
     private Entity _target;
     private Tower _tower;
-    private float timer;
+    private double timer;
     
 
     public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
