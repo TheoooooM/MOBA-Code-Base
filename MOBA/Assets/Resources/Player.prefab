@@ -93,7 +93,7 @@ MonoBehaviour:
   canView: 0
   meshFilterFoV: {fileID: 6566141563896866825}
   championSo: {fileID: 0}
-  championInitPoint: {fileID: 1874783859807748408}
+  rotateParent: {fileID: 0}
   championMesh: {fileID: 0}
   camera: {fileID: 0}
   maxHp: 0

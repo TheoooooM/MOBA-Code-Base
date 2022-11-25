@@ -23,4 +23,5 @@ public class DebugManager : MonoBehaviour
     {
         GameStateMachine.Instance.winner = index == 0 ? Enums.Team.Team1 : Enums.Team.Team2;
     }
+    
 }

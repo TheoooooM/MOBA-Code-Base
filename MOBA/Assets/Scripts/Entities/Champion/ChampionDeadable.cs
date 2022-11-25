@@ -1,3 +1,4 @@
+using GameStates;
 using Photon.Pun;
 using UnityEngine;
 
@@ -7,10 +8,10 @@ namespace Entities.Champion
     {
         public bool isAlive;
         public bool canDie;
-        
+
         // TODO: Delete when TickManager is implemented
-        public float timerToRespawn = 10f;
-        private float timer; 
+        public float respawnDuration = 3;
+        private double respawnTimer;
 
         public bool IsAlive()
         {
@@ -53,10 +54,16 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDieRPC()
         {
-            isAlive = false;
-            championInitPoint.gameObject.SetActive(false);
-            // TODO: Enable Camera Only
-            InputManager.PlayerMap.Disable();
+            if (photonView.IsMine)
+            {
+                InputManager.PlayerMap.Movement.Disable();
+                InputManager.PlayerMap.Attack.Disable();
+                InputManager.PlayerMap.Capacity.Disable();
+                InputManager.PlayerMap.Inventory.Disable();
+            }
+
+            rotateParent.gameObject.SetActive(false);
+
             RequestRevive();
             OnDieFeedback?.Invoke();
         }
@@ -64,8 +71,16 @@ namespace Entities.Champion
         [PunRPC]
         public void DieRPC()
         {
-            if (!canDie) return;
+            if (!canDie)
+            {
+                Debug.LogWarning($"{name} can't die!");
+                return;
+            }
+
+            isAlive = false;
+
             OnDie?.Invoke();
+            GameStateMachine.Instance.OnTick += Revive;
             photonView.RPC("SyncDieRPC", RpcTarget.All);
         }
 
@@ -80,27 +95,39 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncReviveRPC()
         {
-            isAlive = true;
-            // TODO: Replace with SpawnPoint depending on the team of the player
-            transform.position = new Vector3(0, 0, 0);
-            championInitPoint.gameObject.SetActive(true);
-            InputManager.PlayerMap.Enable();
-            timer = timerToRespawn;
-            SetCurrentHpRPC(maxHp);
-            SetCurrentResourceRPC(maxResource);
+            if (photonView.IsMine)
+            {
+                InputManager.PlayerMap.Movement.Enable();
+                InputManager.PlayerMap.Attack.Enable();
+                InputManager.PlayerMap.Capacity.Enable();
+                InputManager.PlayerMap.Inventory.Enable();
+            }
+
+            rotateParent.gameObject.SetActive(true);
             OnReviveFeedback?.Invoke();
         }
 
         [PunRPC]
         public void ReviveRPC()
         {
-            // TODO: Replace by TickManager
-            while (timer > 0)
-            {
-                timer -= Time.deltaTime;
-            }
+            isAlive = true;
+
+            transform.position = respawnPos;
+
+            SetCurrentHpRPC(maxHp);
+            SetCurrentResourceRPC(maxResource);
             OnRevive?.Invoke();
             photonView.RPC("SyncReviveRPC", RpcTarget.All);
+        }
+
+        private void Revive()
+        {
+            respawnTimer += 1 / GameStateMachine.Instance.tickRate;
+
+            if (!(respawnTimer >= respawnDuration)) return;
+            GameStateMachine.Instance.OnTick -= Revive;
+            respawnTimer = 0f;
+            RequestRevive();
         }
 
         public event GlobalDelegates.NoParameterDelegate OnRevive;
