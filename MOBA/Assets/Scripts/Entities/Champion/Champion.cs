@@ -29,10 +29,6 @@ namespace Entities.Champion
             //fowm.allViewables.Add(entityIndex,this);
             if(uiManager != null && photonView.IsMine)
             {
-                // UI : wait
-                //uiManager.InstantiateHealthBarForEntity(entityIndex);
-                //uiManager.InstantiateResourceBarForEntity(entityIndex);
-
                 UIManager.ClickOnItem += RequestAddItem;
                 UIManager.RemoveOnItem += RequestRemoveItem;
             }
@@ -49,7 +45,6 @@ namespace Entities.Champion
 
         public override void OnInstantiated()
         {
-            uiManager = UIManager.Instance;
             if (uiManager != null)
             {
                 uiManager.InstantiateHealthBarForEntity(entityIndex);
