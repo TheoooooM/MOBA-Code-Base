@@ -204,29 +204,6 @@ namespace Entities
         public event GlobalDelegates.ByteDelegate OnPassiveCapacityRemovedFeedback;
 
         #endregion
-
-        #region ClientMethods
-
-        /// <summary>
-        /// Sends an RPC to the master to set the value canAddPassiveCapacity.
-        /// </summary>
-        /// <param name="value">The value tu set canAddPassiveCapacity to</param>
-        public void RequestSetCanAddPassiveCapacity(bool value)
-        {
-            photonView.RPC("SetCanAddPassiveCapacityRPC", RpcTarget.MasterClient, value);
-        }
-
-        /// <summary>
-        /// Sends an RPC to the master to set the value canRemovePassiveCapacity.
-        /// </summary>
-        /// <param name="value">The value to set canRemovePassiveCapacity to</param>
-        public void RequestSetCanRemovePassiveCapacity(bool value)
-        {
-            photonView.RPC("SyncSetCanRemovePassiveCapacityRPC", RpcTarget.MasterClient, value);
-        }
-
-        #endregion
-
-   
+        
     }
 }
