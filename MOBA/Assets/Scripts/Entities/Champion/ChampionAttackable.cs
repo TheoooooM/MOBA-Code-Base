@@ -81,15 +81,25 @@ namespace Entities.Champion
                 else
                 {
                     Debug.Log("Attack in Range");
+                    agent.SetDestination(transform.position);
                     OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
                     photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
+                    
                 }
             }
+            else
+            {
+                Debug.Log("SkillShot");
+
+                agent.SetDestination(transform.position);
+                OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
+                photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
+            }
+        }
+
+        void LaunchAttack()
+        {
             
-            Debug.Log("SkillShot");
-            
-            OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
-            photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
         }
         
         [PunRPC]

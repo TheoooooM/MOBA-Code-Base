@@ -127,7 +127,7 @@ namespace UnityEngine.Rendering.Universal
             Vector4 p = new Vector4(-x * invScale, -y * invScale, invScale, blendFactor);
             //Send the data back to the material
             settings.blitMaterial.SetColor("_Unexplored", mFog.fogColor);
-            Debug.Log(mFog.fogColor);
+            //Debug.Log(mFog.fogColor);
             settings.blitMaterial.SetMatrix("_InverseMVP", mInverseMVP);
             settings.blitMaterial.SetVector("_CamPos", camPos);
             settings.blitMaterial.SetVector("_Params", p);

@@ -16,9 +16,13 @@ MonoBehaviour:
   descriptionName: Auto attack
   description: 
   cooldown: 0
-  maxRange: 0
+  isTargeting: 0
+  maxRange: 1
   types: 
-  indexInCollection: 0
+  shootType: 2
+  indexInCollection: 2
+  feedbackDuration: 0
+  feedbackPrefab: {fileID: 0}
   range: 0
   damage: 0
   attackSpeed: 0

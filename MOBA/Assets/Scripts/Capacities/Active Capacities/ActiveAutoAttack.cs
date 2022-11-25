@@ -10,17 +10,14 @@ public class ActiveAutoAttack : ActiveCapacity
     private double attackTimer;
     private int target;
 
-    public override bool TryCast(int casterIndex, int[] targets, Vector3[] direction)
+    public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        //if the time since the last attack is lower than the attack speed or the target is not in range, return false
-        
-
-        return true;
+        return base.TryCast(casterIndex, targetsEntityIndexes, targetPositions);
     }
 
     public override void PlayFeedback(int entityIndex, int[] targets, Vector3[] position)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("AutoAtk Feedback");
     }
 
     

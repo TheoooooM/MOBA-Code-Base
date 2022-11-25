@@ -189,11 +189,10 @@ namespace Entities.Champion
         
         public void SendFollowEntity(int entityIndex, float capacityDistance)
         {
-            photonView.RPC("FollowEntity", RpcTarget.All, entityIndex, capacityDistance);
+            photonView.RPC("StartFollowEntityRPC", RpcTarget.All, entityIndex, capacityDistance);
         }
 
-        [PunRPC]
-        public void StartFollowEntity(int entityIndex, float capacityDistance)
+        [PunRPC] public void StartFollowEntityRPC(int entityIndex, float capacityDistance)
         {
             Debug.Log("Start Follow Entity");
             if (!photonView.IsMine) return;
