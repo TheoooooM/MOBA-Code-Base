@@ -9,16 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0dafae94bc2430942a9106e2a258c749, type: 3}
-  m_Name: new Auto Attack 1
+  m_Script: {fileID: 11500000, guid: c17864f56e1624845a4eeff929087887, type: 3}
+  m_Name: AI Auto Attack for Minion
   m_EditorClassIdentifier: 
-  referenceName: Auto
-  descriptionName: Auto attack
+  referenceName: AAM
+  descriptionName: 
   description: 
   cooldown: 0
   maxRange: 0
-  types: 
+  types: 04000000
   indexInCollection: 0
-  range: 0
-  damage: 0
-  attackSpeed: 0

@@ -42,6 +42,8 @@ namespace Entities.Champion
 
         public override void OnInstantiated()
         {
+            base.OnInstantiated();
+            uiManager = UIManager.Instance;
             if (uiManager != null)
             {
                 uiManager.InstantiateHealthBarForEntity(entityIndex);

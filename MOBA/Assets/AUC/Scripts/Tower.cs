@@ -74,7 +74,7 @@ public partial class Tower : Building
     }
 }
 
-public partial class Tower : IAttackable, IActiveLifeable
+public partial class Tower : IAttackable, IActiveLifeable, IDeadable
 {
     public bool CanAttack()
     {
@@ -263,22 +263,99 @@ public partial class Tower : IAttackable, IActiveLifeable
 
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+    
     public void RequestDecreaseCurrentHp(float amount)
     {
         photonView.RPC("DecreaseCurrentHpRPC", RpcTarget.MasterClient, amount);
     }
-
+    
+    [PunRPC]
     public void SyncDecreaseCurrentHpRPC(float amount)
     {
-        currentHealth = (int)amount;
+        currentHealth = amount;
     }
 
+    [PunRPC]
     public void DecreaseCurrentHpRPC(float amount)
     {
-        currentHealth -= (int)amount;
+        currentHealth -= amount;
+        if (currentHealth < 0) currentHealth = 0;
+        
         photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHealth);
+        
+        if (currentHealth <= 0 && isAlive)
+        {
+            RequestDie();
+            isAlive = false;
+        }
     }
 
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
+    public bool IsAlive()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool CanDie()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RequestSetCanDie(bool value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncSetCanDieRPC(bool value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetCanDieRPC(bool value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.BoolDelegate OnSetCanDie;
+    public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
+    
+    
+    public void RequestDie()
+    {
+        photonView.RPC("DieRPC", RpcTarget.MasterClient);
+    }
+
+    [PunRPC]
+    public void SyncDieRPC()
+    {
+        isAlive = false;
+        Destroy(gameObject);
+    }
+
+    [PunRPC]
+    public void DieRPC()
+    {
+        photonView.RPC("SyncDieRPC", RpcTarget.All);
+    }
+
+    public event GlobalDelegates.NoParameterDelegate OnDie;
+    public event GlobalDelegates.NoParameterDelegate OnDieFeedback;
+    public void RequestRevive()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncReviveRPC()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ReviveRPC()
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.NoParameterDelegate OnRevive;
+    public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
 }

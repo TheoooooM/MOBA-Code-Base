@@ -3,18 +3,18 @@ using Entities.Capacities;
 using GameStates;
 using UnityEngine;
 
-public class ActiveTowerAuto : ActiveCapacity
+public class ActiveMinionAuto : ActiveCapacity
 {
     private Entity _target;
-    private Tower _tower;
+    private MinionTest _minion;
     private double timer;
     
     public override bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        _tower = caster.GetComponent<Tower>();
-        _target = _tower.enemiesInRange[0].GetComponent<Entity>();
-        
-        if (Vector3.Distance(_tower.transform.position, _target.transform.position) > _tower.detectionRange){return false;}
+        _minion = caster.GetComponent<MinionTest>();
+        _target = _minion.currentAttackTarget.GetComponent<Entity>();
+
+        if (Vector3.Distance(_minion.transform.position, _target.transform.position) > _minion.attackRange){return false;}
         
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
         
@@ -29,7 +29,7 @@ public class ActiveTowerAuto : ActiveCapacity
     {
         timer += 1 / GameStateMachine.Instance.tickRate;
 
-        if (timer >= _tower.delayBeforeAttack) 
+        if (timer >= _minion.delayBeforeAttack) 
         {
             ApplyEffect();
             GameStateMachine.Instance.OnTick -= DelayWaitingTick;
@@ -39,6 +39,6 @@ public class ActiveTowerAuto : ActiveCapacity
     private void ApplyEffect()
     {
         IActiveLifeable entityActiveLifeable = _target.GetComponent<IActiveLifeable>();
-        entityActiveLifeable.DecreaseCurrentHpRPC(_tower.damage); 
+        entityActiveLifeable.DecreaseCurrentHpRPC(_minion.attackDamage); 
     }
 }
