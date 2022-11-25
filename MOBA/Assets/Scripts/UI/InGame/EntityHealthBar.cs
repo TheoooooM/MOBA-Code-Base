@@ -9,6 +9,7 @@ namespace UIComponents
         [SerializeField] private Image healthBar;
         private Entity linkedEntity;
         private IActiveLifeable lifeable;
+        private IDeadable deadable;
         private Camera cam;
 
         private void Start()
@@ -20,6 +21,7 @@ namespace UIComponents
         {
             linkedEntity = entity;
             lifeable = entity.GetComponent<IActiveLifeable>();
+            deadable = entity.GetComponent<IDeadable>();
         
             transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();
@@ -27,6 +29,8 @@ namespace UIComponents
             lifeable.OnSetCurrentHpPercentFeedback += UpdateFillPercentByPercent;
             lifeable.OnIncreaseCurrentHpFeedback += UpdateFillPercent;
             lifeable.OnDecreaseCurrentHpFeedback += UpdateFillPercent;
+            deadable.OnSetCanDieFeedback += DeactivateHealth;
+            deadable.OnReviveFeedback += ActivateHealth;
         }
 
         private void UpdateFillPercentByPercent(float value)
@@ -39,11 +43,14 @@ namespace UIComponents
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();
         }
 
-        public void SetActive(bool active)
+        private void ActivateHealth()
         {
-            healthBar.gameObject.SetActive(active);
+            gameObject.SetActive(true);
+        }
+
+        private void DeactivateHealth(bool active)
+        {
+            gameObject.SetActive(!active);
         }
     }
-
 }
-

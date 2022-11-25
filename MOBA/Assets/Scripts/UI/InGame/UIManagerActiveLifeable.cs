@@ -16,5 +16,4 @@ public partial class UIManager
         var canvasHealth = Instantiate(healthBarPrefab, entityTransform.position + offset, Quaternion.identity, entityTransform);
         canvasHealth.InitHealthBar(entity);
     }
-    
 }

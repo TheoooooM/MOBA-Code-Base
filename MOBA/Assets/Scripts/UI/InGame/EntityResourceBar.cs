@@ -9,6 +9,7 @@ namespace UIComponents
         [SerializeField] private Image resourceBar;
         private Entity linkedEntity;
         private IResourceable resourceable;
+        private IDeadable deadable;
         private Camera cam;
 
         private void Start()
@@ -27,6 +28,8 @@ namespace UIComponents
             resourceable.OnSetCurrentResourceFeedback += UpdateFillPercentByPercent;
             resourceable.OnIncreaseCurrentResourceFeedback += UpdateFillPercent;
             resourceable.OnDecreaseCurrentResourceFeedback += UpdateFillPercent;
+            deadable.OnSetCanDieFeedback += DeactivateResource;
+            deadable.OnReviveFeedback += ActivateResource;
         }
 
         private void UpdateFillPercentByPercent(float value)
@@ -38,10 +41,15 @@ namespace UIComponents
         {
             resourceBar.fillAmount = resourceable.GetCurrentResource();
         }
-
-        public void SetActive(bool active)
+        
+        private void ActivateResource()
         {
-            resourceBar.gameObject.SetActive(active);
+            gameObject.SetActive(true);
+        }
+
+        private void DeactivateResource(bool active)
+        {
+            resourceBar.gameObject.SetActive(!active);
         }
     }
 }

@@ -180,7 +180,6 @@ namespace Entities.Champion
             {
                 currentHp = 0;
                 RequestSetCanDie(true);
-                RequestDie();
             }
             OnDecreaseCurrentHp?.Invoke(amount);
             photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp);
