@@ -4,6 +4,7 @@ using Entities.FogOfWar;
 using System.Linq;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Entities
 {
@@ -18,8 +19,8 @@ namespace Entities
         public bool canView;
         public List<IFOWShowable> seenShowables = new List<IFOWShowable>();
         public GameObject meshFilterFoV;
-
-
+        
+        
         public Enums.Team GetTeam()
         {
             return team;
@@ -245,5 +246,10 @@ namespace Entities
 
         public event GlobalDelegates.IntDelegate OnRemoveShowable;
         public event GlobalDelegates.IntDelegate OnRemoveShowableFeedback;
+
+        protected virtual void ShowableRemoved(ObservableList<IFOWShowable> sender, ListChangedEventArgs<IFOWShowable> e)
+        {
+            showableRemoved?.Invoke(sender, e);
+        }
     }
 }

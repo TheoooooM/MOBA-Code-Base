@@ -32,9 +32,7 @@ namespace Entities.FogOfWar
         /// List Of all IFogOfWarViewable for Fog of War render
         /// </summary>
         /// <param name="IFogOfWarViewable"> Interface for Entity </param>
-        //Transform Dictionnary into List
         private List<Entity> allViewables = new List<Entity>();
-
         private Dictionary<Entity, List<Entity>> currentViewablesWithEntitiesShowables =
             new Dictionary<Entity, List<Entity>>();
 
@@ -112,14 +110,16 @@ namespace Entities.FogOfWar
             {
                 var seenShowables = viewable.seenShowables;
                 Debug.Log("Count : " + seenShowables.Count);
-                foreach (var showable in seenShowables)
+                for (int i = seenShowables.Count-1; i >= 0; i--)
                 {
-                    if (!currentViewablesWithEntitiesShowables[viewable].Contains((Entity)showable))
+                    if (!currentViewablesWithEntitiesShowables[viewable].Contains((Entity)seenShowables[i]))
                     {
-                        viewable.RemoveShowable(showable);
+                        viewable.RemoveShowable(seenShowables[i]);
                         Debug.Log("Remove Elements from list");
                     }
+                    
                 }
+                
             }
         }
 
@@ -238,6 +238,8 @@ namespace Entities.FogOfWar
                 {
                     entity.AddShowable(candidateEntity);
                     currentViewablesWithEntitiesShowables[entity].Add(candidateEntity);
+                    return new ViewCastInfo(false, entity.transform.position + dir * entity.viewRange, entity.viewRange,
+                        globalAngle);
                 }
                 return new ViewCastInfo(true, hit.point, hit.distance, globalAngle);
             }
