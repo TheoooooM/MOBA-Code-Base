@@ -10,8 +10,8 @@ namespace Entities
         [Space]
         [Header("Life Building settings")]
         public bool isAlive;
-        public int maxHealth;
-        public int currentHealth;
+        public float maxHealth;
+        public float currentHealth;
 
         protected override void OnStart()
         {

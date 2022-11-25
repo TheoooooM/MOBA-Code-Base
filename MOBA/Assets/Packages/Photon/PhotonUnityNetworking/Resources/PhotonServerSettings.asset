@@ -201,6 +201,9 @@ MonoBehaviour:
   - SyncChampionPhotonId
   - StartFollowEntity
   - StartFollowEntityRPC
+  - SyncChampionPhotonId
+  - RequestDecreaseCurrentHp
+  - RequestDie
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

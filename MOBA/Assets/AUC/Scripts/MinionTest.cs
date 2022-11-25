@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Entities;
 using Entities.Capacities;
+using Entities.FogOfWar;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,7 +12,7 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
 {
     #region MinionVariables
     
-    private NavMeshAgent myAgent;
+    public NavMeshAgent myAgent;
     private MinionController myController;
     
     [Header("Pathfinding")] 
@@ -31,20 +32,23 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
     public bool attackCycle;
 
     [Header("Stats")]
-    public int currentHealth;
-    public int attackDamage;
+    public float currentHealth;
+    public float attackDamage;
     public float attackSpeed;
     [Range(5, 15)] public float attackRange;
-    private int maxHealth;
+    public float delayBeforeAttack;
+    public float maxHealth;
     #endregion
 
     protected override void OnStart()
     {
+        base.OnStart();
         myAgent = GetComponent<NavMeshAgent>();
         myController = GetComponent<MinionController>();
         currentHealth = maxHealth;
+        Debug.Log("OnStart ? " + gameObject.name);
     }
-
+    
     //------ State Methods
 
     public void IdleState()
@@ -150,7 +154,7 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
     }
 }
 
-public partial class MinionTest
+public partial class MinionTest : IDeadable
 {
     public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
     public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttackFeedback;
@@ -217,12 +221,11 @@ public partial class MinionTest
     
     public override void OnInstantiated()
     {
-        throw new System.NotImplementedException();
+        base.OnInstantiated();
     }
 
     public override void OnInstantiatedFeedback()
     {
-        throw new System.NotImplementedException();
     }
 
     public bool CanMove()
@@ -498,22 +501,98 @@ public partial class MinionTest
 
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+    
+    
     public void RequestDecreaseCurrentHp(float amount)
     {
         photonView.RPC("DecreaseCurrentHpRPC", RpcTarget.MasterClient, amount);
     }
-
+    
+    [PunRPC]
     public void SyncDecreaseCurrentHpRPC(float amount)
     {
-        currentHealth = (int)amount;
+        currentHealth = amount;
     }
 
+    [PunRPC]
     public void DecreaseCurrentHpRPC(float amount)
     {
-        currentHealth -= (int)amount;
+        currentHealth -= amount;
+        if (currentHealth < 0) currentHealth = 0;
+        
         photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHealth);
+        
+        if (currentHealth <= 0)
+        {
+            RequestDie();     
+        }
     }
 
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
+    public bool IsAlive()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool CanDie()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RequestSetCanDie(bool value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncSetCanDieRPC(bool value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetCanDieRPC(bool value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.BoolDelegate OnSetCanDie;
+    public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
+    
+    public void RequestDie()
+    {
+        photonView.RPC("DieRPC", RpcTarget.MasterClient);
+    }
+
+    [PunRPC]
+    public void SyncDieRPC()
+    {
+        PoolNetworkManager.Instance.PoolRequeue(this);
+        FogOfWarManager.Instance.RemoveFOWViewable(this);
+    }
+    
+    [PunRPC]
+    public void DieRPC()
+    {
+        photonView.RPC("SyncDieRPC", RpcTarget.All);
+    }
+
+    public event GlobalDelegates.NoParameterDelegate OnDie;
+    public event GlobalDelegates.NoParameterDelegate OnDieFeedback;
+    public void RequestRevive()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncReviveRPC()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ReviveRPC()
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.NoParameterDelegate OnRevive;
+    public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
 }
