@@ -16,6 +16,7 @@ namespace Controllers.Inputs
         private Vector2 moveInput;
         private Vector3 moveVector;
         private Camera cam;
+        private bool isActivebuttonPress;
         
         /// <summary>
         /// Actions Performed on Attack Activation
@@ -99,15 +100,16 @@ namespace Controllers.Inputs
             // var ent = hit.transform.GetComponent<Entity>();
             // if(ent == null) return;
             // selectedEntity[0] = ent.entityIndex;
-
+            if (isActivebuttonPress)
+            {
+                MouseActiveActions();
+            }
         }
 
         /// <summary>
         /// Get Entity(ies) and worldPos point by mouse
         /// </summary>
-        /// <param name="mousePos"></param>
-        /// <returns></returns>
-        public int GetMouseOverEntity(Vector2 mousePos)
+        public int GetMouseOverEntity()
         {
             Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -120,6 +122,7 @@ namespace Controllers.Inputs
 
             return 999999;
         }
+        
         /// <summary>
         /// Get World Position of mouse
         /// </summary>
@@ -138,7 +141,7 @@ namespace Controllers.Inputs
         }
 
         /// <summary>
-        /// Actions Performed on Move direction Change
+        /// Actions Performed on Move inputs direction Change
         /// </summary>
         /// <param name="ctx"></param>
         void OnMoveChange(InputAction.CallbackContext ctx)
@@ -151,7 +154,17 @@ namespace Controllers.Inputs
         void OnMoveClick(InputAction.CallbackContext ctx)
         {
             Debug.Log("MoveClick");
-            champion.MoveToPosition(GetMouseOverWorldPos());
+            MouseActiveActions();
+        }
+
+        void MouseActiveActions()
+        {
+            int entity = GetMouseOverEntity();
+            if (entity != 999999)
+            {
+                if(CapacitySOCollectionManager.GetActiveCapacitySOByIndex(champion.attackAbilityIndex).)
+            }
+            else champion.MoveToPosition(GetMouseOverWorldPos());
         }
 
         protected override void Link(Entity entity)
@@ -177,6 +190,8 @@ namespace Controllers.Inputs
             else
             {
                 inputs.MoveMouse.ActiveButton.performed += OnMoveClick;
+                inputs.MoveMouse.ActiveButton.started += context => isActivebuttonPress = true;
+                inputs.MoveMouse.ActiveButton.canceled += context => isActivebuttonPress = false;
             }
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;
@@ -199,8 +214,15 @@ namespace Controllers.Inputs
             inputs.Capacity.Capacity2.performed -= OnActivateUltimateAbility;
             inputs.Inventory.ShowHideShop.performed -= OnShowHideShop;
 
-            inputs.Movement.Move.performed -= OnMoveChange;
-            inputs.Movement.Move.canceled -= OnMoveChange;
+            if (champion.isBattlerite)
+            {
+                inputs.Movement.Move.performed -= OnMoveChange; 
+                inputs.Movement.Move.canceled -= OnMoveChange;
+            }
+            else
+            {
+                inputs.MoveMouse.ActiveButton.performed -= OnMoveClick;
+            }
 
             inputs.MoveMouse.MousePos.performed -= OnMouseMove;
 
