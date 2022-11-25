@@ -23,7 +23,8 @@ namespace UIComponents
         
             transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
             healthBar.fillAmount = lifeable.GetCurrentHpPercent();
-               
+
+            lifeable.OnSetCurrentHpFeedback += UpdateFillPercent;
             lifeable.OnSetCurrentHpPercentFeedback += UpdateFillPercentByPercent;
             lifeable.OnIncreaseCurrentHpFeedback += UpdateFillPercent;
             lifeable.OnDecreaseCurrentHpFeedback += UpdateFillPercent;

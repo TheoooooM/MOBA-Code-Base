@@ -23,7 +23,8 @@ namespace UIComponents
             transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
             resourceBar.fillAmount = resourceable.GetCurrentResourcePercent();
 
-            resourceable.OnSetCurrentResourceFeedback += UpdateFillPercentByPercent;
+            resourceable.OnSetCurrentResourceFeedback += UpdateFillPercent;
+            resourceable.OnSetCurrentResourcePercentFeedback += UpdateFillPercentByPercent;
             resourceable.OnIncreaseCurrentResourceFeedback += UpdateFillPercent;
             resourceable.OnDecreaseCurrentResourceFeedback += UpdateFillPercent;
             resourceable.OnIncreaseMaxResourceFeedback += UpdateFillPercent;

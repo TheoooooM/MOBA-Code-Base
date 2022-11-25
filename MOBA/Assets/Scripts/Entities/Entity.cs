@@ -29,6 +29,11 @@ namespace Entities
         /// </summary>
         public readonly List<PassiveCapacity> passiveCapacitiesList = new List<PassiveCapacity>();
 
+        /// <summary>
+        /// The transform of the UI of the entity.
+        /// </summary>
+        public Transform uiTransform;
+
         private void Start()
         {
             entityIndex = photonView.ViewID;
