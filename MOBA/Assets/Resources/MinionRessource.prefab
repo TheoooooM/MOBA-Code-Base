@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4555090259929885739}
   - component: {fileID: 4555090259929885740}
   - component: {fileID: 2637466631205122503}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MinionRessource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,10 +186,11 @@ MonoBehaviour:
   currentAttackTarget: {fileID: 0}
   whoIsAttackingMe: []
   attackCycle: 0
-  currentHealth: 10
+  currentHealth: 20
   attackDamage: 3
   attackSpeed: 2
   attackRange: 5
+  maxHealth: 20
 --- !u!114 &4555090259929885740
 MonoBehaviour:
   m_ObjectHideFlags: 0

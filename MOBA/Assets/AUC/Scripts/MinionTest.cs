@@ -35,7 +35,7 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
     public int attackDamage;
     public float attackSpeed;
     [Range(5, 15)] public float attackRange;
-    private int maxHealth;
+    public int maxHealth;
     #endregion
 
     protected override void OnStart()
@@ -150,7 +150,7 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
     }
 }
 
-public partial class MinionTest
+public partial class MinionTest : IDeadable
 {
     public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttack;
     public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnAttackFeedback;
@@ -511,9 +511,77 @@ public partial class MinionTest
     public void DecreaseCurrentHpRPC(float amount)
     {
         currentHealth -= (int)amount;
+        if (currentHealth < 0) currentHealth = 0;
+        
         photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHealth);
+        
+        if (currentHealth <= 0)
+        {
+            RequestDie();     
+        }
     }
 
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHp;
     public event GlobalDelegates.FloatDelegate OnDecreaseCurrentHpFeedback;
+    public bool IsAlive()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool CanDie()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RequestSetCanDie(bool value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncSetCanDieRPC(bool value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetCanDieRPC(bool value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.BoolDelegate OnSetCanDie;
+    public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
+    public void RequestDie()
+    {
+        photonView.RPC("DieRPC", RpcTarget.MasterClient);
+    }
+
+    public void SyncDieRPC()
+    {
+        Destroy(gameObject);
+    }
+
+    public void DieRPC()
+    {
+        photonView.RPC("SyncDieRPC", RpcTarget.All);
+    }
+
+    public event GlobalDelegates.NoParameterDelegate OnDie;
+    public event GlobalDelegates.NoParameterDelegate OnDieFeedback;
+    public void RequestRevive()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SyncReviveRPC()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ReviveRPC()
+    {
+        throw new NotImplementedException();
+    }
+
+    public event GlobalDelegates.NoParameterDelegate OnRevive;
+    public event GlobalDelegates.NoParameterDelegate OnReviveFeedback;
 }
