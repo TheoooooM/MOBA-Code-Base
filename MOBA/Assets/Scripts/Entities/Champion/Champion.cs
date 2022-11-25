@@ -44,7 +44,8 @@ namespace Entities.Champion
         {
             Move();
             Rotate();
-            CheckMoveDistance(); // Lol
+            CheckMoveDistance();
+            if(isFollowing)FollowEntity();// Lol
         }
 
         public override void OnInstantiated()
