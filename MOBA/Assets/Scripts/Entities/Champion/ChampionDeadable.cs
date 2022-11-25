@@ -28,6 +28,7 @@ namespace Entities.Champion
         public void SyncSetCanDieRPC(bool value)
         {
             canDie = value;
+            isAlive = !value;
             OnSetCanDieFeedback?.Invoke(value);
             RequestDie();
         }
@@ -36,6 +37,7 @@ namespace Entities.Champion
         public void SetCanDieRPC(bool value)
         {
             canDie = value;
+            isAlive = !value;
             OnSetCanDie?.Invoke(value);
             photonView.RPC("SyncSetCanDieRPC", RpcTarget.All, value);
         }
@@ -51,16 +53,16 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDieRPC()
         {
-            OnDieFeedback?.Invoke();
+            // TODO: Add death animation, deactivate mesh, collider, movements, etc.
             RequestRevive();
+            OnDieFeedback?.Invoke();
         }
 
         [PunRPC]
         public void DieRPC()
         {
             if (!canDie) return;
-            isAlive = false;
-            // TODO: Add death animation, deactivate mesh, collider, movements, etc.
+            if (isAlive) return;
             OnDie?.Invoke();
             photonView.RPC("SyncDieRPC", RpcTarget.All);
         }
@@ -76,9 +78,10 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncReviveRPC()
         {
-            OnReviveFeedback?.Invoke();
             isAlive = true;
             canDie = false;
+            // TODO: Add revive animation, activate mesh, collider, movements, etc.
+            OnReviveFeedback?.Invoke();
         }
 
         [PunRPC]

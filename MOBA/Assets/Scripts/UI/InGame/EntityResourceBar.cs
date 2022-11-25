@@ -7,7 +7,6 @@ namespace UIComponents
     public class EntityResourceBar : MonoBehaviour
     {
         [SerializeField] private Image resourceBar;
-        private Entity linkedEntity;
         private IResourceable resourceable;
         private IDeadable deadable;
         private Camera cam;
@@ -19,7 +18,6 @@ namespace UIComponents
 
         public void InitResourceBar(Entity entity)
         {
-            linkedEntity = entity;
             resourceable = entity.GetComponent<IResourceable>();
 
             transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
@@ -28,6 +26,8 @@ namespace UIComponents
             resourceable.OnSetCurrentResourceFeedback += UpdateFillPercentByPercent;
             resourceable.OnIncreaseCurrentResourceFeedback += UpdateFillPercent;
             resourceable.OnDecreaseCurrentResourceFeedback += UpdateFillPercent;
+            resourceable.OnIncreaseMaxResourceFeedback += UpdateFillPercent;
+            resourceable.OnDecreaseMaxResourceFeedback += UpdateFillPercent;
             deadable.OnSetCanDieFeedback += DeactivateResource;
             deadable.OnReviveFeedback += ActivateResource;
         }
