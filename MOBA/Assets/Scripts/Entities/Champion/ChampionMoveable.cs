@@ -186,11 +186,7 @@ namespace Entities.Champion
             agent.SetDestination(position);
         }
 
-        public void SendFollowEntity(int entityIndex)
-        {
-            photonView.RPC("FollowEntity", RpcTarget.All, entityIndex);
-        }
-
+        
         public void SendFollowEntity(int entityIndex, float capacityDistance)
         {
             photonView.RPC("FollowEntity", RpcTarget.All, entityIndex, capacityDistance);
@@ -206,31 +202,6 @@ namespace Entities.Champion
             attackRange = capacityDistance;
         }
         
-        void FollowEntity()
-        {
-            agent.SetDestination(entityFollow.transform.position);
-            if (attackRange <= agent.remainingDistance)
-            {
-                Debug.Log("In Range to Attack");
-                agent.SetDestination(transform.position);
-                RequestAttack(lastCapacityIndex, lastTargetedEntities, lastTargetedPositions);
-            }
-        }
-
-        public void SendFollowEntity(int entityIndex, float capacityDistance)
-        {
-            photonView.RPC("FollowEntity", RpcTarget.All, entityIndex, capacityDistance);
-        }
-        
-        [PunRPC] public void StartFollowEntity(int entityIndex, float capacityDistance)
-        {
-            Debug.Log("Start Follow Entity");
-            if (!photonView.IsMine) return;
-            isFollowing = true;
-            entityFollow = EntityCollectionManager.GetEntityByIndex(entityIndex);
-            attackRange = capacityDistance;
-        }
-
         void FollowEntity()
         {
             agent.SetDestination(entityFollow.transform.position);
