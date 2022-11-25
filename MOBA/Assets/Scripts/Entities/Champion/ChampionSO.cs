@@ -6,7 +6,9 @@ namespace Entities.Champion
     [CreateAssetMenu(menuName = "Champion", fileName = "new Champion")]
     public class ChampionSO : ScriptableObject
     {
-        [Header("Mesh")] public GameObject championMeshPrefab;
+        [Header("Visual")]
+        public GameObject championMeshPrefab;
+        public int canvasIndex;
         
         [Header("Stats")]
         public float maxHp;
