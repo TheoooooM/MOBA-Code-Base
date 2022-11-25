@@ -113,7 +113,7 @@ namespace Controllers.Inputs
         void OnMouseClick(InputAction.CallbackContext ctx)
         {
             Debug.Log("MoveClick");
-            champion.MoveToPosition(GetMouseOverWorldPos());
+            champion.MoveToPosition(cursorWorldPos[0]);
             if (selectedEntity[0] != -1)
             {
                 champion.RequestAttack(champion.attackAbilityIndex, selectedEntity, cursorWorldPos);

@@ -56,6 +56,7 @@ namespace Entities.Champion
 
         public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
+            Debug.Log("Request Attack");
             photonView.RPC("AttackRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
         }
 
@@ -79,10 +80,13 @@ namespace Entities.Champion
                 }
                 else
                 {
+                    Debug.Log("Attack in Range");
                     OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
                     photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
                 }
             }
+            
+            Debug.Log("SkillShot");
             
             OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
             photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
