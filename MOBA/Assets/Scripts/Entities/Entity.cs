@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Entities
 {
-    [RequireComponent(typeof(PhotonView))]
+    [RequireComponent(typeof(PhotonView)), RequireComponent(typeof(PhotonTransformView))]
     public abstract partial class Entity : MonoBehaviourPun, ITeamable
     {
         /// <summary>
