@@ -50,6 +50,7 @@ namespace Entities.Capacities
 
                 if (entityTouch)
                 {
+                    Debug.Log(entityTouch);
                     ITeamable entityTeam = entityTouch.GetComponent<ITeamable>();
                     ITeamable casterTeam = caster.GetComponent<ITeamable>();
 
@@ -57,7 +58,7 @@ namespace Entities.Capacities
                     {
                         IActiveLifeable entityActiveLifeable = entityTouch.GetComponent<IActiveLifeable>();
 
-                        entityActiveLifeable.DecreaseCurrentHpRPC(so.damageAmount);
+                        if(entityActiveLifeable != null) entityActiveLifeable.DecreaseCurrentHpRPC(so.damageAmount);
                     }
                 }
             }
