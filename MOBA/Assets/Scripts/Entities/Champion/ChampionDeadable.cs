@@ -29,6 +29,7 @@ namespace Entities.Champion
         {
             canDie = value;
             OnSetCanDieFeedback?.Invoke(value);
+            RequestDie();
         }
 
         [PunRPC]
@@ -51,6 +52,7 @@ namespace Entities.Champion
         public void SyncDieRPC()
         {
             OnDieFeedback?.Invoke();
+            RequestRevive();
         }
 
         [PunRPC]
@@ -75,6 +77,8 @@ namespace Entities.Champion
         public void SyncReviveRPC()
         {
             OnReviveFeedback?.Invoke();
+            isAlive = true;
+            canDie = false;
         }
 
         [PunRPC]
