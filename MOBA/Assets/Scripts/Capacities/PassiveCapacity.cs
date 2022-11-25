@@ -4,8 +4,9 @@ namespace Entities.Capacities
 {
     public abstract class PassiveCapacity
     {
-        private byte indexOfSo; //Index Reference in CapacitySOCollectionManager
+        public byte indexOfSo; //Index Reference in CapacitySOCollectionManager
 
+        public bool stackable;
         private int count; //Amount of Stacks
 
         public List<Enums.CapacityType> types; //All types of the capacity
@@ -14,37 +15,48 @@ namespace Entities.Capacities
 
         protected Entity entity;
         
+        
+        public void OnAdded(Entity target)
+        {
+            if (stackable) count++;
+            entity = target;
+            OnAddedEffects(entity);
+        }
+
         /// <summary>
         /// Call when a Stack of the capicity is Added
         /// </summary>
-        public virtual void OnAdded(Entity target)
-        {
-            entity = target;
-            entity.passiveCapacitiesList.Add(this);
-        }
+        protected abstract void OnAddedEffects(Entity target);
 
         /// <summary>
         /// Call Feedback of the Stack on when Added
         /// </summary>
-        public virtual void OnAddedFeedback()
+        public void OnAddedFeedback(Entity target)
         {
-            entity.passiveCapacitiesList.Add(this);
+            entity = target;
+            OnAddedFeedbackEffects(target);
         }
+        
+        protected abstract void OnAddedFeedbackEffects(Entity target);
 
         /// <summary>
         /// Call when a Stack of the capacity is Removed
         /// </summary>
-        public virtual void OnRemoved()
+        public void OnRemoved(Entity target)
         {
-            entity.passiveCapacitiesList.Remove(this);
+            OnRemovedEffects(target);
         }
+        
+        protected abstract void OnRemovedEffects(Entity target);
 
         /// <summary>
         /// Call Feedback of the Stack on when Removed
         /// </summary>
-        public virtual void OnRemoveFeedback()
+        public void OnRemovedFeedback(Entity target)
         {
-            entity.passiveCapacitiesList.Remove(this);
+            OnRemovedFeedbackEffects(target);
         }
+        
+        protected abstract void OnRemovedFeedbackEffects(Entity target);
     }
 }

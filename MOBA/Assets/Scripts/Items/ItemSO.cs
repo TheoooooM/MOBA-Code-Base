@@ -26,8 +26,9 @@ namespace Entities.Inventory
         public abstract Type AssociatedType();
         [HideInInspector] public byte indexInCollection;
         
-        public void SetIndexes()
+        public void SetIndexes(byte indexInColle)
         {
+            indexInCollection = indexInColle;
             // Passives
             passiveCapacitiesIndexes = new byte[passiveCapacities.Length];
             for (var index = 0; index < passiveCapacities.Length; index++)
@@ -37,8 +38,8 @@ namespace Entities.Inventory
                     CapacitySOCollectionManager.GetPassiveCapacitySOIndex(passiveCapacitySo);
             }
             // Actives
-            activeCapacitiesIndexes = new byte[activeCapacitiesIndexes.Length];
-            for (var index = 0; index < activeCapacitiesIndexes.Length; index++)
+            activeCapacitiesIndexes = new byte[activeCapacities.Length];
+            for (var index = 0; index < activeCapacities.Length; index++)
             {
                 var activeCapacitySo = activeCapacities[index];
                 activeCapacitiesIndexes[index] =

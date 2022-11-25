@@ -79,8 +79,6 @@ MonoBehaviour:
   entityIndex: 0
   canAddPassiveCapacity: 0
   canRemovePassiveCapacity: 0
-  uiTransform: {fileID: 0}
-  offset: {x: 0, y: 2, z: 0}
   canShow: 0
   canHide: 0
   elementsToShow:
@@ -93,7 +91,7 @@ MonoBehaviour:
   canView: 0
   meshFilterFoV: {fileID: 6566141563896866825}
   championSo: {fileID: 0}
-  rotateParent: {fileID: 0}
+  championInitPoint: {fileID: 1874783859807748408}
   championMesh: {fileID: 0}
   camera: {fileID: 0}
   maxHp: 0
@@ -106,10 +104,10 @@ MonoBehaviour:
   canCast: 0
   isAlive: 0
   canDie: 0
-  timerToRespawn: 10
+  timer: 10
   canBeDisplaced: 0
   items: []
-  isBattlerite: 0
+  isBattlerite: 1
   referenceMoveSpeed: 10
   currentMoveSpeed: 10
   currentRotateSpeed: 0

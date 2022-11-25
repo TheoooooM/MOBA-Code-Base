@@ -19,6 +19,7 @@ namespace Entities.Champion
         private CapacitySOCollectionManager capacityCollection;
         private UIManager uiManager;
         public Camera camera;
+        public Rigidbody rb;
 
         protected override void OnStart()
         {
@@ -34,10 +35,16 @@ namespace Entities.Champion
 
         protected override void OnUpdate()
         {
+            RotateMath();
+            if (isFollowing) FollowEntity(); // Lol
+            if (!photonView.IsMine) return;
+            CheckMoveDistance();
+        }
+
+        protected override void OnFixedUpdate()
+        {
             Move();
             Rotate();
-            CheckMoveDistance();
-            if (isFollowing) FollowEntity(); // Lol
         }
 
         public override void OnInstantiated()
@@ -70,6 +77,7 @@ namespace Entities.Champion
             ultimateAbilityIndex = championSo.ultimateAbilityIndex;
             var championMesh = Instantiate(championSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
+            championMesh.transform.localEulerAngles = Vector3.zero;
 
             team = newTeam;
 
@@ -92,6 +100,8 @@ namespace Entities.Champion
 
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
             elementsToShow.Add(championMesh);
+            
+            RequestSetCanDie(true);
         }
     }
 }

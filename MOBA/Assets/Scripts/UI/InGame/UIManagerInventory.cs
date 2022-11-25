@@ -98,7 +98,6 @@ public partial class UIManager
     {
         var playerTeam = GameStateMachine.Instance.GetPlayerTeam(actorNumber);
         var champion = GameStateMachine.Instance.GetPlayerChampion(actorNumber).GetComponent<IInventoryable>();
-        Debug.Log($"playerTeam : {playerTeam}");
         foreach (var panel in inventoriesPanel)
         {
             if (panel.team != playerTeam || !panel.available) continue;

@@ -16,6 +16,9 @@ MonoBehaviour:
   descriptionName: Perseverance
   description: If has not recently been struck by damage or enemy abilities, he regenerates
     a percentage of his total health each second.
+  stackable: 0
   types: 0000000002000000
+  indexInCollection: 0
   percentage: 0.054
   timeBeforeHeal: 0
+  healEffectPrefab: {fileID: 3248323131726062708, guid: 9365fdce127720748a1a73011482ddeb, type: 3}

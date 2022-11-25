@@ -27,8 +27,6 @@ namespace Entities.Capacities
         private void PoolOfShadow()
         {
             tickDamageTimer += GameStateMachine.Instance.tickRate;
-
-            Debug.Log(so.zoneRadius);
             
             if (tickDamageTimer >= so.tickDamage)
             {
