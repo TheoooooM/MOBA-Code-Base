@@ -55,6 +55,7 @@ namespace Entities.Champion
         {
             isAlive = false;
             championInitPoint.gameObject.SetActive(false);
+            // TODO: Enable Camera Only
             InputManager.PlayerMap.Disable();
             RequestRevive();
             OnDieFeedback?.Invoke();
@@ -85,6 +86,8 @@ namespace Entities.Champion
             championInitPoint.gameObject.SetActive(true);
             InputManager.PlayerMap.Enable();
             timer = timerToRespawn;
+            SetCurrentHpRPC(maxHp);
+            SetCurrentResourceRPC(maxResource);
             OnReviveFeedback?.Invoke();
         }
 
