@@ -38,7 +38,10 @@ public class ActiveTowerAuto : ActiveCapacity
     
     private void ApplyEffect()
     {
-        IActiveLifeable entityActiveLifeable = _target.GetComponent<IActiveLifeable>();
-        entityActiveLifeable.DecreaseCurrentHpRPC(_tower.damage); 
+        if (Vector3.Distance(_tower.transform.position, _target.transform.position) < _tower.detectionRange)
+        {
+            IActiveLifeable entityActiveLifeable = _target.GetComponent<IActiveLifeable>();
+            entityActiveLifeable.DecreaseCurrentHpRPC(_tower.damage); 
+        }
     }
 }
