@@ -28,6 +28,8 @@ namespace Entities.Champion
 
         private NavMeshAgent agent;
 
+        private Vector3 rotateDirection;
+
         public bool CanMove()
         {
             return canMove;
@@ -132,10 +134,10 @@ namespace Entities.Champion
 
         private void Move()
         {
-            transform.position += moveDirection * (currentMoveSpeed * Time.deltaTime);
+            rb.velocity = moveDirection * currentMoveSpeed;
         }
 
-        private void Rotate()
+        private void RotateMath()
         {
             if (!photonView.IsMine) return;
             if (!isBattlerite) return;
@@ -143,9 +145,12 @@ namespace Entities.Champion
 
             if (!Physics.Raycast(ray, out var hit, float.PositiveInfinity)) return;
 
-            var rotateDirection = -(transform.position - hit.point);
+            rotateDirection = -(transform.position - hit.point);
             rotateDirection.y = 0;
+        }
 
+        private void Rotate()
+        {
             rotateParent.transform.rotation = Quaternion.Lerp(rotateParent.transform.rotation,
                 Quaternion.LookRotation(rotateDirection),
                 Time.deltaTime * currentRotateSpeed);
@@ -172,7 +177,8 @@ namespace Entities.Champion
             photonView.RPC("StartFollowEntityRPC", RpcTarget.All, entityIndex, capacityDistance);
         }
 
-        [PunRPC] public void StartFollowEntityRPC(int entityIndex, float capacityDistance)
+        [PunRPC]
+        public void StartFollowEntityRPC(int entityIndex, float capacityDistance)
         {
             Debug.Log("Start Follow Entity");
             if (!photonView.IsMine) return;
@@ -189,7 +195,8 @@ namespace Entities.Champion
             {
                 Debug.Log("In Range to Attack");
                 agent.SetDestination(transform.position);
-                Debug.Log($"lastCapacityIndex{lastCapacityIndex}; lastTargetedEntities{lastTargetedEntities}; lastTargetedPositions{lastTargetedPositions}");
+                Debug.Log(
+                    $"lastCapacityIndex{lastCapacityIndex}; lastTargetedEntities{lastTargetedEntities}; lastTargetedPositions{lastTargetedPositions}");
                 RequestAttack(lastCapacityIndex, lastTargetedEntities, lastTargetedPositions);
             }
         }
@@ -202,8 +209,6 @@ namespace Entities.Champion
                 agent.SetDestination(transform.position);
             }
         }
-
-        
 
         #endregion
 

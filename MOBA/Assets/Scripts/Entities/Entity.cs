@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Entities.Capacities;
 using Entities.FogOfWar;
@@ -33,7 +34,7 @@ namespace Entities
         /// The transform of the UI of the entity.
         /// </summary>
         public Transform uiTransform;
-        
+
         /// <summary>
         /// The offset of the UI of the entity.
         /// </summary>
@@ -49,23 +50,30 @@ namespace Entities
         /// <summary>
         /// Replaces the Start() method.
         /// </summary>
-        protected virtual void OnStart(){}
+        protected virtual void OnStart() { }
 
         private void Update()
         {
             OnUpdate();
         }
 
+        private void FixedUpdate()
+        {
+            OnFixedUpdate();
+        }
+
         /// <summary>
         /// Replaces the Update() method.
         /// </summary>
-        protected virtual void OnUpdate(){}
+        protected virtual void OnUpdate() { }
+
+        protected virtual void OnFixedUpdate() { }
 
         #region MasterMethods
 
         public void SendSyncInstantiate(Vector3 position, Quaternion rotation)
         {
-            photonView.RPC("SyncInstantiateRPC", RpcTarget.All, position, rotation);    
+            photonView.RPC("SyncInstantiateRPC", RpcTarget.All, position, rotation);
             OnInstantiated();
         }
 
@@ -73,7 +81,7 @@ namespace Entities
         {
             FogOfWarManager.Instance.AddFOWViewable(this);
         }
-        
+
         [PunRPC]
         public void SyncInstantiateRPC(Vector3 position, Quaternion rotation)
         {
@@ -81,8 +89,8 @@ namespace Entities
             transform.rotation = rotation;
             OnInstantiatedFeedback();
         }
-        
-        public virtual void OnInstantiatedFeedback(){}
+
+        public virtual void OnInstantiatedFeedback() { }
 
         /// <summary>
         /// Sends an RPC to the master to set the value canAddPassiveCapacity.
@@ -223,7 +231,5 @@ namespace Entities
         }
 
         #endregion
-
-   
     }
 }

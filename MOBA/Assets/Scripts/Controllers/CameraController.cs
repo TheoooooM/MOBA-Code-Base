@@ -51,7 +51,7 @@ namespace Controllers
             Debug.Log("Camera Lock Toggled");
         }
 
-        private void LateUpdate()
+        private void FixedUpdate()
         {
             //if the player is not null
             if (!player) return;
@@ -61,7 +61,7 @@ namespace Controllers
             if (cameraLock)
             {
                 nextPos = player.position + offset;
-                transform.position = Vector3.Lerp(transform.position, nextPos, Time.deltaTime * lerpSpeed);
+                transform.position = Vector3.Lerp(transform.position, nextPos, Time.fixedDeltaTime * lerpSpeed);
             }
             else
             {
@@ -87,7 +87,7 @@ namespace Controllers
                     nextPos -= transform.forward * cameraSpeed;
                 }
                 
-                transform.position = Vector3.Lerp(transform.position, nextPos, Time.deltaTime * lerpSpeed);
+                transform.position = Vector3.Lerp(transform.position, nextPos, Time.fixedDeltaTime * lerpSpeed);
                 
             }
             transform.rotation = Quaternion.Euler(transform.rotation.x, rotationY, transform.rotation.z);

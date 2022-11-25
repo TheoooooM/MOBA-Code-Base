@@ -19,6 +19,7 @@ namespace Entities.Champion
         private CapacitySOCollectionManager capacityCollection;
         private UIManager uiManager;
         public Camera camera;
+        public Rigidbody rb;
 
         protected override void OnStart()
         {
@@ -34,11 +35,16 @@ namespace Entities.Champion
 
         protected override void OnUpdate()
         {
-            Move();
-            Rotate();
+            RotateMath();
             if (isFollowing) FollowEntity(); // Lol
             if (!photonView.IsMine) return;
             CheckMoveDistance();
+        }
+
+        protected override void OnFixedUpdate()
+        {
+            Move();
+            Rotate();
         }
 
         public override void OnInstantiated()
