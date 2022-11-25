@@ -28,6 +28,7 @@ namespace Entities.Capacities
             }
 
             Instance = this;
+            Debug.Log($"CapacitySOCollectionManager is in {gameObject.name}");
         }
 
         private void Start()
@@ -46,13 +47,15 @@ namespace Entities.Capacities
 
         public static byte GetActiveCapacitySOIndex(ActiveCapacitySO so)
         {
+            Debug.Log($"so:{so.name}, idnex:{Instance.allActiveCapacities.IndexOf(so)}");
             return (byte)Instance.allActiveCapacities.IndexOf(so);
         }
 
         public static ActiveCapacity CreateActiveCapacity(byte soIndex,Entity caster)
         {
-            var active =
-                (ActiveCapacity) Activator.CreateInstance(Instance.allActiveCapacities[soIndex].AssociatedType());
+            Debug.Log($"CapacityIndex:{soIndex}, Instance:{Instance}");
+            Debug.Log($"allActiveCapacities[soIndex]: {Instance.allActiveCapacities[soIndex]}");
+            var active = (ActiveCapacity) Activator.CreateInstance(Instance.allActiveCapacities[soIndex].AssociatedType());
             active.indexOfSOInCollection = soIndex;
             active.caster = caster;
             return active;

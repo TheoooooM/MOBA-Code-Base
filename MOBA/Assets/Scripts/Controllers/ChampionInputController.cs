@@ -175,7 +175,7 @@ namespace Controllers.Inputs
             }
             else
             {
-                if(!champion.photonView.IsMine){champion.GetComponent<NavMeshAgent>().enabled = false;}
+                champion.GetComponent<NavMeshAgent>().enabled = true;
                 inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
                 inputs.MoveMouse.ActiveButton.started += context => isActivebuttonPress = true;
                 inputs.MoveMouse.ActiveButton.canceled += context => isActivebuttonPress = false;

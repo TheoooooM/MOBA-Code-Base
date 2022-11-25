@@ -57,6 +57,7 @@ namespace Entities.Champion
         public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             Debug.Log("Request Attack");
+            Debug.Log($"Capacity Index {capacityIndex}");
             photonView.RPC("AttackRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
         }
 
@@ -67,6 +68,7 @@ namespace Entities.Champion
             lastTargetedEntities = targetedEntities;
             lastTargetedPositions = targetedPositions;
             
+            Debug.Log($"Capacity Index {capacityIndex}");
             var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             var attackCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
             var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
