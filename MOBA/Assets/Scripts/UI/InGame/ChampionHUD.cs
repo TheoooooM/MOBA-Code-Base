@@ -124,6 +124,9 @@ public class ChampionHUD : MonoBehaviour
             spellIcon = spellUltimate,
             spellCooldown = spellUltimateCooldown
         };
+        Debug.Log(so.activeCapacitiesIndexes[0]);
+        Debug.Log(so.activeCapacitiesIndexes[1]);
+        Debug.Log(so.ultimateAbilityIndex);
         spellHolderDict.Add(so.activeCapacitiesIndexes[0], spellOneHolder);
         spellHolderDict.Add(so.activeCapacitiesIndexes[1], spellTwoHolder);
         spellHolderDict.Add(so.ultimateAbilityIndex, ultimateHolder);
@@ -132,8 +135,6 @@ public class ChampionHUD : MonoBehaviour
         spellOneHolder.Setup(so.activeCapacities[0].icon);
         spellTwoHolder.Setup(so.activeCapacities[1].icon);
         ultimateHolder.Setup(so.ultimateAbility.icon);
-        
-        spellPassive.sprite = champion.passiveCapacitiesList[0].AssociatedPassiveCapacitySO().icon;
     }
 
     private void UpdateCooldown(byte capacityIndex, int[] intArray, Vector3[] vectors, ActiveCapacity capacity)
