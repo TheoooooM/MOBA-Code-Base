@@ -24,7 +24,7 @@ namespace GameStates
         private GameState[] gamesStates;
 
         [Tooltip("Ticks per second")] public double tickRate = 1;
-
+        
         public event GlobalDelegates.NoParameterDelegate OnTick;
         public event GlobalDelegates.NoParameterDelegate OnTickFeedback;
 
@@ -59,6 +59,8 @@ namespace GameStates
             public Enums.Team team;
             public byte championSOIndex;
             public bool playerReady;
+            public int championPhotonViewId;
+            public Champion champion;
         }
 
         public string currentStateDebugString;
@@ -391,10 +393,10 @@ namespace GameStates
 
             if (UIManager.Instance != null)
             {
-            foreach (var actorNumber in playersReadyDict.Keys)
-            {
-                UIManager.Instance.AssignInventory(actorNumber);
-            }
+                foreach (var actorNumber in playersReadyDict.Keys)
+                {
+                    UIManager.Instance.AssignInventory(actorNumber);
+                }
             }
 
             SendSetToggleReady(true);
@@ -412,10 +414,26 @@ namespace GameStates
         {
             var pos = new Vector3(Random.Range(0f, 10f), 1, Random.Range(0f, 10f));
             var champion = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, pos, Quaternion.identity);
-            champion.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber}";
+            
+            photonView.RPC("SyncChampionPhotonId", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, champion.photonView.ViewID);
+
+            champion.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber} [MINE]";
 
             LinkController(champion);
             LinkChampionData(champion);
+        }
+
+        [PunRPC]
+        private void SyncChampionPhotonId(int photonId, int photonViewId)
+        {
+            var champion = PhotonNetwork.GetPhotonView(photonViewId);
+            playersReadyDict[photonId].championPhotonViewId = champion.ViewID;
+            playersReadyDict[photonId].champion = champion.GetComponent<Champion>();
+
+            debugList[photonId].championPhotonViewId = playersReadyDict[photonId].championPhotonViewId;
+            debugList[photonId].champion = playersReadyDict[photonId].champion;
+            
+            champion.name = $"Player ID : {photonId}";
         }
 
         private void LinkController(Champion champion)
