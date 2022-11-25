@@ -7,7 +7,10 @@ namespace Entities.Champion
     {
         public bool isAlive;
         public bool canDie;
-        public float timer = 10f;
+        
+        // TODO: Delete when TickManager is implemented
+        public float timerToRespawn = 10f;
+        private float timer; 
 
         public bool IsAlive()
         {
@@ -50,6 +53,11 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDieRPC()
         {
+            isAlive = false;
+            championInitPoint.gameObject.SetActive(false);
+            // TODO: Enable Camera Only
+            InputManager.PlayerMap.Disable();
+            RequestRevive();
             OnDieFeedback?.Invoke();
         }
 
@@ -57,8 +65,6 @@ namespace Entities.Champion
         public void DieRPC()
         {
             if (!canDie) return;
-            isAlive = false;
-            // TODO: Add death animation, deactivate mesh, collider, movements, etc.
             OnDie?.Invoke();
             photonView.RPC("SyncDieRPC", RpcTarget.All);
         }
@@ -74,6 +80,14 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncReviveRPC()
         {
+            isAlive = true;
+            // TODO: Replace with SpawnPoint depending on the team of the player
+            transform.position = new Vector3(0, 0, 0);
+            championInitPoint.gameObject.SetActive(true);
+            InputManager.PlayerMap.Enable();
+            timer = timerToRespawn;
+            SetCurrentHpRPC(maxHp);
+            SetCurrentResourceRPC(maxResource);
             OnReviveFeedback?.Invoke();
         }
 

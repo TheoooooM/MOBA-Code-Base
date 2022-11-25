@@ -169,6 +169,11 @@ namespace Entities.Champion
         public void SyncDecreaseCurrentHpRPC(float amount)
         {
             currentHp = amount;
+            if (currentHp <= 0)
+            {
+                currentHp = 0;
+                RequestDie();
+            }
             OnDecreaseCurrentHpFeedback?.Invoke(amount);
         }
 
@@ -176,12 +181,6 @@ namespace Entities.Champion
         public void DecreaseCurrentHpRPC(float amount)
         {
             currentHp -= amount;
-            if (currentHp <= 0)
-            {
-                currentHp = 0;
-                RequestSetCanDie(true);
-                RequestDie();
-            }
             OnDecreaseCurrentHp?.Invoke(amount);
             photonView.RPC("SyncDecreaseCurrentHpRPC",RpcTarget.All,currentHp);
         }

@@ -10,6 +10,10 @@ namespace Entities.Champion
         public bool canAttack;
         public float attackDamage;
 
+        private byte lastCapacityIndex;
+        private int[] lastTargetedEntities;
+        private Vector3[] lastTargetedPositions;
+        
         public bool CanAttack()
         {
             return canAttack;
@@ -52,15 +56,37 @@ namespace Entities.Champion
 
         public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
+            Debug.Log("Request Attack");
             photonView.RPC("AttackRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
         }
 
         [PunRPC]
         public void AttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
+            lastCapacityIndex = capacityIndex;
+            lastTargetedEntities = targetedEntities;
+            lastTargetedPositions = targetedPositions;
+            
             var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
+            var attackCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
+            var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
 
-            if (!attackCapacity.TryCast(entityIndex, targetedEntities, targetedPositions)) return;
+            if (attackCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
+            {
+                if (!attackCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
+                {
+                    Debug.Log("Not in range");
+                    SendFollowEntity(targetedEntities[0], attackCapacitySO.maxRange);
+                }
+                else
+                {
+                    Debug.Log("Attack in Range");
+                    OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
+                    photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
+                }
+            }
+            
+            Debug.Log("SkillShot");
             
             OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
             photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
@@ -69,6 +95,7 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncAttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
+            Debug.Log("SyncAttack");
             var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             attackCapacity.PlayFeedback(capacityIndex,targetedEntities,targetedPositions);
             OnAttackFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);

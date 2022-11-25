@@ -33,11 +33,6 @@ public class PoolNetworkManager : MonoBehaviour
         SetupDictionary();
     }
 
-    private void Start()
-    {
-        
-    }
-
     private void SetupDictionary()
     {
         queuesDictionary = new Dictionary<Entity, Queue<Entity>>();
