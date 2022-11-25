@@ -206,6 +206,31 @@ namespace Entities.Champion
             }
         }
 
+        public void SendFollowEntity(int entityIndex, float capacityDistance)
+        {
+            photonView.RPC("FollowEntity", RpcTarget.All, entityIndex, capacityDistance);
+        }
+        
+        [PunRPC] public void StartFollowEntity(int entityIndex, float capacityDistance)
+        {
+            Debug.Log("Start Follow Entity");
+            if (!photonView.IsMine) return;
+            isFollowing = true;
+            entityFollow = EntityCollectionManager.GetEntityByIndex(entityIndex);
+            attackRange = capacityDistance;
+        }
+
+        void FollowEntity()
+        {
+            agent.SetDestination(entityFollow.transform.position);
+            if (attackRange <= agent.remainingDistance)
+            {
+                Debug.Log("In Range to Attack");
+                agent.SetDestination(transform.position);
+                RequestAttack(lastCapacityIndex, lastTargetedEntities, lastTargetedPositions);
+            }
+        }
+
         void CheckMoveDistance()
         {
             if (Vector3.Distance(transform.position, movePosition) < 0.5f)
