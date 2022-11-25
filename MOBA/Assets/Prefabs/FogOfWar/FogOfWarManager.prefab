@@ -176,7 +176,7 @@ MonoBehaviour:
   - _InGameScene
   - _FogOfWarDebugTestTry
   - FOG_InGameScene
-  fogColor: {r: 1, g: 0, b: 0, a: 1}
+  fogColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
   layerTargetFogOfWar:
     serializedVersion: 2
     m_Bits: 1610612736
@@ -184,7 +184,7 @@ MonoBehaviour:
   worldSize: 50
   worldSizeGizmos: 1
   settingsFOV:
-    meshResolution: 2
+    meshResolution: 0.5
     edgeResolveIterations: 0
     edgeDstThreshold: 0
     maskCutawayDst: 0.1
