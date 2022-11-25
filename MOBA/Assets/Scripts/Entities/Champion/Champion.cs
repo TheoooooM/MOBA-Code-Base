@@ -100,7 +100,7 @@ namespace Entities.Champion
 
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
             elementsToShow.Add(championMesh);
-            
+            elementsToShow.Add(meshFilterFoV);
             RequestSetCanDie(true);
         }
     }
