@@ -69,10 +69,10 @@ namespace Entities.Champion
             var championMesh = Instantiate(championSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
 
-            this.team = (Enums.Team)team;
+            team = newTeam;
 
             Transform pos;
-            switch (this.team)
+            switch (team)
             {
                 case Enums.Team.Team1:
                     pos = MapLoaderManager.Instance.firstTeamBasePoint;
@@ -90,11 +90,6 @@ namespace Entities.Champion
 
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
             elementsToShow.Add(championMesh);
-        }
-
-        public void SyncApplyChampionSO(byte championSoIndex, Enums.Team team)
-        {
-            photonView.RPC("ApplyChampionSORPC", RpcTarget.All, championSoIndex, (byte)team);
         }
     }
 }

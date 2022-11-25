@@ -249,7 +249,7 @@ MonoBehaviour:
   canCast: 0
   isAlive: 0
   canDie: 0
-  timerToRespawn: 10
+  respawnDuration: 3
   canBeDisplaced: 0
   items: []
   isBattlerite: 1
