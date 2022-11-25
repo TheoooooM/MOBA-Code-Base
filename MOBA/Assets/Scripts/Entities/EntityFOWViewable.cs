@@ -17,7 +17,7 @@ namespace Entities
         [Range(0, 360)] public float viewAngle;
         public bool canView;
         public List<IFOWShowable> seenShowables = new List<IFOWShowable>();
-        public MeshFilter meshFilterFoV;
+        public GameObject meshFilterFoV;
 
 
         public Enums.Team GetTeam()
@@ -168,11 +168,14 @@ namespace Entities
             if (seenShowables.Contains(showable)) return;
 
             seenShowables.Add(showable);
+            Debug.Log("seen Showable Add");
             showable.TryAddFOWViewable(this);
-
+            Debug.Log("Try add This FowViewable");
             var seenEntityIndex = ((Entity)showable).entityIndex;
+            Debug.Log("Entity index : " + seenEntityIndex);
             OnAddShowableFeedback?.Invoke(seenEntityIndex);
 
+            
             if (!PhotonNetwork.IsMasterClient) return;
             OnAddShowable?.Invoke(seenEntityIndex);
             photonView.RPC("SyncAddShowableRPC", RpcTarget.All, seenEntityIndex);
@@ -211,10 +214,13 @@ namespace Entities
         {
             if (!seenShowables.Contains(showable)) return;
 
-            seenShowables.Add(showable);
+            seenShowables.Remove(showable);
+            Debug.Log("Remove Showable");
             showable.TryRemoveFOWViewable(this);
-
+            Debug.Log("TryRemoveFOWViewable");
+            
             var seenEntityIndex = ((Entity)showable).entityIndex;
+            Debug.Log("Entity Index : " + ((Entity)showable).entityIndex);
             OnRemoveShowableFeedback?.Invoke(seenEntityIndex);
 
             if (!PhotonNetwork.IsMasterClient) return;

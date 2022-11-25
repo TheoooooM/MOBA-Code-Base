@@ -83,15 +83,14 @@ MonoBehaviour:
   offset: {x: 0, y: 2, z: 0}
   canShow: 0
   canHide: 0
-  elementsToShow:
-  - {fileID: 0}
+  elementsToShow: []
   canChangeTeam: 0
   team: 0
   baseViewRange: 0.01
   viewRange: 0.01
   viewAngle: 360
   canView: 0
-  meshFilterFoV: {fileID: 6566141563896866825}
+  meshFilterFoV: {fileID: 8832706607515029277}
   championSo: {fileID: 0}
   championInitPoint: {fileID: 1874783859807748408}
   championMesh: {fileID: 0}
