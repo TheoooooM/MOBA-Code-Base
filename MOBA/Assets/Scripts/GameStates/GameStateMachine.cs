@@ -412,8 +412,7 @@ namespace GameStates
 
         private void InstantiateChampion()
         {
-            var pos = new Vector3(Random.Range(0f, 10f), 1, Random.Range(0f, 10f));
-            var champion = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, pos, Quaternion.identity);
+            var champion = (Champion)PoolNetworkManager.Instance.PoolInstantiate(0, Vector3.up, Quaternion.identity);
             
             photonView.RPC("SyncChampionPhotonId", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, champion.photonView.ViewID);
 
