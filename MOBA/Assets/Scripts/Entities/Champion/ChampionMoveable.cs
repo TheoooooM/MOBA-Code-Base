@@ -161,7 +161,6 @@ namespace Entities.Champion
             movePosition = position;
             movePosition.y = transform.position.y;
             agent.SetDestination(position);
-            Debug.Log($"SetDestination, position:{position}, remainingDistance{agent.remainingDistance}");
         }
 
         public void SendFollowEntity(int entityIndex)
@@ -185,8 +184,6 @@ namespace Entities.Champion
             if (Vector3.Distance(transform.position, movePosition) < 0.5f)
             {
                 agent.SetDestination(transform.position);
-                Debug.Log(
-                    $"Stop Moving : Transform.position{transform.position}, positon{movePosition} = Distance{Vector3.Distance(transform.position, movePosition)}");
             }
         }
 

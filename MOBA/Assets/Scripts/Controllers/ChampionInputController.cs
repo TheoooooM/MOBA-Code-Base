@@ -149,15 +149,13 @@ namespace Controllers.Inputs
             moveVector = new Vector3(moveInput.x, 0, moveInput.y);
             champion.SetMoveDirection(moveVector);
         }
-        
-
 
         protected override void Link(Entity entity)
         {
+            champion = controlledEntity as Champion;
             base.Link(entity);
             
             cam = Camera.main;
-            champion = controlledEntity as Champion;
             selectedEntity = new int[1];
             cursorWorldPos = new Vector3[1];
             
