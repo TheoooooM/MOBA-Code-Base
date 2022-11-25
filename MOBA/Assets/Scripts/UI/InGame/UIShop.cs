@@ -19,9 +19,9 @@ public class UIShop : MonoBehaviour
     private IEnumerator InitUIShop()
     {
         yield return new WaitForSeconds(0.5f);
-        for (byte a = 0; a < ItemCollectionManager.allItems.Count; a++)
+        for (byte a = 0; a < ItemCollectionManager.Instance.allItemSOs.Count; a++)
         {
-            ShopItemImagesUI[a].slotImage.sprite = ItemCollectionManager.allItems[a].sprite;
+            ShopItemImagesUI[a].slotImage.sprite = ItemCollectionManager.Instance.allItemSOs[a].sprite;
             var indexOfItemToAdd = a;
             ShopItemImagesUI[a].buttonShop.onClick.AddListener(() => GameStateMachine.Instance.GetPlayerChampion().GetComponent<IInventoryable>().RequestAddItem(indexOfItemToAdd));
         }

@@ -36,7 +36,7 @@ namespace Entities.Champion
         [PunRPC]
         public void AddItemRPC(byte index)
         {
-            var itemSo = ItemCollectionManager.GetItemSObyIndex(index);
+            var itemSo = ItemCollectionManager.Instance.GetItemSObyIndex(index);
             if (itemSo.consumable)
             {
                 var contains = false;
@@ -55,7 +55,7 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncAddItemRPC(byte index)
         {
-            var item = ItemCollectionManager.CreateItem(index, this);
+            var item = ItemCollectionManager.Instance.CreateItem(index, this);
             if(item == null) return;
             if(!items.Contains(item)) items.Add(item);
             if (PhotonNetwork.IsMasterClient)
@@ -117,14 +117,13 @@ namespace Entities.Champion
         
         public void RequestActivateItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
-            Debug.Log("request item uses");
+            if(itemIndexInInventory >= items.Count) return;
             photonView.RPC("ActivateItemRPC",RpcTarget.MasterClient,itemIndexInInventory,selectedEntities,positions);
         }
 
         [PunRPC]
         public void ActivateItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
-            Debug.Log("try to use item");
             if(itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
             if(item == null) return;
@@ -139,12 +138,13 @@ namespace Entities.Champion
             items[itemIndexInInventory].OnItemActivated(selectedEntities,positions);
             OnActivateItem?.Invoke(itemIndexInInventory,selectedEntities,positions);
             photonView.RPC("SyncActivateItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions,successes.ToArray());
+            
+
         }
 
         [PunRPC]
         public void SyncActivateItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions,bool[] castSuccess)
         {
-            Debug.Log("sync to use item");
             if(itemIndexInInventory >= items.Count) return;
             var item = items[itemIndexInInventory];
             if(items[itemIndexInInventory] == null) return;

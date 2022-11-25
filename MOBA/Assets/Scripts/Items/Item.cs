@@ -19,7 +19,7 @@ namespace Entities.Inventory
 
         public ItemSO AssociatedItemSO()
         {
-            return ItemCollectionManager.GetItemSObyIndex(indexOfSOInCollection);
+            return ItemCollectionManager.Instance.GetItemSObyIndex(indexOfSOInCollection);
         }
 
         public void OnItemAddedToInventory(Entity entity)
@@ -63,15 +63,14 @@ namespace Entities.Inventory
         {
             if(!consumable) return;
             count--;
-            if(count > 0) return;
-            inventory.RemoveItemRPC(this);
         }
-
-
+        
         public virtual void OnItemActivatedFeedback(int[] targets, Vector3[] positions)
         {
             if(!consumable) return;
             if (!PhotonNetwork.IsMasterClient) count--;
+            if(count > 0 || !PhotonNetwork.IsMasterClient) return;
+            inventory.RemoveItemRPC(this);
         }
     }
 }
