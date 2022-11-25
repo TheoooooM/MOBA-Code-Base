@@ -1,4 +1,5 @@
 using Entities;
+using Entities.Capacities;
 using Entities.Champion;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,21 +8,31 @@ public class ChampionHUD : MonoBehaviour
 {
     [SerializeField] private Image healthBar;
     [SerializeField] private Image resourceBar;
+    [SerializeField] private Image spellPassive;
     [SerializeField] private Image spellOne;
     [SerializeField] private Image spellTwo;
-    [SerializeField] private Image spellThree;
+    [SerializeField] private Image spellUltimate;
+    [SerializeField] private Image spellPassiveCooldown;
+    [SerializeField] private Image spellOneCooldown;
+    [SerializeField] private Image spellTwoCooldown;
+    [SerializeField] private Image spellUltimateCooldown;
     private IResourceable resourceable;
     private IActiveLifeable lifeable;
+    private ICastable castable;
 
-    public void InitHUD(Entity entity)
+    public void InitHUD(Champion champion)
     {
-        lifeable = entity.GetComponent<IActiveLifeable>();
-        resourceable = entity.GetComponent<IResourceable>();
+        lifeable = champion.GetComponent<IActiveLifeable>();
+        resourceable = champion.GetComponent<IResourceable>();
+        castable = champion.GetComponent<ICastable>();
+        var so = champion.championSo;
 
         healthBar.fillAmount = lifeable.GetCurrentHpPercent();
         resourceBar.fillAmount = resourceable.GetCurrentResourcePercent();
         
-        // TODO: Set cooldowns effects
+        UpdateIcons(champion);
+        
+        castable.OnCastFeedback += UpdateCooldown;
 
         lifeable.OnSetCurrentHpFeedback += UpdateFillPercentHealth;
         lifeable.OnSetCurrentHpPercentFeedback += UpdateFillPercentByPercentHealth;
@@ -36,7 +47,35 @@ public class ChampionHUD : MonoBehaviour
         resourceable.OnDecreaseCurrentResourceFeedback += UpdateFillPercentResource;
         resourceable.OnIncreaseMaxResourceFeedback += UpdateFillPercentResource;
         resourceable.OnDecreaseMaxResourceFeedback += UpdateFillPercentResource;
-        
+    }
+
+    private void UpdateIcons(Champion champion)
+    {
+        var so = champion.championSo;
+        spellPassive.sprite = champion.passiveCapacitiesList[0].AssociatedPassiveCapacitySO().icon;
+        spellOne.sprite = so.activeCapacities[0].icon;
+        spellTwo.sprite = so.activeCapacities[1].icon;
+        spellUltimate.sprite = so.ultimateAbility.icon;
+    }
+
+    private void UpdateCooldown(byte capacityIndex, int[] intArray, Vector3[] vectors)
+    {
+        CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
+        switch (capacityIndex)
+        {
+            case 0:
+                spellPassiveCooldown.fillAmount = 100f;
+                break;
+            case 1:
+                spellOneCooldown.fillAmount = 100f;
+                break;
+            case 2:
+                spellTwoCooldown.fillAmount = 100f;
+                break;
+            case 3:
+                spellUltimateCooldown.fillAmount = 100f;
+                break;
+        }
     }
     
     private void UpdateFillPercentByPercentHealth(float value)
