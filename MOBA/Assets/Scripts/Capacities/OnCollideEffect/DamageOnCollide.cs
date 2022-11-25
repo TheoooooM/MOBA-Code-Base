@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Entities.Capacities
 {
-    public class DamageOnCollide : MonoBehaviour
+    public class DamageOnCollide : Entity
     {
         [HideInInspector] public Entity caster;
         [HideInInspector] public float damage;
@@ -17,7 +17,7 @@ namespace Entities.Capacities
         {
             Entity entity = other.GetComponent<Entity>();
 
-            if (entity)
+            if (entity && entity != caster)
             {
                 IActiveLifeable activeLifeable = entity.GetComponent<IActiveLifeable>();
                 

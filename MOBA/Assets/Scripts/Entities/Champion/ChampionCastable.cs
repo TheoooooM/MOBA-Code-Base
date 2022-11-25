@@ -63,10 +63,10 @@ namespace Entities.Champion
         {
             var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             activeCapacity.PlayFeedback(capacityIndex,targetedEntities,targetedPositions);
-            OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions);
+            OnCastFeedback?.Invoke(capacityIndex,targetedEntities,targetedPositions,activeCapacity);
         }
         
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCast;
-        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnCastFeedback;
+        public event GlobalDelegates.ByteIntArrayVector3ArrayCapacityDelegate OnCastFeedback;
     }
 }

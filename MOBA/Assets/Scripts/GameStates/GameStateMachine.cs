@@ -405,7 +405,7 @@ namespace GameStates
 
             LinkChampionSOCapacityIndexes();
 
-            ItemCollectionManager.LinkCapacityIndexes();
+            ItemCollectionManager.Instance.LinkCapacityIndexes();
 
             InstantiateChampion();
             
@@ -490,6 +490,8 @@ namespace GameStates
         private void SetupUI()
         {
             if (UIManager.Instance == null) return;
+            
+            UIManager.Instance.InstantiateChampionHUD();
             
             foreach (var actorNumber in playersReadyDict)
             {

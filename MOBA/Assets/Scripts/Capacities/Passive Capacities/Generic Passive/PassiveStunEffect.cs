@@ -10,18 +10,29 @@ namespace Entities.Capacities
     
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByName(so.name);
+            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
         }
 
-        public override void OnAdded(Entity target)
+        protected override void OnAddedEffects(Entity target)
         {
-            base.OnAdded(target);
-
             so = (PassiveStunEffectSO)AssociatedPassiveCapacitySO();
             moveable = target.GetComponent<IMoveable>();
 
             moveable.SetCanMoveRPC(false);
             GameStateMachine.Instance.OnTick += WaitBeforeRelease;
+        }
+
+        protected override void OnAddedFeedbackEffects(Entity target)
+        {
+        }
+
+        protected override void OnRemovedEffects(Entity target)
+        {
+        }
+
+        protected override void OnRemovedFeedbackEffects(Entity target)
+        {
+            
         }
 
         private void WaitBeforeRelease()
@@ -33,21 +44,6 @@ namespace Entities.Capacities
                 moveable.SetCanMoveRPC(true);
                 GameStateMachine.Instance.OnTick -= WaitBeforeRelease;
             }
-        }
-
-        public override void OnAddedFeedback()
-        {
-            base.OnAddedFeedback();
-        }
-
-        public override void OnRemoved()
-        {
-            base.OnRemoved();
-        }
-
-        public override void OnRemoveFeedback()
-        {
-            base.OnRemoveFeedback();
         }
     }
 }

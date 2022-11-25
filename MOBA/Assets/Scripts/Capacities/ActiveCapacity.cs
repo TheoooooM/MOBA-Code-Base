@@ -77,8 +77,9 @@ namespace Entities.Capacities
         /// <returns></returns>
         public virtual bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
-            if (Vector3.Distance(EntityCollectionManager.GetEntityByIndex(casterIndex).transform.position, EntityCollectionManager.GetEntityByIndex(targetsEntityIndexes[0]).transform.position)> 
-                AssociatedActiveCapacitySO().maxRange) return false;
+            // if (Vector3.Distance(EntityCollectionManager.GetEntityByIndex(casterIndex).transform.position, EntityCollectionManager.GetEntityByIndex(targetsEntityIndexes[0]).transform.position)> 
+            //     AssociatedActiveCapacitySO().maxRange) return false;
+            
             if (!onCooldown)
             {
                 InitiateCooldown();
@@ -112,6 +113,7 @@ namespace Entities.Capacities
         protected virtual void DisableFeedback()
         {
             PoolLocalManager.Instance.EnqueuePool(AssociatedActiveCapacitySO().feedbackPrefab, instantiateFeedbackObj);
+            GameStateMachine.Instance.OnTick -= FeedbackCountdown;
         }
         
         #endregion

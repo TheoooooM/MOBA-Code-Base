@@ -23,6 +23,6 @@ MonoBehaviour:
   indexInCollection: 3
   feedbackDuration: 0
   feedbackPrefab: {fileID: 0}
-  projectile: {fileID: 5556055349926743607, guid: 15a987334465ce742ab2dc481e3cedea, type: 3}
+  projectile: {fileID: -780024786077258656, guid: 15a987334465ce742ab2dc481e3cedea, type: 3}
   damageAmount: 1
   speed: 25
