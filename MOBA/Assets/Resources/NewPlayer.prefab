@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 2263356599250850540}
   - component: {fileID: 6530865356692434526}
   - component: {fileID: 8091990961712310653}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: NewPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,10 +231,10 @@ MonoBehaviour:
   - {fileID: 0}
   canChangeTeam: 0
   team: 0
-  baseViewRange: 0.01
-  viewRange: 0.01
+  baseViewRange: 5
+  viewRange: 5
   viewAngle: 360
-  canView: 0
+  canView: 1
   meshFilterFoV: {fileID: 3480681341397647661}
   championSo: {fileID: 0}
   rotateParent: {fileID: 3480681341152264625}
@@ -318,7 +318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3480681342087303708}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}

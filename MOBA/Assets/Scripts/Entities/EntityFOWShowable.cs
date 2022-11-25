@@ -10,7 +10,7 @@ namespace  Entities
         public List<IFOWViewable> enemiesThatCanSeeMe = new List<IFOWViewable>();
         public bool canShow;
         public bool canHide;
-        public List<Object> elementsToShow = new List<Object>();
+        public List<GameObject> elementsToShow = new List<GameObject>();
         public bool CanShow() 
         {
             return canShow;
@@ -68,9 +68,11 @@ namespace  Entities
         public void TryAddFOWViewable(int viewableIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(viewableIndex);
+            Debug.Log("Get Entity By Index" + entity);
             if(entity == null) return;
 
             if (entity != null) TryAddFOWViewable(entity);
+            Debug.Log("Try Add FOW ");
         }
 
         public void TryAddFOWViewable(Entity viewable)
@@ -80,11 +82,12 @@ namespace  Entities
             var show = enemiesThatCanSeeMe.Count == 0;
             
             enemiesThatCanSeeMe.Add(viewable);
+            Debug.Log("ennemiesThat Can See Mee");
             if (show) ShowElements();
             
-            if (!PhotonNetwork.IsMasterClient) return;
-            if(show) OnShowElement?.Invoke();
-            photonView.RPC("SyncTryAddViewableRPC",RpcTarget.All,((Entity)viewable).entityIndex,show);
+            //if (!PhotonNetwork.IsMasterClient) return;
+            //if(show) OnShowElement?.Invoke();
+            //photonView.RPC("SyncTryAddViewableRPC",RpcTarget.All,((Entity)viewable).entityIndex,show);
         }
         
         [PunRPC]
@@ -100,6 +103,10 @@ namespace  Entities
 
         public void ShowElements()
         {
+            for (int i = 0; i < elementsToShow.Count; i++)
+            {
+                elementsToShow[i].SetActive(true);
+            }
             OnShowElementFeedback?.Invoke();
         }
 
@@ -126,9 +133,9 @@ namespace  Entities
             enemiesThatCanSeeMe.Remove(viewable);
             if (hide) HideElements();
             
-            if (!PhotonNetwork.IsMasterClient) return;
-            if (hide) OnHideElement?.Invoke();
-            photonView.RPC("SyncTryRemoveViewableRPC",RpcTarget.All,((Entity)viewable).entityIndex,hide);
+            //if (!PhotonNetwork.IsMasterClient) return;
+            //if (hide) OnHideElement?.Invoke();
+            //photonView.RPC("SyncTryRemoveViewableRPC",RpcTarget.All,((Entity)viewable).entityIndex,hide);
         }
 
         [PunRPC]
@@ -143,6 +150,10 @@ namespace  Entities
 
         public void HideElements()
         {
+            for (int i = 0; i < elementsToShow.Count; i++)
+            {
+                elementsToShow[i].SetActive(false);
+            }
             OnHideElementFeedback?.Invoke();
         }
 
