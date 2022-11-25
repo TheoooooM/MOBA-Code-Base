@@ -7,7 +7,7 @@ public class ActiveAutoAttack : ActiveCapacity
 {
     
     private ActiveAutoAttackSO activeAutoAttackSO; 
-    private float attackTimer;
+    private double attackTimer;
     private int target;
 
     public override bool TryCast(int casterIndex, int[] targets, Vector3[] direction)

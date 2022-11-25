@@ -5,15 +5,18 @@ using UnityEngine;
 
 public class ActiveDarkMatter : ActiveCapacity,IPrevisualisable
 {
-    private float timer;
+    private double timer;
     private ActiveDarkMatterSO activeCapacitySo;
     private Vector3[] dir;
 
     public override bool TryCast(int casterIndex, int[] targets, Vector3[] position)
     {
+        base.TryCast(casterIndex, targets, position);
+        
+        Debug.Log("Performed dark matter at " + Time.time);
         activeCapacitySo = (ActiveDarkMatterSO)AssociatedActiveCapacitySO();
         
-        if (Vector3.Distance(position[0], caster.transform.position) > activeCapacitySo.maxRange){return false;}
+       // if (Vector3.Distance(position[0], caster.transform.position) > activeCapacitySo.maxRange){return false;}
         
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
         
@@ -44,16 +47,20 @@ public class ActiveDarkMatter : ActiveCapacity,IPrevisualisable
                 }
             }
         }
+        
+        Debug.Log("Dark Matter is end at " + Time.time);
     }
 
     private void DelayWaitingTick()
     {
-        timer += GameStateMachine.Instance.tickRate;
+        timer += 1 / GameStateMachine.Instance.tickRate;
 
         if (timer >=  activeCapacitySo.delay)
         {
+            Debug.Log("Delay is over at " + Time.time);
             ApplyEffect();
             GameStateMachine.Instance.OnTick -= DelayWaitingTick;
+            timer = 0;
         }
     }
     
@@ -70,5 +77,15 @@ public class ActiveDarkMatter : ActiveCapacity,IPrevisualisable
     public void DisableDrawing()
     {
         throw new System.NotImplementedException();
+    }
+
+    protected override void InitiateCooldown()
+    {
+        base.InitiateCooldown();
+    }
+
+    protected override void CooldownTimer()
+    {
+        base.CooldownTimer();
     }
 }

@@ -7,36 +7,72 @@ namespace Entities.Capacities
     {
         public byte indexOfSOInCollection;
         public Entity caster;
-        private float cooldownTimer;
+        private double cooldownTimer;
         public bool onCooldown;
-        private float feedbackTimer;
+        private double feedbackTimer;
         
         public GameObject instantiateFeedbackObj;
 
         protected int target;
-        
-        public ActiveCapacitySO AssociatedActiveCapacitySO()
+
+        protected ActiveCapacitySO AssociatedActiveCapacitySO()
         {
             return CapacitySOCollectionManager.GetActiveCapacitySOByIndex(indexOfSOInCollection);
         }
 
-        public void InitiateCooldown()
+        #region Cast
+        
+        /// <summary>
+        /// Check if the target is in range.
+        /// </summary>
+        /// <returns></returns>
+        private bool IsTargetInRange()
         {
+            //get the distance between the entity and the target
+            float distance = Vector3.Distance(caster.transform.position, EntityCollectionManager.GetEntityByIndex(target).transform.position);
+            //if the distance is lower than the range, return true
+            if (distance < AssociatedActiveCapacitySO().maxRange)
+            {
+                return true;
+            }
+            return false;
+        }
+        
+        /// <summary>
+        /// Initialize the cooldown of the capacity when used.
+        /// </summary>
+        protected virtual void InitiateCooldown()
+        {
+            Debug.Log("Initialize Cooldown");
             cooldownTimer = AssociatedActiveCapacitySO().cooldown;
+            onCooldown = true;
+            Debug.Log(onCooldown);
             GameStateMachine.Instance.OnTick += CooldownTimer;
         }
 
-        private void CooldownTimer()
+        /// <summary>
+        /// Method which update the timer.
+        /// </summary>
+        protected virtual void CooldownTimer()
         {
-            cooldownTimer -= GameStateMachine.Instance.tickRate;
+            cooldownTimer -= 1.0 / GameStateMachine.Instance.tickRate;
             
             if (cooldownTimer <= 0)
             {
+                Debug.Log("Cooldown is over");
                 onCooldown = false;
+                Debug.Log(onCooldown);
                 GameStateMachine.Instance.OnTick -= CooldownTimer;
             }
         }
-
+        
+        /// <summary>
+        /// Called when trying cast a capacity.
+        /// </summary>
+        /// <param name="casterIndex"></param>
+        /// <param name="targetsEntityIndexes"></param>
+        /// <param name="targetPositions"></param>
+        /// <returns></returns>
         public virtual bool TryCast(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
         {
             if (!onCooldown)
@@ -59,27 +95,20 @@ namespace Entities.Capacities
             return false;
         }
         
-        private bool IsTargetInRange()
-        {
-            //get the distance between the entity and the target
-            float distance = Vector3.Distance(caster.transform.position, EntityCollectionManager.GetEntityByIndex(target).transform.position);
-            //if the distance is lower than the range, return true
-            if (distance < AssociatedActiveCapacitySO().maxRange)
-            {
-                return true;
-            }
-            return false;
-        }
+
+        #endregion
+
+        #region Feedback
 
         public abstract void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions);
 
-        public virtual void InitializeFeedbackCountdown()
+        protected virtual void InitializeFeedbackCountdown()
         {
             feedbackTimer = AssociatedActiveCapacitySO().feedbackDuration;
             GameStateMachine.Instance.OnTick += FeedbackCountdown;
         }
 
-        public  virtual void FeedbackCountdown()
+        protected virtual void FeedbackCountdown()
         {
             feedbackTimer -= GameStateMachine.Instance.tickRate;
 
@@ -89,10 +118,13 @@ namespace Entities.Capacities
             }
         }
         
-        public virtual void DisableFeedback()
+        protected virtual void DisableFeedback()
         {
             PoolLocalManager.Instance.EnqueuePool(AssociatedActiveCapacitySO().feedbackPrefab, instantiateFeedbackObj);
         }
+        
+        #endregion
+        
     }
 }
 
