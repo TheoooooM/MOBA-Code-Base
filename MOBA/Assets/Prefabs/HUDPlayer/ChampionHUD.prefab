@@ -992,14 +992,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 2879464899381115909}
   resourceBar: {fileID: 1486999241300924239}
-  spellPassive: {fileID: 0}
+  spellPassive: {fileID: 5008619242356164378}
   spellOne: {fileID: 9071881175602635849}
   spellTwo: {fileID: 5948937230494779240}
-  spellUltimate: {fileID: 0}
-  spellPassiveCooldown: {fileID: 0}
+  spellUltimate: {fileID: 7699261661361641102}
+  spellPassiveCooldown: {fileID: 1278830541338010399}
   spellOneCooldown: {fileID: 8658146713366610463}
   spellTwoCooldown: {fileID: 6355397539884889174}
-  spellUltimateCooldown: {fileID: 0}
+  spellUltimateCooldown: {fileID: 6643564811561275885}
 --- !u!1 &7161138584308343159
 GameObject:
   m_ObjectHideFlags: 0

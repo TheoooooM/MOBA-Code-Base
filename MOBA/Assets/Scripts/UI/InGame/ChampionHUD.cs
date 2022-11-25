@@ -60,22 +60,7 @@ public class ChampionHUD : MonoBehaviour
 
     private void UpdateCooldown(byte capacityIndex, int[] intArray, Vector3[] vectors)
     {
-        CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
-        switch (capacityIndex)
-        {
-            case 0:
-                spellPassiveCooldown.fillAmount = 100f;
-                break;
-            case 1:
-                spellOneCooldown.fillAmount = 100f;
-                break;
-            case 2:
-                spellTwoCooldown.fillAmount = 100f;
-                break;
-            case 3:
-                spellUltimateCooldown.fillAmount = 100f;
-                break;
-        }
+        
     }
     
     private void UpdateFillPercentByPercentHealth(float value)
