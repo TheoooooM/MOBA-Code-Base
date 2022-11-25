@@ -21,6 +21,8 @@ namespace Entities.Capacities
             
             dir = (position[0] - casterPos).normalized;
             
+            Debug.Log(position[0]);
+            
             return true;
         }
 

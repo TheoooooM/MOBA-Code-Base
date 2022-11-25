@@ -16,7 +16,7 @@ namespace Entities.Capacities
 
         private void Update()
         {
-            transform.position += dir * speed;
+            transform.position += dir * (speed * Time.deltaTime);
         }
 
         private void OnTriggerEnter(Collider other)
