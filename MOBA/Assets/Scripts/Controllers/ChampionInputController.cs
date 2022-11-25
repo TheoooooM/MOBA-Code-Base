@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using Entities;
 using Entities.Capacities;
 using Entities.Champion;
+using UnityEngine.AI;
 
 namespace Controllers.Inputs
 {
@@ -168,6 +169,7 @@ namespace Controllers.Inputs
             {
                 inputs.Movement.Move.performed += OnMoveChange; 
                 inputs.Movement.Move.canceled += OnMoveChange;
+                champion.GetComponent<NavMeshAgent>().enabled = false;
             }
             else
             {

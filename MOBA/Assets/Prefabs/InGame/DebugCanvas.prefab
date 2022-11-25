@@ -2548,8 +2548,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4826138202468875369}
-        m_TargetAssemblyTypeName: WinButtonTest, Assembly-CSharp
-        m_MethodName: OnStartInGameState
+        m_TargetAssemblyTypeName: DebugManager, Assembly-CSharp
+        m_MethodName: OnDieButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
