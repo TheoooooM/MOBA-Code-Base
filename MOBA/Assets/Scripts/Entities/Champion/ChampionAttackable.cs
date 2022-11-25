@@ -59,9 +59,21 @@ namespace Entities.Champion
         public void AttackRPC(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
+            var attackCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
+            var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
 
-            if (!attackCapacity.TryCast(entityIndex, targetedEntities, targetedPositions)) return;
-            
+            if (attackCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
+            {
+                if (!attackCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
+                {
+                    SendFollowEntity(targetedEntities[0]);
+                }
+                else
+                {
+                    OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
+                    photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
+                }
+            }
             OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
             photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
         }

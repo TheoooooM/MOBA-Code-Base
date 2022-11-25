@@ -19,6 +19,7 @@ namespace Entities.Champion
 
         // === League Of Legends
         private int mouseTargetIndex;
+        private bool isFollowing;
 
         private Vector3 movePosition;
         //NavMesh
@@ -161,6 +162,22 @@ namespace Entities.Champion
             movePosition.y = transform.position.y;
             agent.SetDestination(position);
             Debug.Log($"SetDestination, position:{position}, remainingDistance{agent.remainingDistance}");
+        }
+
+        public void SendFollowEntity(int entityIndex)
+        {
+            photonView.RPC("FollowEntity", RpcTarget.All, entityIndex);
+        }
+        
+        [PunRPC] public void StartFollowEntity(int entityIndex)
+        {
+            if (!photonView.IsMine) return;
+            //follow
+        }
+
+        void FollowEntity()
+        {
+            
         }
 
         void CheckMoveDistance()
