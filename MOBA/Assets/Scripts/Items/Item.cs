@@ -19,7 +19,7 @@ namespace Entities.Inventory
 
         public ItemSO AssociatedItemSO()
         {
-            return ItemCollectionManager.GetItemSObyIndex(indexOfSOInCollection);
+            return ItemCollectionManager.Instance.GetItemSObyIndex(indexOfSOInCollection);
         }
 
         public void OnItemAddedToInventory(Entity entity)
@@ -28,8 +28,10 @@ namespace Entities.Inventory
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
             OnItemAddedEffects(entity);
-            var capacityCollection = CapacitySOCollectionManager.Instance;
-            // TODO - Add passives
+            foreach (var index in AssociatedItemSO().passiveCapacitiesIndexes)
+            {
+                entityOfInventory.AddPassiveCapacityRPC(index);
+            }
         }
 
         protected abstract void OnItemAddedEffects(Entity entity);
@@ -39,15 +41,17 @@ namespace Entities.Inventory
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
             OnItemAddedEffectsFeedback(entity);
-            // TODO - Add passives feedbacks
         }
 
         protected abstract void OnItemAddedEffectsFeedback(Entity entity);
-
-
+        
         public void OnItemRemovedFromInventory(Entity entity)
         {
             OnItemRemovedEffects(entity);
+            foreach (var index in AssociatedItemSO().passiveCapacitiesIndexes)
+            {
+                entityOfInventory.RemovePassiveCapacityByIndex(index);
+            }
         }
 
         protected abstract void OnItemRemovedEffects(Entity entity);
@@ -63,15 +67,14 @@ namespace Entities.Inventory
         {
             if(!consumable) return;
             count--;
-            if(count > 0) return;
-            inventory.RemoveItemRPC(this);
         }
-
-
+        
         public virtual void OnItemActivatedFeedback(int[] targets, Vector3[] positions)
         {
             if(!consumable) return;
             if (!PhotonNetwork.IsMasterClient) count--;
+            if(count > 0 || !PhotonNetwork.IsMasterClient) return;
+            inventory.RemoveItemRPC(this);
         }
     }
 }

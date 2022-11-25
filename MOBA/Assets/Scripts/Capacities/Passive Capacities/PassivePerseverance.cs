@@ -1,4 +1,5 @@
 using GameStates;
+using UnityEngine;
 
 namespace Entities.Capacities
 {
@@ -11,13 +12,11 @@ namespace Entities.Capacities
         
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByName(passiveCapacitySo.name);
+            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
         }
 
-        public override void OnAdded(Entity target)
+        protected override void OnAddedEffects(Entity target)
         {
-            base.OnAdded(target);
-
             passiveCapacitySo = (PassivePerseveranceSO)AssociatedPassiveCapacitySO();
 
             activeLifeable = entity.GetComponent<IActiveLifeable>();
@@ -26,18 +25,36 @@ namespace Entities.Capacities
             GameStateMachine.Instance.OnTick += IncreasePerTick;
         }
 
+        protected override void OnAddedFeedbackEffects(Entity target)
+        {
+            
+        }
+
+        protected override void OnRemovedEffects(Entity target)
+        {
+            Debug.LogWarning("RemovedEffect");
+            activeLifeable.OnDecreaseCurrentHp -= ResetTimeSinceLastAttack;
+            GameStateMachine.Instance.OnTick -= IncreasePerTick;
+        }
+
+        protected override void OnRemovedFeedbackEffects(Entity target)
+        {
+            
+        }
+
         private void ActiveHealEffect()
         {
             float maxHP = activeLifeable.GetMaxHp();
             float modAmount = maxHP * passiveCapacitySo.percentage;
             activeLifeable.IncreaseCurrentHpRPC(modAmount);
+            PoolLocalManager.Instance.PoolInstantiate(((PassivePerseveranceSO)AssociatedPassiveCapacitySO()).healEffectPrefab, entity.transform.position, Quaternion.identity,
+                entity.transform);
         }
 
         private void IncreasePerTick()
         {
             timeSinceLastAttack += GameStateMachine.Instance.tickRate;
             timeSinceLastHeal += GameStateMachine.Instance.tickRate;
-
             if (timeSinceLastAttack > passiveCapacitySo.timeBeforeHeal)
             {
                 if (timeSinceLastHeal >= 5)
@@ -51,24 +68,6 @@ namespace Entities.Capacities
         private void ResetTimeSinceLastAttack(float f)
         {
             timeSinceLastAttack = 0;
-        }
-
-        public override void OnAddedFeedback()
-        {
-            base.OnAddedFeedback();
-        }
-
-        public override void OnRemoved()
-        {
-            base.OnRemoved();
-            
-            activeLifeable.OnDecreaseCurrentHp -= ResetTimeSinceLastAttack;
-            GameStateMachine.Instance.OnTick -= IncreasePerTick;
-        }
-
-        public override void OnRemoveFeedback()
-        {
-            base.OnRemoveFeedback();
         }
     }
 

@@ -9,35 +9,29 @@ namespace Entities.Capacities
         private IMoveable moveable;
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
-            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByName(so.name);
+            return CapacitySOCollectionManager.Instance.GetPassiveCapacitySOByIndex(indexOfSo);
         }
 
-        public override void OnAdded(Entity target)
-        {            
+        protected override void OnAddedEffects(Entity target)
+        {
+            so = (PassiveSlowEffectSO)AssociatedPassiveCapacitySO();
             moveable = target.GetComponent<IMoveable>();
-
-            if(moveable == null) return;
-            
-            base.OnAdded(target);
-
-            moveable.DecreaseCurrentMoveSpeedRPC(so.slowAmount);
+            moveable?.DecreaseCurrentMoveSpeedRPC(so.slowAmount);
         }
 
-        public override void OnAddedFeedback()
+        protected override void OnAddedFeedbackEffects(Entity target)
         {
-            base.OnAddedFeedback();
+            if(moveable == null) entity.passiveCapacitiesList.Remove(this);
         }
 
-        public override void OnRemoved()
+        protected override void OnRemovedEffects(Entity target)
         {
-            base.OnRemoved();
-            
             moveable.IncreaseCurrentMoveSpeedRPC(so.slowAmount);
         }
 
-        public override void OnRemoveFeedback()
+        protected override void OnRemovedFeedbackEffects(Entity target)
         {
-            base.OnRemoveFeedback();
+            
         }
     }
 }

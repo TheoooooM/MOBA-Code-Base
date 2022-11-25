@@ -405,7 +405,7 @@ namespace GameStates
 
             LinkChampionSOCapacityIndexes();
 
-            ItemCollectionManager.LinkCapacityIndexes();
+            ItemCollectionManager.Instance.LinkCapacityIndexes();
 
             InstantiateChampion();
             
