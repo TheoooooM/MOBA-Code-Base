@@ -123,14 +123,13 @@ namespace Entities.Champion
         public void SyncSetCurrentResourcePercentRPC(float value)
         {
             currentResource = value;
-            uiManager.entitiesResource[entityIndex].SetResourceByValue(value);
             OnSetCurrentResourcePercentFeedback?.Invoke(value);
         }
 
         [PunRPC]
         public void SetCurrentResourcePercentRPC(float value)
         {
-            currentResource = value * maxResource;
+            currentResource = (value * 100)/maxResource;
             OnSetCurrentResourcePercent?.Invoke(value);
             photonView.RPC("SyncSetCurrentResourcePercentRPC", RpcTarget.All, value);
         }
