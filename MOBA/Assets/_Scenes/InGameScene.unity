@@ -2010,18 +2010,6 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-      propertyPath: allActiveCapacities.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-      propertyPath: allActiveCapacities.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 56200ad2b07b5ff43a416c1a288af400, type: 2}
-    - target: {fileID: 6697169192466650589, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
-      propertyPath: allActiveCapacities.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: a0e1138ceea314448b40f9db868c7ec9, type: 2}
     - target: {fileID: 8293423625793494612, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: m_Name
       value: Collections
