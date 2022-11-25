@@ -21,4 +21,4 @@ MonoBehaviour:
   indexInCollection: 0
   percentage: 0.054
   timeBeforeHeal: 0
-  healEffectPrefab: {fileID: 3248323131726062708, guid: 9365fdce127720748a1a73011482ddeb, type: 3}
+  healEffectPrefab: {fileID: 3248323131726062708, guid: 1e116510708295e4fa641f6ab0c260c1, type: 3}
