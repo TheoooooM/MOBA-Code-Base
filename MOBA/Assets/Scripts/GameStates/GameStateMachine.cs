@@ -491,6 +491,8 @@ namespace GameStates
         {
             if (UIManager.Instance == null) return;
             
+            UIManager.Instance.InstantiateChampionHUD();
+            
             foreach (var actorNumber in playersReadyDict)
             {
                 UIManager.Instance.AssignInventory(actorNumber.Key);
