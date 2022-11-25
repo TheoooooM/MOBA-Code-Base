@@ -761,6 +761,18 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2983732105347116086, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: poolElements.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2983732105347116086, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: poolElements.Array.data[2].amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2983732105347116086, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
+      propertyPath: poolElements.Array.data[2].Element
+      value: 
+      objectReference: {fileID: -780024786077258656, guid: 15a987334465ce742ab2dc481e3cedea, type: 3}
     - target: {fileID: 4487338298682654952, guid: 80fefcb4f83a0b14db760960cf24ee68, type: 3}
       propertyPath: sceneViewId
       value: 2

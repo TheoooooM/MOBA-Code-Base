@@ -6,7 +6,7 @@ namespace Entities.Capacities
     [CreateAssetMenu(menuName = "Capacity/ActiveCapacitySO/Zappie", fileName = "new Zappie")]
     public class ActiveZappieSO : ActiveCapacitySO
     {
-        public GameObject projectile;
+        public Entity projectile;
         public float damageAmount;
         public float speed;
     
