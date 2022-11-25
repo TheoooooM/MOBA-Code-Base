@@ -179,6 +179,22 @@ namespace Entities.Champion
             
         }
 
+        public void SendFollowEntity(int entityIndex)
+        {
+            photonView.RPC("FollowEntity", RpcTarget.All, entityIndex);
+        }
+        
+        [PunRPC] public void StartFollowEntity(int entityIndex)
+        {
+            if (!photonView.IsMine) return;
+            //follow
+        }
+
+        void FollowEntity()
+        {
+            
+        }
+
         void CheckMoveDistance()
         {
             if (Vector3.Distance(transform.position, movePosition) < 0.5f)

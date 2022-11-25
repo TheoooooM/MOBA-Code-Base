@@ -149,6 +149,7 @@ namespace Controllers.Inputs
             moveVector = new Vector3(moveInput.x, 0, moveInput.y);
             champion.SetMoveDirection(moveVector);
         }
+        
 
         protected override void Link(Entity entity)
         {
