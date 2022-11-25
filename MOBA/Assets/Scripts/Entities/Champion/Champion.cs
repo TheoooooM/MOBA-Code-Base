@@ -1,9 +1,9 @@
+using System;
 using Controllers;
 using Entities.Capacities;
 using Entities.FogOfWar;
 using GameStates;
 using Photon.Pun;
-
 using UnityEngine;
 
 namespace Entities.Champion
@@ -11,8 +11,9 @@ namespace Entities.Champion
     public partial class Champion : Entity
     {
         public ChampionSO championSo;
-        public Transform championInitPoint;
+        public Transform rotateParent;
         public Transform championMesh;
+        private Vector3 respawnPos;
 
         private FogOfWarManager fowm;
         private CapacitySOCollectionManager capacityCollection;
@@ -27,7 +28,6 @@ namespace Entities.Champion
             uiManager = UIManager.Instance;
             camera = Camera.main;
             //fowm.allViewables.Add(entityIndex,this);
-            
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
         }
@@ -37,7 +37,7 @@ namespace Entities.Champion
             Move();
             Rotate();
             CheckMoveDistance();
-            if(isFollowing)FollowEntity();// Lol
+            if (isFollowing) FollowEntity(); // Lol
         }
 
         public override void OnInstantiated()
@@ -66,13 +66,35 @@ namespace Entities.Champion
             attackAbilityIndex = championSo.attackAbilityIndex;
             abilitiesIndexes = championSo.activeCapacitiesIndexes;
             ultimateAbilityIndex = championSo.ultimateAbilityIndex;
-            team = newTeam;
-            
-            var mesh = Instantiate(championSo.championMeshPrefab, championInitPoint.position,
-                Quaternion.identity, championInitPoint);
-            mesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
-            elementsToShow.Add(mesh);
-            
+            var championMesh = Instantiate(championSo.championMeshPrefab, rotateParent.position,
+                Quaternion.identity, rotateParent);
+
+            this.team = (Enums.Team)team;
+
+            Transform pos;
+            switch (this.team)
+            {
+                case Enums.Team.Team1:
+                    pos = MapLoaderManager.Instance.firstTeamBasePoint;
+                    break;
+                case Enums.Team.Team2:
+                    pos = MapLoaderManager.Instance.secondTeamBasePoint;
+                    break;
+                default:
+                    Debug.LogError("Team is not valid.");
+                    pos = transform;
+                    break;
+            }
+
+            respawnPos = transform.position = pos.position;
+
+            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
+            elementsToShow.Add(championMesh);
+        }
+
+        public void SyncApplyChampionSO(byte championSoIndex, Enums.Team team)
+        {
+            photonView.RPC("ApplyChampionSORPC", RpcTarget.All, championSoIndex, (byte)team);
         }
     }
 }

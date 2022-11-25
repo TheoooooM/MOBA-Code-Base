@@ -50,100 +50,79 @@ namespace Entities.Champion
             return currentMoveSpeed;
         }
 
-        public void RequestSetCanMove(bool value)
-        { }
+        public void RequestSetCanMove(bool value) { }
 
         [PunRPC]
-        public void SyncSetCanMoveRPC(bool value)
-        { }
+        public void SyncSetCanMoveRPC(bool value) { }
 
         [PunRPC]
-        public void SetCanMoveRPC(bool value)
-        { }
+        public void SetCanMoveRPC(bool value) { }
 
         public event GlobalDelegates.BoolDelegate OnSetCanMove;
         public event GlobalDelegates.BoolDelegate OnSetCanMoveFeedback;
 
-        public void RequestSetReferenceMoveSpeed(float value)
-        { }
+        public void RequestSetReferenceMoveSpeed(float value) { }
 
         [PunRPC]
-        public void SyncSetReferenceMoveSpeedRPC(float value)
-        { }
+        public void SyncSetReferenceMoveSpeedRPC(float value) { }
 
         [PunRPC]
-        public void SetReferenceMoveSpeedRPC(float value)
-        { }
+        public void SetReferenceMoveSpeedRPC(float value) { }
 
         public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnSetReferenceMoveSpeedFeedback;
 
-        public void RequestIncreaseReferenceMoveSpeed(float amount)
-        { }
+        public void RequestIncreaseReferenceMoveSpeed(float amount) { }
 
         [PunRPC]
-        public void SyncIncreaseReferenceMoveSpeedRPC(float amount)
-        { }
+        public void SyncIncreaseReferenceMoveSpeedRPC(float amount) { }
 
         [PunRPC]
-        public void IncreaseReferenceMoveSpeedRPC(float amount)
-        { }
+        public void IncreaseReferenceMoveSpeedRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnIncreaseReferenceMoveSpeedFeedback;
 
-        public void RequestDecreaseReferenceMoveSpeed(float amount)
-        { }
+        public void RequestDecreaseReferenceMoveSpeed(float amount) { }
 
         [PunRPC]
-        public void SyncDecreaseReferenceMoveSpeedRPC(float amount)
-        { }
+        public void SyncDecreaseReferenceMoveSpeedRPC(float amount) { }
 
         [PunRPC]
-        public void DecreaseReferenceMoveSpeedRPC(float amount)
-        { }
+        public void DecreaseReferenceMoveSpeedRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseReferenceMoveSpeedFeedback;
 
-        public void RequestSetCurrentMoveSpeed(float value)
-        { }
+        public void RequestSetCurrentMoveSpeed(float value) { }
 
         [PunRPC]
-        public void SyncSetCurrentMoveSpeedRPC(float value)
-        { }
+        public void SyncSetCurrentMoveSpeedRPC(float value) { }
 
         [PunRPC]
-        public void SetCurrentMoveSpeedRPC(float value)
-        { }
+        public void SetCurrentMoveSpeedRPC(float value) { }
 
         public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnSetCurrentMoveSpeedFeedback;
 
-        public void RequestIncreaseCurrentMoveSpeed(float amount)
-        { }
+        public void RequestIncreaseCurrentMoveSpeed(float amount) { }
 
         [PunRPC]
-        public void SyncIncreaseCurrentMoveSpeedRPC(float amount)
-        { }
+        public void SyncIncreaseCurrentMoveSpeedRPC(float amount) { }
 
         [PunRPC]
-        public void IncreaseCurrentMoveSpeedRPC(float amount)
-        { }
+        public void IncreaseCurrentMoveSpeedRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnIncreaseCurrentMoveSpeedFeedback;
 
-        public void RequestDecreaseCurrentMoveSpeed(float amount)
-        { }
+        public void RequestDecreaseCurrentMoveSpeed(float amount) { }
 
         [PunRPC]
-        public void SyncDecreaseCurrentMoveSpeedRPC(float amount)
-        { }
+        public void SyncDecreaseCurrentMoveSpeedRPC(float amount) { }
 
         [PunRPC]
-        public void DecreaseCurrentMoveSpeedRPC(float amount)
-        { }
+        public void DecreaseCurrentMoveSpeedRPC(float amount) { }
 
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeed;
         public event GlobalDelegates.FloatDelegate OnDecreaseCurrentMoveSpeedFeedback;
@@ -158,6 +137,7 @@ namespace Entities.Champion
         private void Rotate()
         {
             if (!photonView.IsMine) return;
+            if (!isBattlerite) return;
             var ray = camera.ScreenPointToRay(Input.mousePosition);
 
             if (!Physics.Raycast(ray, out var hit, float.PositiveInfinity)) return;
@@ -165,7 +145,7 @@ namespace Entities.Champion
             var rotateDirection = -(transform.position - hit.point);
             rotateDirection.y = 0;
 
-            transform.rotation = Quaternion.Lerp(transform.rotation,
+            rotateParent.transform.rotation = Quaternion.Lerp(rotateParent.transform.rotation,
                 Quaternion.LookRotation(rotateDirection),
                 Time.deltaTime * currentRotateSpeed);
         }
@@ -186,14 +166,13 @@ namespace Entities.Champion
             agent.SetDestination(position);
         }
 
-        
-        public void SendFollowEntity(int entityIndex, float capacityDistance)
+        private void SendFollowEntity(int entityIndex, float capacityDistance)
         {
-            photonView.RPC("FollowEntity", RpcTarget.All, entityIndex, capacityDistance);
+            photonView.RPC("StartFollowEntityRPC", RpcTarget.All, entityIndex, capacityDistance);
         }
 
         [PunRPC]
-        public void StartFollowEntity(int entityIndex, float capacityDistance)
+        public void StartFollowEntityRPC(int entityIndex, float capacityDistance)
         {
             Debug.Log("Start Follow Entity");
             if (!photonView.IsMine) return;
@@ -201,8 +180,8 @@ namespace Entities.Champion
             entityFollow = EntityCollectionManager.GetEntityByIndex(entityIndex);
             attackRange = capacityDistance;
         }
-        
-        void FollowEntity()
+
+        private void FollowEntity()
         {
             agent.SetDestination(entityFollow.transform.position);
             if (attackRange <= agent.remainingDistance)
@@ -213,7 +192,7 @@ namespace Entities.Champion
             }
         }
 
-        void CheckMoveDistance()
+        private void CheckMoveDistance()
         {
             if (Vector3.Distance(transform.position, movePosition) < 0.5f)
             {
