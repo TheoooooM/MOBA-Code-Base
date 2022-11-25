@@ -71,6 +71,7 @@ namespace Entities.Champion
             ultimateAbilityIndex = championSo.ultimateAbilityIndex;
             var championMesh = Instantiate(championSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
+            championMesh.transform.localEulerAngles = Vector3.zero;
 
             team = newTeam;
 
@@ -93,6 +94,8 @@ namespace Entities.Champion
 
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
             elementsToShow.Add(championMesh);
+            
+            RequestSetCanDie(true);
         }
     }
 }

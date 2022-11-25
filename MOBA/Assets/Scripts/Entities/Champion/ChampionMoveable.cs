@@ -183,6 +183,7 @@ namespace Entities.Champion
 
         private void FollowEntity()
         {
+            if (isBattlerite) return;
             agent.SetDestination(entityFollow.transform.position);
             if (attackRange <= agent.remainingDistance)
             {
@@ -195,6 +196,7 @@ namespace Entities.Champion
 
         private void CheckMoveDistance()
         {
+            if (isBattlerite) return;
             if (Vector3.Distance(transform.position, movePosition) < 0.5f)
             {
                 agent.SetDestination(transform.position);
