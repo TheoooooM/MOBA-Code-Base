@@ -20,6 +20,8 @@ namespace Entities.Champion
         // === League Of Legends
         private int mouseTargetIndex;
         private bool isFollowing;
+        private Entity entityFollow;
+        private float attackRange;
 
         private Vector3 movePosition;
         //NavMesh
@@ -164,20 +166,29 @@ namespace Entities.Champion
             Debug.Log($"SetDestination, position:{position}, remainingDistance{agent.remainingDistance}");
         }
 
-        public void SendFollowEntity(int entityIndex)
+        public void SendFollowEntity(int entityIndex, float capacityDistance)
         {
-            photonView.RPC("FollowEntity", RpcTarget.All, entityIndex);
+            photonView.RPC("FollowEntity", RpcTarget.All, entityIndex, capacityDistance);
         }
         
-        [PunRPC] public void StartFollowEntity(int entityIndex)
+        [PunRPC] public void StartFollowEntity(int entityIndex, float capacityDistance)
         {
+            Debug.Log("Start Follow Entity");
             if (!photonView.IsMine) return;
-            //follow
+            isFollowing = true;
+            entityFollow = EntityCollectionManager.GetEntityByIndex(entityIndex);
+            attackRange = capacityDistance;
         }
 
         void FollowEntity()
         {
-            
+            agent.SetDestination(entityFollow.transform.position);
+            if (attackRange <= agent.remainingDistance)
+            {
+                Debug.Log("In Range to Attack");
+                agent.SetDestination(transform.position);
+                RequestAttack(lastCapacityIndex, lastTargetedEntities, lastTargetedPositions);
+            }
         }
 
         void CheckMoveDistance()
