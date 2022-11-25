@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Entities.Capacities;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Entities.Inventory
@@ -60,11 +61,17 @@ namespace Entities.Inventory
         
         public virtual void OnItemActivated(int[] targets, Vector3[] positions)
         {
+            if(!consumable) return;
+            count--;
+            if(count > 0) return;
+            inventory.RemoveItemRPC(this);
         }
 
 
         public virtual void OnItemActivatedFeedback(int[] targets, Vector3[] positions)
         {
+            if(!consumable) return;
+            if (!PhotonNetwork.IsMasterClient) count--;
         }
     }
 }

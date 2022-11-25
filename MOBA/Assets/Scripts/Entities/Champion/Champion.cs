@@ -28,11 +28,6 @@ namespace Entities.Champion
             uiManager = UIManager.Instance;
             camera = Camera.main;
             //fowm.allViewables.Add(entityIndex,this);
-            if (uiManager != null && photonView.IsMine)
-            {
-                UIManager.ClickOnItem += RequestAddItem;
-                UIManager.RemoveOnItem += RequestRemoveItem;
-            }
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
         }
@@ -55,9 +50,8 @@ namespace Entities.Champion
         }
 
         public override void OnInstantiatedFeedback() { }
-
-        [PunRPC]
-        public void ApplyChampionSORPC(byte championSoIndex, byte team)
+        
+        public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)
         {
             var so = GameStateMachine.Instance.allChampionsSo[championSoIndex];
             championSo = so;
@@ -72,7 +66,6 @@ namespace Entities.Champion
             attackAbilityIndex = championSo.attackAbilityIndex;
             abilitiesIndexes = championSo.activeCapacitiesIndexes;
             ultimateAbilityIndex = championSo.ultimateAbilityIndex;
-
             var championMesh = Instantiate(championSo.championMeshPrefab, rotateParent.position,
                 Quaternion.identity, rotateParent);
 

@@ -175,6 +175,26 @@ namespace GameStates
             OnTickFeedback?.Invoke();
         }
 
+        public int GetPlayerChampionPhotonViewId(int actorNumber)
+        {
+            return playersReadyDict[actorNumber].championPhotonViewId;
+        }
+        
+        public int GetPlayerChampionPhotonViewId()
+        {
+            return playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber].championPhotonViewId;
+        }
+        
+        public Champion GetPlayerChampion(int actorNumber)
+        {
+            return playersReadyDict[actorNumber].champion;
+        }
+
+        public Champion GetPlayerChampion()
+        {
+            return playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber].champion;
+        }
+        
         public Enums.Team GetPlayerTeam(int actorNumber)
         {
             return playersReadyDict.ContainsKey(actorNumber) ? playersReadyDict[actorNumber].team : Enums.Team.Neutral;
@@ -385,24 +405,26 @@ namespace GameStates
         {
             // TODO - init pools
 
-            LinkChampionCapacityIndexes();
+            LinkChampionSOCapacityIndexes();
 
             ItemCollectionManager.LinkCapacityIndexes();
 
             InstantiateChampion();
-
-            if (UIManager.Instance != null)
-            {
-                foreach (var actorNumber in playersReadyDict.Keys)
-                {
-                    UIManager.Instance.AssignInventory(actorNumber);
-                }
-            }
-
+            
             SendSetToggleReady(true);
         }
+        
+        /// <summary>
+        /// Executed during the exit of loading state, so after every champion is instantiated and every indexes are linked
+        /// </summary>
+        public void LateLoad()
+        {
+            LinkLoadChampionData();
+            
+            SetupUI();
+        }
 
-        private void LinkChampionCapacityIndexes()
+        private void LinkChampionSOCapacityIndexes()
         {
             foreach (var championSo in allChampionsSo)
             {
@@ -417,9 +439,7 @@ namespace GameStates
             photonView.RPC("SyncChampionPhotonId", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, champion.photonView.ViewID);
 
             champion.name = $"Player ID:{PhotonNetwork.LocalPlayer.ActorNumber} [MINE]";
-
             LinkController(champion);
-            LinkChampionData(champion);
         }
 
         [PunRPC]
@@ -435,6 +455,14 @@ namespace GameStates
             champion.name = $"Player ID : {photonId}";
         }
 
+        private void LinkLoadChampionData()
+        {
+            foreach (var playerData in playersReadyDict.Values)
+            {
+                ApplyChampionSoData(playerData);
+            }
+        }
+
         private void LinkController(Champion champion)
         {
             var controller = champion.GetComponent<PlayerInputController>();
@@ -442,28 +470,33 @@ namespace GameStates
             // We set local parameters
             controller.LinkControlsToPlayer();
             controller.LinkCameraToPlayer();
-            //controller.TransferOwnerShipToMaster();
         }
 
-        private void LinkChampionData(Champion champion)
+        private void ApplyChampionSoData(PlayerData playerData)
         {
-            // We take data
-
-            var data = playersReadyDict[PhotonNetwork.LocalPlayer.ActorNumber];
-
-            if (data.championSOIndex >= allChampionsSo.Length)
+            if (playerData.championSOIndex >= allChampionsSo.Length)
             {
                 Debug.LogWarning("Make sure the mesh is valid. Selects default mesh.");
-                data.championSOIndex = 1;
+                playerData.championSOIndex = 1;
             }
 
-            var championSo = allChampionsSo[data.championSOIndex];
+            var championSo = allChampionsSo[playerData.championSOIndex];
 
             // We state name
-            champion.name += $" / {championSo.name}";
+            playerData.champion.name += $" / {championSo.name}";
 
             // We sync data and champion mesh
-            champion.SyncApplyChampionSO(data.championSOIndex, data.team);
+            playerData.champion.ApplyChampionSO(playerData.championSOIndex, playerData.team);
+        }
+
+        private void SetupUI()
+        {
+            if (UIManager.Instance == null) return;
+            
+            foreach (var actorNumber in playersReadyDict)
+            {
+                UIManager.Instance.AssignInventory(actorNumber.Key);
+            }
         }
 
         public void SendWinner(Enums.Team team)

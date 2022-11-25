@@ -30,21 +30,11 @@ namespace Entities.Champion
 
         public void RequestAddItem(byte index)
         {
-            photonView.RPC("AddItemRPC",RpcTarget.MasterClient,index, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
-        }
-
-        public void AddItemRPC(byte index)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void SyncAddItemRPC(byte index)
-        {
-            throw new System.NotImplementedException();
+            photonView.RPC("AddItemRPC",RpcTarget.MasterClient,index);
         }
 
         [PunRPC]
-        public void AddItemRPC(byte index, byte senderID)
+        public void AddItemRPC(byte index)
         {
             var itemSo = ItemCollectionManager.GetItemSObyIndex(index);
             if (itemSo.consumable)
@@ -55,15 +45,15 @@ namespace Entities.Champion
                     contains = true;
                 }
                 if(!contains && items.Count>=3) return;
-                photonView.RPC("SyncAddItemRPC",RpcTarget.All, index, senderID);
+                photonView.RPC("SyncAddItemRPC",RpcTarget.All, index);
                 return;
             }
             if(items.Count>=3) return;
-            photonView.RPC("SyncAddItemRPC",RpcTarget.All, index, senderID);
+            photonView.RPC("SyncAddItemRPC",RpcTarget.All, index);
         }
 
         [PunRPC]
-        public void SyncAddItemRPC(byte index, byte senderID)
+        public void SyncAddItemRPC(byte index)
         {
             var item = ItemCollectionManager.CreateItem(index, this);
             if(item == null) return;
@@ -73,8 +63,6 @@ namespace Entities.Champion
                 item.OnItemAddedToInventory(this);
                 OnAddItem?.Invoke(index);
             }
-            
-            uiManager.UpdateInventory(items, senderID, photonView.IsMine);
 
             item.OnItemAddedToInventoryFeedback(this);
             OnAddItemFeedback?.Invoke(index);
@@ -83,10 +71,10 @@ namespace Entities.Champion
         public event GlobalDelegates.ByteDelegate OnAddItem;
         public event GlobalDelegates.ByteDelegate OnAddItemFeedback;
         
-        /// <param name="index">index of Item in this entity's inventory</param>
+        /// <param name="index">index of Item in this entity's inventory (not in item Collection)</param>
         public void RequestRemoveItem(byte index)
         {
-            photonView.RPC("RemoveItemRPC",RpcTarget.MasterClient,index, (byte)PhotonNetwork.LocalPlayer.ActorNumber);
+            photonView.RPC("RemoveItemRPC",RpcTarget.MasterClient,index);
         }
 
         /// <param name="item">Item to remove from this entity's inventory</param>
@@ -96,24 +84,21 @@ namespace Entities.Champion
             RequestRemoveItem((byte)items.IndexOf(item));
         }
 
+        [PunRPC]
         public void RemoveItemRPC(byte index)
         {
-            throw new System.NotImplementedException();
+            photonView.RPC("SyncRemoveItemRPC",RpcTarget.All,index);
         }
 
+        public void RemoveItemRPC(Item item)
+        {
+            if(!items.Contains(item)) return;
+            var index = items.IndexOf(item);
+            RemoveItemRPC((byte)index);
+        }
+
+        [PunRPC]
         public void SyncRemoveItemRPC(byte index)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        [PunRPC]
-        public void RemoveItemRPC(byte index, byte senderID)
-        {
-            photonView.RPC("SyncRemoveItemRPC",RpcTarget.All,index, senderID);
-        }
-
-        [PunRPC]
-        public void SyncRemoveItemRPC(byte index, byte senderID)
         {
             if(index >= items.Count) return;
             var item = items[index];
@@ -124,46 +109,57 @@ namespace Entities.Champion
                 OnRemoveItem?.Invoke(index);
             }
             
-            uiManager.UpdateInventory(items, senderID, photonView.IsMine);
-            
             item.OnItemRemovedFromInventoryFeedback(this);
             OnRemoveItemFeedback?.Invoke(index);
         }
         public event GlobalDelegates.ByteDelegate OnRemoveItem;
         public event GlobalDelegates.ByteDelegate OnRemoveItemFeedback;
         
-        public void RequestActivateItem(byte itemIndex,int[] selectedEntities,Vector3[] positions)
+        public void RequestActivateItem(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
-            photonView.RPC("ActivateItemRPC",RpcTarget.MasterClient,itemIndex,selectedEntities,positions);
+            Debug.Log("request item uses");
+            photonView.RPC("ActivateItemRPC",RpcTarget.MasterClient,itemIndexInInventory,selectedEntities,positions);
         }
 
         [PunRPC]
-        public void ActivateItemRPC(byte itemIndex,int[] selectedEntities,Vector3[] positions)
+        public void ActivateItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions)
         {
-            if(itemIndex >= items.Count) return;
-            var item = items[itemIndex];
+            Debug.Log("try to use item");
+            if(itemIndexInInventory >= items.Count) return;
+            var item = items[itemIndexInInventory];
             if(item == null) return;
-            items[itemIndex].OnItemActivated(selectedEntities,positions);
-            foreach (var capacityIndex in item.AssociatedItemSO().activeCapacitiesIndexes)
+            var successes = new bool[item.AssociatedItemSO().activeCapacitiesIndexes.Length];
+            var bytes = item.AssociatedItemSO().activeCapacitiesIndexes;
+            for (var i = 0; i < bytes.Length; i++)
             {
-                var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-                if (!activeCapacity.TryCast(entityIndex, selectedEntities, positions)) return;
-                // TODO - activeCapacityFeedback
+                var capacityIndex = bytes[i];
+                var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
+                successes[i] = activeCapacity.TryCast(entityIndex, selectedEntities, positions);
             }
-            OnActivateItem?.Invoke(itemIndex,selectedEntities,positions);
-            photonView.RPC("SyncActivateItemRPC",RpcTarget.All,itemIndex,selectedEntities,positions);
+            items[itemIndexInInventory].OnItemActivated(selectedEntities,positions);
+            OnActivateItem?.Invoke(itemIndexInInventory,selectedEntities,positions);
+            photonView.RPC("SyncActivateItemRPC",RpcTarget.All,itemIndexInInventory,selectedEntities,positions,successes.ToArray());
         }
 
         [PunRPC]
-        public void SyncActivateItemRPC(byte itemIndex,int[] selectedEntities,Vector3[] positions)
+        public void SyncActivateItemRPC(byte itemIndexInInventory,int[] selectedEntities,Vector3[] positions,bool[] castSuccess)
         {
-            if(itemIndex >= items.Count) return;
-            if(items[itemIndex] == null) return;
-            items[itemIndex].OnItemActivatedFeedback(selectedEntities,positions);
-            OnActivateItemFeedback?.Invoke(itemIndex,selectedEntities,positions);
+            Debug.Log("sync to use item");
+            if(itemIndexInInventory >= items.Count) return;
+            var item = items[itemIndexInInventory];
+            if(items[itemIndexInInventory] == null) return;
+            var bytes = item.AssociatedItemSO().activeCapacitiesIndexes;
+            for (var index = 0; index < bytes.Length; index++)
+            {
+                var capacityIndex = bytes[index];
+                var activeCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex, this);
+                if(castSuccess[index]) activeCapacity.PlayFeedback(entityIndex,selectedEntities,positions);
+            }
+            items[itemIndexInInventory].OnItemActivatedFeedback(selectedEntities,positions);
+            OnActivateItemFeedback?.Invoke(itemIndexInInventory,selectedEntities,positions,castSuccess);
         }
 
         public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItem;
-        public event GlobalDelegates.ByteIntArrayVector3ArrayDelegate OnActivateItemFeedback;
+        public event GlobalDelegates.ByteIntArrayVector3ArrayBoolArrayDelegate OnActivateItemFeedback;
     }
 }

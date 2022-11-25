@@ -93,7 +93,6 @@ namespace Controllers.Inputs
         {
             mousePos = ctx.ReadValue<Vector2>();
             var mouseRay = cam.ScreenPointToRay(Input.mousePosition);
-
             if (!Physics.Raycast(mouseRay, out var hit)) return;
             cursorWorldPos[0] = hit.point;
             selectedEntity[0] = -1;
