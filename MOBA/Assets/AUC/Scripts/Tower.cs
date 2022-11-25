@@ -263,26 +263,30 @@ public partial class Tower : IAttackable, IActiveLifeable, IDeadable
 
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+    
     public void RequestDecreaseCurrentHp(float amount)
     {
         photonView.RPC("DecreaseCurrentHpRPC", RpcTarget.MasterClient, amount);
     }
-
+    
+    [PunRPC]
     public void SyncDecreaseCurrentHpRPC(float amount)
     {
-        currentHealth = (int)amount;
+        currentHealth = amount;
     }
 
+    [PunRPC]
     public void DecreaseCurrentHpRPC(float amount)
     {
-        currentHealth -= (int)amount;
+        currentHealth -= amount;
         if (currentHealth < 0) currentHealth = 0;
         
         photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHealth);
         
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && isAlive)
         {
-            RequestDie();     
+            RequestDie();
+            isAlive = false;
         }
     }
 
@@ -315,19 +319,24 @@ public partial class Tower : IAttackable, IActiveLifeable, IDeadable
 
     public event GlobalDelegates.BoolDelegate OnSetCanDie;
     public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
+    
+    
     public void RequestDie()
     {
-        photonView.RPC("DieRPC", RpcTarget.MasterClient, this);
+        photonView.RPC("DieRPC", RpcTarget.MasterClient);
     }
 
+    [PunRPC]
     public void SyncDieRPC()
     {
         isAlive = false;
+        Destroy(gameObject);
     }
 
+    [PunRPC]
     public void DieRPC()
     {
-        photonView.RPC("DieRPC", RpcTarget.All, this);
+        photonView.RPC("SyncDieRPC", RpcTarget.All);
     }
 
     public event GlobalDelegates.NoParameterDelegate OnDie;

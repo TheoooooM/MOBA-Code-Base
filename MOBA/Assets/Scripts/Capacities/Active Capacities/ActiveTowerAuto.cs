@@ -14,7 +14,6 @@ public class ActiveTowerAuto : ActiveCapacity
         _tower = caster.GetComponent<Tower>();
         _target = _tower.enemiesInRange[0].GetComponent<Entity>();
         
-        
         if (Vector3.Distance(_tower.transform.position, _target.transform.position) > _tower.detectionRange){return false;}
         
         GameStateMachine.Instance.OnTick += DelayWaitingTick;
@@ -24,12 +23,11 @@ public class ActiveTowerAuto : ActiveCapacity
 
     public override void PlayFeedback(int casterIndex, int[] targetsEntityIndexes, Vector3[] targetPositions)
     {
-        throw new System.NotImplementedException();
     }
     
     private void DelayWaitingTick()
     {
-        timer += GameStateMachine.Instance.tickRate;
+        timer += 1 / GameStateMachine.Instance.tickRate;
 
         if (timer >= _tower.delayBeforeAttack) 
         {

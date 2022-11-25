@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Entities;
 using Entities.Capacities;
+using Entities.FogOfWar;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,7 +12,7 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
 {
     #region MinionVariables
     
-    private NavMeshAgent myAgent;
+    public NavMeshAgent myAgent;
     private MinionController myController;
     
     [Header("Pathfinding")] 
@@ -31,20 +32,23 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
     public bool attackCycle;
 
     [Header("Stats")]
-    public int currentHealth;
-    public int attackDamage;
+    public float currentHealth;
+    public float attackDamage;
     public float attackSpeed;
     [Range(5, 15)] public float attackRange;
-    public int maxHealth;
+    public float delayBeforeAttack;
+    public float maxHealth;
     #endregion
 
     protected override void OnStart()
     {
+        base.OnStart();
         myAgent = GetComponent<NavMeshAgent>();
         myController = GetComponent<MinionController>();
         currentHealth = maxHealth;
+        Debug.Log("OnStart ? " + gameObject.name);
     }
-
+    
     //------ State Methods
 
     public void IdleState()
@@ -217,12 +221,11 @@ public partial class MinionTest : IDeadable
     
     public override void OnInstantiated()
     {
-        throw new System.NotImplementedException();
+        base.OnInstantiated();
     }
 
     public override void OnInstantiatedFeedback()
     {
-        throw new System.NotImplementedException();
     }
 
     public bool CanMove()
@@ -498,19 +501,23 @@ public partial class MinionTest : IDeadable
 
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHpFeedback;
+    
+    
     public void RequestDecreaseCurrentHp(float amount)
     {
         photonView.RPC("DecreaseCurrentHpRPC", RpcTarget.MasterClient, amount);
     }
-
+    
+    [PunRPC]
     public void SyncDecreaseCurrentHpRPC(float amount)
     {
-        currentHealth = (int)amount;
+        currentHealth = amount;
     }
 
+    [PunRPC]
     public void DecreaseCurrentHpRPC(float amount)
     {
-        currentHealth -= (int)amount;
+        currentHealth -= amount;
         if (currentHealth < 0) currentHealth = 0;
         
         photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHealth);
@@ -550,16 +557,20 @@ public partial class MinionTest : IDeadable
 
     public event GlobalDelegates.BoolDelegate OnSetCanDie;
     public event GlobalDelegates.BoolDelegate OnSetCanDieFeedback;
+    
     public void RequestDie()
     {
         photonView.RPC("DieRPC", RpcTarget.MasterClient);
     }
 
+    [PunRPC]
     public void SyncDieRPC()
     {
-        Destroy(gameObject);
+        PoolNetworkManager.Instance.PoolRequeue(this);
+        FogOfWarManager.Instance.RemoveFOWViewable(this);
     }
-
+    
+    [PunRPC]
     public void DieRPC()
     {
         photonView.RPC("SyncDieRPC", RpcTarget.All);
