@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Entities;
 using Entities.Capacities;
 using Entities.Champion;
@@ -19,7 +20,19 @@ public class ChampionHUD : MonoBehaviour
     private IResourceable resourceable;
     private IActiveLifeable lifeable;
     private ICastable castable;
+    private Dictionary<byte, SpellHolder> spellHolderDict = new Dictionary<byte, SpellHolder>();
 
+    public class SpellHolder
+    {
+        public Image spellIcon;
+        public Image spellCooldown;
+
+        public void Setup(byte capacityIndex)
+        {
+            
+        }
+    }
+    
     public void InitHUD(Champion champion)
     {
         lifeable = champion.GetComponent<IActiveLifeable>();

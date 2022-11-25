@@ -10,6 +10,7 @@ public partial class UIManager
     // Choose the right HUD to show based on the champion the player is playing
     public void InstantiateChampionHUD(int entityIndex)
     {
+        // TODO: Replace with getChampionPlayer
         var champion = EntityCollectionManager.GetEntityByIndex(entityIndex).GetComponent<Champion>();
         if (champion == null) return;
         // TODO: How to identify the champion and show the right HUD?
