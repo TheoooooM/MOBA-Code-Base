@@ -49,6 +49,7 @@ namespace Entities.Champion
         public void RequestDie()
         {
             photonView.RPC("DieRPC", RpcTarget.MasterClient);
+            Debug.Log("Request to die");
         }
 
         [PunRPC]
@@ -64,7 +65,6 @@ namespace Entities.Champion
 
             rotateParent.gameObject.SetActive(false);
 
-            RequestRevive();
             OnDieFeedback?.Invoke();
         }
 
@@ -78,6 +78,8 @@ namespace Entities.Champion
             }
 
             isAlive = false;
+            
+            // TODO - Disable collision, etc...
 
             OnDie?.Invoke();
             GameStateMachine.Instance.OnTick += Revive;
@@ -118,6 +120,7 @@ namespace Entities.Champion
             SetCurrentResourceRPC(maxResource);
             OnRevive?.Invoke();
             photonView.RPC("SyncReviveRPC", RpcTarget.All);
+
         }
 
         private void Revive()
