@@ -18,7 +18,7 @@ namespace GameStates.States
 
         public override void ExitState()
         {
-            
+            sm.LateLoad();
         }
 
         public override void OnAllPlayerReady()
