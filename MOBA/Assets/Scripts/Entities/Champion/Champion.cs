@@ -32,9 +32,6 @@ namespace Entities.Champion
                 // UI : wait
                 //uiManager.InstantiateHealthBarForEntity(entityIndex);
                 //uiManager.InstantiateResourceBarForEntity(entityIndex);
-
-                UIManager.ClickOnItem += RequestAddItem;
-                UIManager.RemoveOnItem += RequestRemoveItem;
             }
 
             currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
@@ -58,9 +55,8 @@ namespace Entities.Champion
         }
 
         public override void OnInstantiatedFeedback() { }
-
-        [PunRPC]
-        public void ApplyChampionSORPC(byte championSoIndex, byte team)
+        
+        public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)
         {
             var so = GameStateMachine.Instance.allChampionsSo[championSoIndex];
             championSo = so;
@@ -75,18 +71,13 @@ namespace Entities.Champion
             attackAbilityIndex = championSo.attackAbilityIndex;
             abilitiesIndexes = championSo.activeCapacitiesIndexes;
             ultimateAbilityIndex = championSo.ultimateAbilityIndex;
+            team = newTeam;
             
-             var championMesh = Instantiate(championSo.championMeshPrefab, championInitPoint.position,
+            var mesh = Instantiate(championSo.championMeshPrefab, championInitPoint.position,
                 Quaternion.identity, championInitPoint);
-
-            this.team = (Enums.Team)team;
-            championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
-            elementsToShow.Add(championMesh);
-        }
-
-        public void SyncApplyChampionSO(byte championSoIndex, Enums.Team team)
-        {
-            photonView.RPC("ApplyChampionSORPC", RpcTarget.All, championSoIndex, (byte)team);
+            mesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(team);
+            elementsToShow.Add(mesh);
+            
         }
     }
 }

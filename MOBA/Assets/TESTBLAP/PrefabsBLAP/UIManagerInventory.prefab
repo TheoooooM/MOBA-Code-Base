@@ -367,7 +367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1174079734156847846}
   - component: {fileID: 1174079734156847847}
-  - component: {fileID: 1174079734156847840}
+  - component: {fileID: 6738515277711622255}
   m_Layer: 0
   m_Name: UIManagerInventory
   m_TagString: Untagged
@@ -433,7 +433,7 @@ MonoBehaviour:
     - {fileID: 3252803865024007886}
     team: 2
     available: 1
-  ListLocalInventorySlots:
+  slots:
   - slotImages: {fileID: 851832314412125286}
     slotButton: {fileID: 3241468529824627370}
   - slotImages: {fileID: 63198229294444607}
@@ -443,7 +443,7 @@ MonoBehaviour:
   InventoryCanvas: {fileID: 7498691665753908636}
   ShopCanvas: {fileID: 7498691667280078573}
   resourceBarPrefab: {fileID: 5630961168596188745, guid: 005e9dc584e3abd4db884d636a71c910, type: 3}
---- !u!114 &1174079734156847840
+--- !u!114 &6738515277711622255
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1174079734156847841}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60bc2eba918452f4590fe5bbf7bc1ca4, type: 3}
+  m_Script: {fileID: 11500000, guid: c0f419ec362a5504d8f7733d40ec8f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShopItemImagesUI:
@@ -464,7 +464,6 @@ MonoBehaviour:
     buttonShop: {fileID: 1599916294029998724}
   - slotImage: {fileID: 7498691666812078586}
     buttonShop: {fileID: 1080442938668134445}
-  Champion: {fileID: 0}
 --- !u!1 &1540399562384152253
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,7 +1127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6792453, g: 0.6568174, b: 0.6568174, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1311,7 +1310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6792453, g: 0.6568174, b: 0.6568174, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2532,7 +2531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6792453, g: 0.6568174, b: 0.6568174, a: 1}
+  m_Color: {r: 0.07075471, g: 0.293021, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2822,7 +2821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7498691665753908636
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4023,7 +4022,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6792453, g: 0.6568174, b: 0.6568174, a: 1}
+  m_Color: {r: 0.07058824, g: 0.29411766, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
