@@ -7,7 +7,10 @@ namespace Entities.Champion
     {
         public bool isAlive;
         public bool canDie;
-        public float timer = 10f;
+        
+        // TODO: Delete when TickManager is implemented
+        public float timerToRespawn = 10f;
+        private float timer; 
 
         public bool IsAlive()
         {
@@ -28,16 +31,13 @@ namespace Entities.Champion
         public void SyncSetCanDieRPC(bool value)
         {
             canDie = value;
-            isAlive = !value;
             OnSetCanDieFeedback?.Invoke(value);
-            RequestDie();
         }
 
         [PunRPC]
         public void SetCanDieRPC(bool value)
         {
             canDie = value;
-            isAlive = !value;
             OnSetCanDie?.Invoke(value);
             photonView.RPC("SyncSetCanDieRPC", RpcTarget.All, value);
         }
@@ -53,7 +53,9 @@ namespace Entities.Champion
         [PunRPC]
         public void SyncDieRPC()
         {
-            // TODO: Add death animation, deactivate mesh, collider, movements, etc.
+            isAlive = false;
+            championInitPoint.gameObject.SetActive(false);
+            InputManager.PlayerMap.Disable();
             RequestRevive();
             OnDieFeedback?.Invoke();
         }
@@ -62,7 +64,6 @@ namespace Entities.Champion
         public void DieRPC()
         {
             if (!canDie) return;
-            if (isAlive) return;
             OnDie?.Invoke();
             photonView.RPC("SyncDieRPC", RpcTarget.All);
         }
@@ -79,8 +80,11 @@ namespace Entities.Champion
         public void SyncReviveRPC()
         {
             isAlive = true;
-            canDie = false;
-            // TODO: Add revive animation, activate mesh, collider, movements, etc.
+            // TODO: Replace with SpawnPoint depending on the team of the player
+            transform.position = new Vector3(0, 0, 0);
+            championInitPoint.gameObject.SetActive(true);
+            InputManager.PlayerMap.Enable();
+            timer = timerToRespawn;
             OnReviveFeedback?.Invoke();
         }
 

@@ -172,7 +172,7 @@ namespace Entities.Champion
             if (currentHp <= 0)
             {
                 currentHp = 0;
-                RequestSetCanDie(true);
+                RequestDie();
             }
             OnDecreaseCurrentHpFeedback?.Invoke(amount);
         }
