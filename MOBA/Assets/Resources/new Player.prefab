@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 3480681341667345174}
   - component: {fileID: 3480681341667345175}
   - component: {fileID: 3480681341667345176}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: new Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,9 +236,10 @@ MonoBehaviour:
   canView: 0
   meshFilterFoV: {fileID: 3480681341397647661}
   championSo: {fileID: 0}
-  championInitPoint: {fileID: 3480681341152264625}
+  rotateParent: {fileID: 0}
   championMesh: {fileID: 0}
   camera: {fileID: 0}
+  rb: {fileID: 0}
   maxHp: 0
   currentHp: 0
   attackAbilityIndex: 0
@@ -249,7 +250,7 @@ MonoBehaviour:
   canCast: 0
   isAlive: 0
   canDie: 0
-  timerToRespawn: 10
+  respawnDuration: 3
   canBeDisplaced: 0
   items: []
   isBattlerite: 1
@@ -286,7 +287,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3480681342087303708}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -317,7 +318,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3480681342996286637}
   - component: {fileID: 3480681342996286636}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

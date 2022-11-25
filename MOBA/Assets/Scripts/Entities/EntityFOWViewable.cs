@@ -18,7 +18,7 @@ namespace Entities
         [Range(0, 360)] public float viewAngle;
         public bool canView;
         public List<IFOWShowable> seenShowables = new List<IFOWShowable>();
-        public GameObject meshFilterFoV;
+        public MeshFilter meshFilterFoV;
         
         
         public Enums.Team GetTeam()
@@ -247,9 +247,6 @@ namespace Entities
         public event GlobalDelegates.IntDelegate OnRemoveShowable;
         public event GlobalDelegates.IntDelegate OnRemoveShowableFeedback;
 
-        protected virtual void ShowableRemoved(ObservableList<IFOWShowable> sender, ListChangedEventArgs<IFOWShowable> e)
-        {
-            showableRemoved?.Invoke(sender, e);
-        }
+  
     }
 }

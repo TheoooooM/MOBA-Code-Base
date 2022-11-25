@@ -62,6 +62,7 @@ namespace Entities.FogOfWar
             {
                 if (GameStates.GameStateMachine.Instance.GetPlayerTeam() == viewable.team)
                 {
+                    Debug.Log("test");
                     DrawFieldOfView(viewable);
                 }
             }
@@ -91,10 +92,10 @@ namespace Entities.FogOfWar
 
         void SetUpCurrentViewablesWithEntitiesShowables()
         {
-            //foreach (var viewable in currentViewablesWithEntitiesShowables)
-            //{
-            //    viewable.Value.Clear();
-            //}
+            foreach (var viewable in currentViewablesWithEntitiesShowables)
+            {
+               viewable.Value.Clear();
+            }
         }
 
         private void Update()
@@ -185,10 +186,10 @@ namespace Entities.FogOfWar
                 }
             }
 
-            Mesh viewMesh = entity.meshFilterFoV.GetComponent<MeshFilter>().mesh;
+            Mesh viewMesh = entity.meshFilterFoV.mesh;
             if (viewMesh == null)
             {
-                InitMesh(entity.meshFilterFoV.GetComponent<MeshFilter>());
+                InitMesh(entity.meshFilterFoV);
             }
 
             viewMesh.Clear();
