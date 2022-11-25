@@ -14,6 +14,7 @@ namespace Controllers
         private bool cameraLock = true;
         public static CameraController Instance;
 
+        public bool isBattlerite = true; 
         [SerializeField] private Vector3 offset;
         [SerializeField] private float lerpSpeed;
         [SerializeField] private float rotationY;
@@ -51,7 +52,19 @@ namespace Controllers
             Debug.Log("Camera Lock Toggled");
         }
 
+        private void LateUpdate()
+        {
+            if(!isBattlerite)
+            UpdateCamera(Time.deltaTime);
+        }
+
         private void FixedUpdate()
+        {
+            if(isBattlerite)
+            UpdateCamera(Time.fixedTime);
+        }
+
+        private void UpdateCamera(float deltaTime)
         {
             //if the player is not null
             if (!player) return;
@@ -61,35 +74,35 @@ namespace Controllers
             if (cameraLock)
             {
                 nextPos = player.position + offset;
-                transform.position = Vector3.Lerp(transform.position, nextPos, Time.fixedDeltaTime * lerpSpeed);
+                transform.position = Vector3.Lerp(transform.position, nextPos, deltaTime * lerpSpeed);
             }
             else
             {
                 nextPos = transform.position;
-                
+
                 if (Input.mousePosition.x >= Screen.width - 1)
                 {
                     nextPos += transform.right * cameraSpeed;
                 }
-                
+
                 if (Input.mousePosition.x <= 0)
                 {
                     nextPos -= transform.right * cameraSpeed;
                 }
-                
+
                 if (Input.mousePosition.y >= Screen.height - 1)
                 {
                     nextPos += transform.forward * cameraSpeed;
                 }
-                
+
                 if (Input.mousePosition.y <= 0)
                 {
                     nextPos -= transform.forward * cameraSpeed;
                 }
-                
-                transform.position = Vector3.Lerp(transform.position, nextPos, Time.fixedDeltaTime * lerpSpeed);
-                
+
+                transform.position = Vector3.Lerp(transform.position, nextPos, deltaTime* lerpSpeed);
             }
+
             transform.rotation = Quaternion.Euler(transform.rotation.x, rotationY, transform.rotation.z);
         }
     }
