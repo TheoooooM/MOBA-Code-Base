@@ -187,6 +187,7 @@ namespace Entities.Champion
             {
                 Debug.Log("In Range to Attack");
                 agent.SetDestination(transform.position);
+                Debug.Log($"lastCapacityIndex{lastCapacityIndex}; lastTargetedEntities{lastTargetedEntities}; lastTargetedPositions{lastTargetedPositions}");
                 RequestAttack(lastCapacityIndex, lastTargetedEntities, lastTargetedPositions);
             }
         }
