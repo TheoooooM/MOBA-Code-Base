@@ -124,27 +124,18 @@ public class ChampionHUD : MonoBehaviour
             spellIcon = spellUltimate,
             spellCooldown = spellUltimateCooldown
         };
-        int activeCapacitiesCount = so.activeCapacities.Length;
-        if (activeCapacitiesCount >= 1)
-        {
-            spellHolderDict.Add(so.activeCapacitiesIndexes[0], spellOneHolder);
-            spellOneHolder.Setup(so.activeCapacities[0].icon);
-        }
-
-        if (activeCapacitiesCount >= 2)
-        {
-            spellHolderDict.Add(so.activeCapacitiesIndexes[1], spellTwoHolder);
-            spellTwoHolder.Setup(so.activeCapacities[1].icon);
-        }
-
-        if (!spellHolderDict.ContainsKey(so.ultimateAbilityIndex))
-        {
-            spellHolderDict.Add(so.ultimateAbilityIndex, ultimateHolder);
-            ultimateHolder.Setup(so.ultimateAbility.icon);
-        }
-        else Debug.Log("Une capacitée normale est la meme que l'ultimate");
+        Debug.Log(so.activeCapacitiesIndexes[0]);
+        Debug.Log(so.activeCapacitiesIndexes[1]);
+        Debug.Log(so.ultimateAbilityIndex);
+        spellHolderDict.Add(so.activeCapacitiesIndexes[0], spellOneHolder);
+        spellHolderDict.Add(so.activeCapacitiesIndexes[1], spellTwoHolder);
+        if(!spellHolderDict.ContainsKey(so.ultimateAbilityIndex))spellHolderDict.Add(so.ultimateAbilityIndex, ultimateHolder);
+        else Debug.Log("A FIXE, CA BUG ");
         
-        if(so.passiveCapacities.Length>=1)passiveHolder.Setup(so.passiveCapacities[0].icon);
+        passiveHolder.Setup(so.passiveCapacities[0].icon);
+        spellOneHolder.Setup(so.activeCapacities[0].icon);
+        spellTwoHolder.Setup(so.activeCapacities[1].icon);
+        ultimateHolder.Setup(so.ultimateAbility.icon);
     }
 
     private void UpdateCooldown(byte capacityIndex, int[] intArray, Vector3[] vectors, ActiveCapacity capacity)

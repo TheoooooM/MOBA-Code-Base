@@ -144,8 +144,9 @@ namespace Entities
         /// <param name="index">The index of the PassiveCapacitySO of the PassiveCapacity to add</param>
         [PunRPC]
         public void AddPassiveCapacityRPC(byte index)
-        { 
+        {
             if (!canAddPassiveCapacity) return;
+            Debug.Log($"Trying to add capacity at index {index}");
             photonView.RPC("SyncAddPassiveCapacityRPC",RpcTarget.All, index);
         }
         /// <summary>

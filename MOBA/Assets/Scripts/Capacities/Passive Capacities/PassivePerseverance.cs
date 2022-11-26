@@ -1,5 +1,4 @@
 using GameStates;
-using Photon.Pun;
 using UnityEngine;
 
 namespace Entities.Capacities
@@ -10,7 +9,6 @@ namespace Entities.Capacities
         private double timeSinceLastHeal;
         private PassivePerseveranceSO passiveCapacitySo;
         private IActiveLifeable activeLifeable;
-        private GameObject particle = null;
         
         public override PassiveCapacitySO AssociatedPassiveCapacitySO()
         {
@@ -19,39 +17,37 @@ namespace Entities.Capacities
 
         protected override void OnAddedEffects(Entity target)
         {
-            
-        }
-
-        protected override void OnAddedFeedbackEffects(Entity target)
-        {
             passiveCapacitySo = (PassivePerseveranceSO)AssociatedPassiveCapacitySO();
 
             activeLifeable = entity.GetComponent<IActiveLifeable>();
 
-            activeLifeable.OnDecreaseCurrentHpFeedback += ResetTimeSinceLastAttack;
-            GameStateMachine.Instance.OnTickFeedback += IncreasePerTick;
+            activeLifeable.OnDecreaseCurrentHp += ResetTimeSinceLastAttack;
+            GameStateMachine.Instance.OnTick += IncreasePerTick;
         }
 
-        protected override void OnRemovedEffects(Entity target)
+        protected override void OnAddedFeedbackEffects(Entity target)
         {
             
         }
 
+        protected override void OnRemovedEffects(Entity target)
+        {
+            Debug.LogWarning("RemovedEffect");
+            activeLifeable.OnDecreaseCurrentHp -= ResetTimeSinceLastAttack;
+            GameStateMachine.Instance.OnTick -= IncreasePerTick;
+        }
+
         protected override void OnRemovedFeedbackEffects(Entity target)
         {
-            activeLifeable.OnDecreaseCurrentHpFeedback -= ResetTimeSinceLastAttack;
-            GameStateMachine.Instance.OnTickFeedback -= IncreasePerTick;
-            if(particle == null) return;
-            particle.gameObject.SetActive(false);
+            
         }
 
         private void ActiveHealEffect()
         {
-            var maxHP = activeLifeable.GetMaxHp();
-            var modAmount = maxHP * passiveCapacitySo.percentage;
-            if(PhotonNetwork.IsMasterClient) activeLifeable.IncreaseCurrentHpRPC(modAmount);
-            if(particle != null) return;
-            particle = PoolLocalManager.Instance.PoolInstantiate(((PassivePerseveranceSO)AssociatedPassiveCapacitySO()).healEffectPrefab, entity.transform.position, Quaternion.identity,
+            float maxHP = activeLifeable.GetMaxHp();
+            float modAmount = maxHP * passiveCapacitySo.percentage;
+            activeLifeable.IncreaseCurrentHpRPC(modAmount);
+            PoolLocalManager.Instance.PoolInstantiate(((PassivePerseveranceSO)AssociatedPassiveCapacitySO()).healEffectPrefab, entity.transform.position, Quaternion.identity,
                 entity.transform);
         }
 
@@ -59,17 +55,19 @@ namespace Entities.Capacities
         {
             timeSinceLastAttack += GameStateMachine.Instance.tickRate;
             timeSinceLastHeal += GameStateMachine.Instance.tickRate;
-            if (!(timeSinceLastAttack > passiveCapacitySo.timeBeforeHeal)) return;
-            if (!(timeSinceLastHeal >= 5)) return;
-            ActiveHealEffect();
-            timeSinceLastHeal = 0;
+            if (timeSinceLastAttack > passiveCapacitySo.timeBeforeHeal)
+            {
+                if (timeSinceLastHeal >= 5)
+                {
+                    ActiveHealEffect();
+                    timeSinceLastHeal = 0;
+                }
+            }
         }
 
         private void ResetTimeSinceLastAttack(float f)
         {
             timeSinceLastAttack = 0;
-            if(particle == null) return;
-            particle.gameObject.SetActive(false);
         }
     }
 
