@@ -7,6 +7,8 @@ namespace Entities.Champion
     public partial class Champion : IAttackable
     {
         public byte attackAbilityIndex;
+        private ActiveCapacity lastCapacity;
+        private ActiveCapacitySO lastCapacitySO;
         public bool canAttack;
         public float attackDamage;
 
@@ -68,35 +70,45 @@ namespace Entities.Champion
             lastTargetedPositions = targetedPositions;
             
             
-            var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            var attackCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
+            lastCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
+            lastCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
             var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
 
-            if (attackCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
+            if (lastCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
             {
-                bool isTargetEntity = attackCapacitySO.shootType == Enums.CapacityShootType.targetEntity;
-                Vector3 position = isTargetEntity? EntityCollectionManager.GetEntityByIndex(targetedEntities[0]).transform.position : targetedPositions[0] ;
-                Debug.Log($"TargetEntity:{isTargetEntity}, position{position}");
-                if (attackCapacity.isInRange(entityIndex,position))
+                if (lastCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
                 {
-                    Debug.Log("Not in range");
-                    if (isTargetEntity) SendFollowEntity(targetedEntities[0], attackCapacitySO.maxRange);
-                    else agent.SetDestination(position);
+                    bool isTargetEntity = lastCapacitySO.shootType == Enums.CapacityShootType.targetEntity;
+                    Vector3 position = isTargetEntity
+                        ? EntityCollectionManager.GetEntityByIndex(targetedEntities[0]).transform.position
+                        : targetedPositions[0];
+
+                    if (!lastCapacity.isInRange(entityIndex, position))
+                    {
+                        Debug.Log("Not in range");
+                        if (isTargetEntity) SendFollowEntity(targetedEntities[0], lastCapacitySO.maxRange);
+                        else agent.SetDestination(position);
+                    }
+                    else
+                    {
+                        Debug.Log("Attack in Range");
+                        agent.SetDestination(transform.position);
+                        OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
+                        photonView.RPC("SyncAttackRPC", RpcTarget.All, capacityIndex, targetedEntities,
+                            targetedPositions);
+
+                    }
                 }
                 else
                 {
-                    Debug.Log("Attack in Range");
                     agent.SetDestination(transform.position);
-                    OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
-                    photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
-                    
+                    OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
+                    photonView.RPC("SyncAttackRPC", RpcTarget.All, capacityIndex, targetedEntities, targetedPositions);
                 }
             }
-            else if (attackCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
+            else
             {
-                agent.SetDestination(transform.position);
-                OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
-                photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
+                //Cant Attack FeedBack
             }
         }
 

@@ -190,21 +190,19 @@ namespace Entities.Champion
 
         private void FollowEntity()
         {
-            if (isBattlerite) return;
+            if (isBattlerite || !isFollowing) return;
             agent.SetDestination(entityFollow.transform.position);
-            if (attackRange <= agent.remainingDistance)
+            if (lastCapacity.isInRange(entityIndex, entityFollow.transform.position))
             {
-                Debug.Log("In Range to Attack");
                 agent.SetDestination(transform.position);
-                Debug.Log(
-                    $"lastCapacityIndex{lastCapacityIndex}; lastTargetedEntities{lastTargetedEntities}; lastTargetedPositions{lastTargetedPositions}");
+                isFollowing = false;
                 RequestAttack(lastCapacityIndex, lastTargetedEntities, lastTargetedPositions);
             }
         }
 
         private void CheckMoveDistance()
         {
-            if (isBattlerite) return;
+            if (isBattlerite || agent == null) return;
             if (Vector3.Distance(transform.position, movePosition) < 0.5f)
             {
                 agent.SetDestination(transform.position);

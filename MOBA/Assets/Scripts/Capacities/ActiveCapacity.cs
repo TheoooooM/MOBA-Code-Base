@@ -91,7 +91,7 @@ namespace Entities.Capacities
         public virtual bool isInRange(int casterIndex, Vector3 position)
         {
             float distance = Vector3.Distance(EntityCollectionManager.GetEntityByIndex(casterIndex).transform.position, position);
-            Debug.Log($"distance:{distance}  >  range:{ AssociatedActiveCapacitySO().maxRange}");
+            //Debug.Log($"distance:{distance}  >  range:{ AssociatedActiveCapacitySO().maxRange}");
             if ( distance > AssociatedActiveCapacitySO().maxRange) return false;
             
             return true;
