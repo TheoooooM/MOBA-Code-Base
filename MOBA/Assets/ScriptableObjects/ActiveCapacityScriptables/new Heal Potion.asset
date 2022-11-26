@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   referenceName: HealPotion
   descriptionName: Potion de Soin
+  icon: {fileID: 21300000, guid: da8824121b8d565478ff8c89cc85e7f0, type: 3}
   description: 
   cooldown: 3
   isTargeting: 0
   maxRange: 0
   types: 0000000002000000
   shootType: 0
-  indexInCollection: 2
+  indexInCollection: 3
   feedbackDuration: 100
   feedbackPrefab: {fileID: 3248323131726062708, guid: 9365fdce127720748a1a73011482ddeb, type: 3}
   healAmount: 1

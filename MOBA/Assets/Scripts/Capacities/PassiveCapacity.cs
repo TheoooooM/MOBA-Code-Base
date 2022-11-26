@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Entities.Capacities
 {
@@ -20,6 +21,7 @@ namespace Entities.Capacities
         {
             if (stackable) count++;
             entity = target;
+            Debug.Log("onadded");
             OnAddedEffects(entity);
         }
 

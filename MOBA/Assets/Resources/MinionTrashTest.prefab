@@ -149,6 +149,7 @@ MonoBehaviour:
   viewAngle: 0
   canView: 0
   meshFilterFoV: {fileID: 0}
+  fogOfWarStartDetection: {fileID: 0}
 --- !u!114 &308790359599412637
 MonoBehaviour:
   m_ObjectHideFlags: 0
