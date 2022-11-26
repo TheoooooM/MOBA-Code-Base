@@ -82,7 +82,7 @@ namespace  Entities
             var show = enemiesThatCanSeeMe.Count == 0;
             
             enemiesThatCanSeeMe.Add(viewable);
-            Debug.Log("ennemiesThat Can See Mee");
+            Debug.Log("try add viewable" + gameObject.name);
             if (show) ShowElements();
             
             //if (!PhotonNetwork.IsMasterClient) return;
@@ -107,6 +107,7 @@ namespace  Entities
             {
                 elementsToShow[i].SetActive(true);
             }
+           // Debug.Log("showelement" + this.gameObject.name);
             OnShowElementFeedback?.Invoke();
         }
 
@@ -116,6 +117,7 @@ namespace  Entities
         public void TryRemoveFOWViewable(int viewableIndex)
         {
             var entity = EntityCollectionManager.GetEntityByIndex(viewableIndex);
+          //  Debug.Log("try remove viewable" + gameObject.name);
             if(entity == null) return;
             
             var viewable = entity.GetComponent<IFOWViewable>();
@@ -150,6 +152,7 @@ namespace  Entities
 
         public void HideElements()
         {
+            Debug.Log("hidelement" + this.gameObject.name);
             for (int i = 0; i < elementsToShow.Count; i++)
             {
                 elementsToShow[i].SetActive(false);

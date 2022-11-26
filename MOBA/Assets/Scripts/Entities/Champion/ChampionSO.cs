@@ -33,7 +33,7 @@ namespace Entities.Champion
         {
             // Attack
             attackAbilityIndex = CapacitySOCollectionManager.GetActiveCapacitySOIndex(attackAbility);
-            Debug.Log($"Set attackAbilityIndex to {attackAbilityIndex} ");
+        
             // Passives
             passiveCapacitiesIndexes = new byte[passiveCapacities.Length];
             for (var index = 0; index < passiveCapacities.Length; index++)

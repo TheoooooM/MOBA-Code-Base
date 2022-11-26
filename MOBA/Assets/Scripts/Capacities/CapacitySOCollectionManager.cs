@@ -28,7 +28,7 @@ namespace Entities.Capacities
             }
 
             Instance = this;
-            Debug.Log($"CapacitySOCollectionManager is in {gameObject.name}");
+
         }
 
         private void Start()

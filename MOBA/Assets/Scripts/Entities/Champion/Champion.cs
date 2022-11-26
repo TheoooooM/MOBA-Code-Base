@@ -24,13 +24,22 @@ namespace Entities.Champion
 
         protected override void OnStart()
         {
+            base.OnStart();
             fowm = FogOfWarManager.Instance;
             capacityCollection = CapacitySOCollectionManager.Instance;
             uiManager = UIManager.Instance;
             camera = Camera.main;
-            //fowm.allViewables.Add(entityIndex,this);
-
-            currentRotateSpeed = 10f; // A mettre dans prefab, je peux pas y toucher pour l'instant
+            uiManager = UIManager.Instance;
+            if (isBattlerite)
+            {
+                rb.isKinematic = false;
+                agent.enabled = false;
+            }
+            else
+            {
+                rb.isKinematic = true;
+                agent.enabled = true;
+            }
         }
 
         protected override void OnUpdate()
@@ -43,6 +52,7 @@ namespace Entities.Champion
 
         protected override void OnFixedUpdate()
         {
+            if (!isBattlerite) return;
             Move();
             Rotate();
         }
@@ -50,16 +60,12 @@ namespace Entities.Champion
         public override void OnInstantiated()
         {
             base.OnInstantiated();
-            uiManager = UIManager.Instance;
-            if (uiManager != null)
-            {
-                uiManager.InstantiateHealthBarForEntity(entityIndex);
-                uiManager.InstantiateResourceBarForEntity(entityIndex);
-            }
         }
 
-        public override void OnInstantiatedFeedback() { }
-        
+        public override void OnInstantiatedFeedback()
+        {
+        }
+
         public void ApplyChampionSO(byte championSoIndex, Enums.Team newTeam)
         {
             var so = GameStateMachine.Instance.allChampionsSo[championSoIndex];
@@ -81,26 +87,68 @@ namespace Entities.Champion
 
             team = newTeam;
 
-            Transform pos;
+            Transform pos = transform;
             switch (team)
             {
                 case Enums.Team.Team1:
-                    pos = MapLoaderManager.Instance.firstTeamBasePoint;
+                {
+                    for (int i = 0; i < MapLoaderManager.Instance.firstTeamBasePoint.Length; i++)
+                    {
+                        if (MapLoaderManager.Instance.firstTeamBasePoint[i].champion == null)
+                        {
+                            pos = MapLoaderManager.Instance.firstTeamBasePoint[i].position;
+                            MapLoaderManager.Instance.firstTeamBasePoint[i].champion = this;
+                            break;
+                        }
+                    }
+
                     break;
+                }
                 case Enums.Team.Team2:
-                    pos = MapLoaderManager.Instance.secondTeamBasePoint;
+                {
+                    for (int i = 0; i < MapLoaderManager.Instance.secondTeamBasePoint.Length; i++)
+                    {
+                        if (MapLoaderManager.Instance.secondTeamBasePoint[i].champion == null)
+                        {
+                            pos = MapLoaderManager.Instance.secondTeamBasePoint[i].position;
+                            MapLoaderManager.Instance.secondTeamBasePoint[i].champion = this;
+                            break;
+                        }
+                    }
+
                     break;
+                }
                 default:
                     Debug.LogError("Team is not valid.");
                     pos = transform;
                     break;
             }
 
+            if (GameStates.GameStateMachine.Instance.GetPlayerTeam() != team)
+            {
+                championMesh.SetActive(false);
+            }
+
             respawnPos = transform.position = pos.position;
-            SetupNavMesh();
+            if (!isBattlerite)
+                SetupNavMesh();
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
             elementsToShow.Add(championMesh);
-        
+
+            uiManager = UIManager.Instance;
+
+            if (uiManager != null)
+            {
+                uiManager.InstantiateHealthBarForEntity(entityIndex);
+                uiManager.InstantiateResourceBarForEntity(entityIndex);
+            }
+
+            so.SetIndexes();
+            for (int i = 0; i < so.passiveCapacitiesIndexes.Length; i++)
+            {
+                AddPassiveCapacityRPC(so.passiveCapacitiesIndexes[i]);
+            }
+
             RequestSetCanDie(true);
         }
     }
