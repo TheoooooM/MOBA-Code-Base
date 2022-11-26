@@ -29,7 +29,6 @@ public partial class Tower : Building
         if (brainTimer > brainSpeed)
         {
             TowerDetection();
-            Debug.Log("TowerDetection() " + gameObject.name);
             brainTimer = 0;
         }
     }
@@ -40,7 +39,6 @@ public partial class Tower : Building
         
         var size = Physics.OverlapSphere(transform.position, detectionRange, canBeHitByTowerMask);
         
-
         foreach (var result in size)
         {
             if (result.CompareTag(enemyUnit))
@@ -62,6 +60,7 @@ public partial class Tower : Building
         yield return new WaitForSeconds(detectionDelay);
         
         int[] targetEntity = new[] { enemiesInRange[0].GetComponent<Entity>().entityIndex };
+        
         
         AttackRPC(3, targetEntity, Array.Empty<Vector3>());
         
@@ -124,7 +123,6 @@ public partial class Tower : IAttackable, IActiveLifeable, IDeadable
     public event GlobalDelegates.FloatDelegate OnSetAttackDamageFeedback;
     public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
-        throw new System.NotImplementedException();
     }
 
     [PunRPC]
@@ -260,7 +258,6 @@ public partial class Tower : IAttackable, IActiveLifeable, IDeadable
 
     public void IncreaseCurrentHpRPC(float amount)
     {
-        throw new NotImplementedException();
     }
 
     public event GlobalDelegates.FloatDelegate OnIncreaseCurrentHp;
@@ -284,6 +281,8 @@ public partial class Tower : IAttackable, IActiveLifeable, IDeadable
         if (currentHealth < 0) currentHealth = 0;
         
         photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHealth);
+        
+        Debug.Log("Minion HP - " + amount);
         
         if (currentHealth <= 0 && isAlive)
         {

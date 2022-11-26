@@ -40,6 +40,7 @@ public class ActiveTowerAuto : ActiveCapacity
     {
         if (Vector3.Distance(_tower.transform.position, _target.transform.position) < _tower.detectionRange)
         {
+            Debug.Log("Apply Effect Auto");
             IActiveLifeable entityActiveLifeable = _target.GetComponent<IActiveLifeable>();
             entityActiveLifeable.DecreaseCurrentHpRPC(_tower.damage); 
         }

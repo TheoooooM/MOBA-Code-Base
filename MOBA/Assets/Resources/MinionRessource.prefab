@@ -180,12 +180,10 @@ MonoBehaviour:
   wayPointIndex: 0
   towerIndex: 0
   currentAggroState: 0
-  whoAggro: 0
   enemyMinionMask:
     serializedVersion: 2
     m_Bits: 1024
   currentAttackTarget: {fileID: 0}
-  whoIsAttackingMe: []
   attackCycle: 0
   currentHealth: 20
   attackDamage: 3

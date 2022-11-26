@@ -52,7 +52,7 @@ public class PoolLocalManager : MonoBehaviour
 
     public void EnqueuePool(GameObject objectPrefab, GameObject go)
     {
-        Debug.Log("Enqueue " + go);
+        //Debug.Log("Enqueue " + go);
         queuesDictionary[objectPrefab].Enqueue(go);
         go.SetActive(false);
     }
@@ -78,7 +78,7 @@ public class PoolLocalManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("New pool of " + GORef.name);
+            //Debug.Log("New pool of " + GORef.name);
             queuesDictionary.Add(GORef, new Queue<GameObject>());
             
             returnGO = Instantiate(GORef, position, rotation, parent);

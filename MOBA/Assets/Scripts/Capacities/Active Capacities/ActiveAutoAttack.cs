@@ -17,11 +17,9 @@ public class ActiveAutoAttack : ActiveCapacity
 
     public override void PlayFeedback(int entityIndex, int[] targets, Vector3[] position)
     {
-        Debug.Log("AutoAtk Feedback");
+        //Debug.Log("AutoAtk Feedback");
     }
-
     
-
 
     private void ApplyEffect()
     {

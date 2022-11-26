@@ -25,10 +25,9 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
     public enum MinionAggroPreferences { Tower, Minion, Champion }
     [Header ("Attack Logic")]
     public MinionAggroState currentAggroState = MinionAggroState.None;
-    public MinionAggroPreferences whoAggro = MinionAggroPreferences.Tower;
     public LayerMask enemyMinionMask;
     public GameObject currentAttackTarget;
-    public List<GameObject> whoIsAttackingMe = new List<GameObject>();
+    
     public bool attackCycle;
 
     [Header("Stats")]
@@ -61,9 +60,9 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
     {
         CheckMyWayPoints();
         CheckObjectives();
-        //CheckEnemiesMinion();
+        CheckEnemiesMinion();
     }
-
+    
     public void LookingForPathingState()
     {
         myAgent.SetDestination(myWaypoints[wayPointIndex].position);
@@ -72,22 +71,44 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
 
     public void AttackingState()
     {
-        if (TowersList[towerIndex].isAlive)
+        if (currentAggroState == MinionAggroState.Minion)
         {
-            var q = Quaternion.LookRotation(currentAttackTarget.transform.position - transform.position);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 50f * Time.deltaTime);
-
-            if (attackCycle == false)
+            if (currentAttackTarget.activeSelf)
             {
-                StartCoroutine(AttackLogic());
+                var q = Quaternion.LookRotation(currentAttackTarget.transform.position - transform.position);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 50f * Time.deltaTime);
+
+                if (attackCycle == false)
+                {
+                    StartCoroutine(AttackLogic());
+                }
+            }
+            else
+            {
+                myController.currentState = MinionController.MinionState.LookingForPathing;
+                currentAggroState = MinionAggroState.None;
+                currentAttackTarget = null;
             }
         }
-        else
+        else if (currentAggroState == MinionAggroState.Tower)
         {
-            myController.currentState = MinionController.MinionState.LookingForPathing;
-            currentAggroState = MinionAggroState.None;
-            currentAttackTarget = null;
-            towerIndex++;
+            if (TowersList[towerIndex].isAlive)
+            {
+                var q = Quaternion.LookRotation(currentAttackTarget.transform.position - transform.position);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 50f * Time.deltaTime);
+
+                if (attackCycle == false)
+                {
+                    StartCoroutine(AttackLogic());
+                }
+            }
+            else
+            {
+                myController.currentState = MinionController.MinionState.LookingForPathing;
+                currentAggroState = MinionAggroState.None;
+                currentAttackTarget = null;
+                towerIndex++;
+            }
         }
     }
     
@@ -137,9 +158,29 @@ public partial class MinionTest : Entity, IMoveable, IAttackable, IActiveLifeabl
         }
     }
     
+    private void CheckEnemiesMinion()
+    {
+        var size = Physics.OverlapSphere(transform.position, attackRange, enemyMinionMask);
+
+        if (size.Length < 1) return;
+        
+        for (int i = 0; i < size.Length; i++)
+        {
+            if (!size[i].CompareTag(gameObject.tag))
+            {
+                myAgent.SetDestination(transform.position);
+                myController.currentState = MinionController.MinionState.Attacking;
+                currentAggroState = MinionAggroState.Minion;
+                currentAttackTarget = size[i].gameObject;
+                break;
+            }
+        }
+    }
+    
+    
     private void AttackTarget(GameObject target) // Attaque de l'entité référencée 
     {
-        Debug.Log("Attack by " + gameObject.name);
+        //Debug.Log("Attack by " + gameObject.name);
         int[] targetEntity = new[] { target.GetComponent<Entity>().entityIndex };
         
         AttackRPC(2, targetEntity, Array.Empty<Vector3>());
@@ -209,7 +250,7 @@ public partial class MinionTest : IDeadable
 
     public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
     {
-        throw new System.NotImplementedException();
+        photonView.RPC("AttackRPC", RpcTarget.MasterClient);
     }
 
     [PunRPC]
@@ -524,7 +565,10 @@ public partial class MinionTest : IDeadable
         currentHealth -= amount;
         if (currentHealth < 0) currentHealth = 0;
         
+        Debug.Log("Minion HP - " + amount);
+        
         photonView.RPC("SyncDecreaseCurrentHpRPC", RpcTarget.All, currentHealth);
+        
         
         if (currentHealth <= 0)
         {

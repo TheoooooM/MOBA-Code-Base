@@ -45,10 +45,8 @@ namespace Entities.Capacities
         /// </summary>
         protected virtual void InitiateCooldown()
         {
-            Debug.Log("Initialize Cooldown");
             cooldownTimer = AssociatedActiveCapacitySO().cooldown;
             onCooldown = true;
-            Debug.Log(onCooldown);
             GameStateMachine.Instance.OnTick += CooldownTimer;
         }
 
@@ -61,9 +59,7 @@ namespace Entities.Capacities
             
             if (cooldownTimer <= 0)
             {
-                Debug.Log("Cooldown is over");
                 onCooldown = false;
-                Debug.Log(onCooldown);
                 GameStateMachine.Instance.OnTick -= CooldownTimer;
             }
         }
