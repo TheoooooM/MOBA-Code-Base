@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   referenceName: Auto
   descriptionName: Auto attack
+  icon: {fileID: 0}
   description: 
   cooldown: 0
   isTargeting: 0
-  maxRange: 1
+  maxRange: 5
   types: 
   shootType: 2
   indexInCollection: 2

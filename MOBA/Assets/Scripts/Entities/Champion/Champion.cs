@@ -5,6 +5,7 @@ using Entities.FogOfWar;
 using GameStates;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Entities.Champion
 {
@@ -24,7 +25,6 @@ namespace Entities.Champion
         protected override void OnStart()
         {
             fowm = FogOfWarManager.Instance;
-            SetupNavMesh();
             capacityCollection = CapacitySOCollectionManager.Instance;
             uiManager = UIManager.Instance;
             camera = Camera.main;
@@ -97,7 +97,7 @@ namespace Entities.Champion
             }
 
             respawnPos = transform.position = pos.position;
-
+            SetupNavMesh();
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
             elementsToShow.Add(championMesh);
         
