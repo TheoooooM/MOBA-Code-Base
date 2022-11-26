@@ -57,7 +57,6 @@ namespace Entities.Champion
         public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             Debug.Log("Request Attack");
-            Debug.Log($"Capacity Index {capacityIndex}");
             photonView.RPC("AttackRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
         }
 
@@ -68,17 +67,21 @@ namespace Entities.Champion
             lastTargetedEntities = targetedEntities;
             lastTargetedPositions = targetedPositions;
             
-            Debug.Log($"Capacity Index {capacityIndex}");
+            
             var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
             var attackCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
             var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
 
             if (attackCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
             {
-                if (!attackCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
+                bool isTargetEntity = attackCapacitySO.shootType == Enums.CapacityShootType.targetEntity;
+                Vector3 position = isTargetEntity? EntityCollectionManager.GetEntityByIndex(targetedEntities[0]).transform.position : targetedPositions[0] ;
+                Debug.Log($"TargetEntity:{isTargetEntity}, position{position}");
+                if (attackCapacity.isInRange(entityIndex,position))
                 {
                     Debug.Log("Not in range");
-                    SendFollowEntity(targetedEntities[0], attackCapacitySO.maxRange);
+                    if (isTargetEntity) SendFollowEntity(targetedEntities[0], attackCapacitySO.maxRange);
+                    else agent.SetDestination(position);
                 }
                 else
                 {
@@ -89,10 +92,8 @@ namespace Entities.Champion
                     
                 }
             }
-            else
+            else if (attackCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
             {
-                Debug.Log("SkillShot");
-
                 agent.SetDestination(transform.position);
                 OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
                 photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);

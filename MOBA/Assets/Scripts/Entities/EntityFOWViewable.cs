@@ -169,11 +169,11 @@ namespace Entities
             if (seenShowables.Contains(showable)) return;
 
             seenShowables.Add(showable);
-            Debug.Log("seen Showable Add");
+            //Debug.Log("seen Showable Add");
             showable.TryAddFOWViewable(this);
-            Debug.Log("Try add This FowViewable");
+            //Debug.Log("Try add This FowViewable");
             var seenEntityIndex = ((Entity)showable).entityIndex;
-            Debug.Log("Entity index : " + seenEntityIndex);
+            //Debug.Log("Entity index : " + seenEntityIndex);
             OnAddShowableFeedback?.Invoke(seenEntityIndex);
 
             
@@ -216,12 +216,12 @@ namespace Entities
             if (!seenShowables.Contains(showable)) return;
 
             seenShowables.Remove(showable);
-            Debug.Log("Remove Showable");
+            //Debug.Log("Remove Showable");
             showable.TryRemoveFOWViewable(this);
-            Debug.Log("TryRemoveFOWViewable");
+            //Debug.Log("TryRemoveFOWViewable");
             
             var seenEntityIndex = ((Entity)showable).entityIndex;
-            Debug.Log("Entity Index : " + ((Entity)showable).entityIndex);
+            //Debug.Log("Entity Index : " + ((Entity)showable).entityIndex);
             OnRemoveShowableFeedback?.Invoke(seenEntityIndex);
 
             if (!PhotonNetwork.IsMasterClient) return;
