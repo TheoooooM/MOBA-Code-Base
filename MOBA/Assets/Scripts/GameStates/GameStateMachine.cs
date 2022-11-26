@@ -418,6 +418,8 @@ namespace GameStates
         public void LateLoad()
         {
             LinkLoadChampionData();
+
+            ActivateChampionPassives();
             
             SetupUI();
         }
@@ -485,6 +487,19 @@ namespace GameStates
 
             // We sync data and champion mesh
             playerData.champion.ApplyChampionSO(playerData.championSOIndex, playerData.team);
+        }
+
+        private void ActivateChampionPassives()
+        {
+            if(!PhotonNetwork.IsMasterClient) return;
+            foreach (var playerData in playersReadyDict.Values)
+            {
+                var champion = playerData.champion;
+                foreach (var index in champion.championSo.passiveCapacitiesIndexes)
+                {
+                    champion.AddPassiveCapacityRPC(index);
+                }
+            }
         }
 
         private void SetupUI()
