@@ -114,7 +114,7 @@ namespace Entities.FogOfWar
                     if (!currentViewablesWithEntitiesShowables[viewable].Contains((Entity)seenShowables[i]))
                     {
                         viewable.RemoveShowable(seenShowables[i]);
-                        Debug.Log("Remove Elements from list");
+                        //Debug.Log("Remove Elements from list");
                     }
                     
                 }

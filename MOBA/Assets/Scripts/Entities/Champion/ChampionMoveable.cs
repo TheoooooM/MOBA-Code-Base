@@ -38,6 +38,7 @@ namespace Entities.Champion
         void SetupNavMesh()
         {
             agent = GetComponent<NavMeshAgent>();
+            agent.SetDestination(transform.position);
             if (!photonView.IsMine) agent.enabled = false;
             //NavMeshBuilder.ClearAllNavMeshes();
             //NavMeshBuilder.BuildNavMesh();
