@@ -19,7 +19,7 @@ namespace Entities
         public bool canView;
         public List<IFOWShowable> seenShowables = new List<IFOWShowable>();
         public MeshFilter meshFilterFoV;
-        
+       public Transform fogOfWarStartDetection;
         
         public Enums.Team GetTeam()
         {
@@ -177,9 +177,9 @@ namespace Entities
             OnAddShowableFeedback?.Invoke(seenEntityIndex);
 
             
-            if (!PhotonNetwork.IsMasterClient) return;
-            OnAddShowable?.Invoke(seenEntityIndex);
-            photonView.RPC("SyncAddShowableRPC", RpcTarget.All, seenEntityIndex);
+         //   if (!PhotonNetwork.IsMasterClient) return;
+           // OnAddShowable?.Invoke(seenEntityIndex);
+            //photonView.RPC("SyncAddShowableRPC", RpcTarget.All, seenEntityIndex);
         }
 
         [PunRPC]
@@ -194,7 +194,7 @@ namespace Entities
 
             seenShowables.Add(showable);
             OnAddShowableFeedback?.Invoke(seenEntityIndex);
-            if (!PhotonNetwork.IsMasterClient) showable.TryAddFOWViewable(this);
+         //    if (!PhotonNetwork.IsMasterClient) showable.TryAddFOWViewable(this);
         }
 
         public event GlobalDelegates.IntDelegate OnAddShowable;
@@ -224,9 +224,9 @@ namespace Entities
             //Debug.Log("Entity Index : " + ((Entity)showable).entityIndex);
             OnRemoveShowableFeedback?.Invoke(seenEntityIndex);
 
-            if (!PhotonNetwork.IsMasterClient) return;
-            OnRemoveShowable?.Invoke(seenEntityIndex);
-            photonView.RPC("SyncRemoveShowableRPC", RpcTarget.All, seenEntityIndex);
+            //    if (!PhotonNetwork.IsMasterClient) return;
+            //     OnRemoveShowable?.Invoke(seenEntityIndex);
+            //     photonView.RPC("SyncRemoveShowableRPC", RpcTarget.All, seenEntityIndex);
         }
 
         [PunRPC]
@@ -241,7 +241,7 @@ namespace Entities
 
             seenShowables.Remove(showable);
             OnAddShowableFeedback?.Invoke(seenEntityIndex);
-            if (!PhotonNetwork.IsMasterClient) showable.TryRemoveFOWViewable(this);
+            //     if (!PhotonNetwork.IsMasterClient) showable.TryRemoveFOWViewable(this);
         }
 
         public event GlobalDelegates.IntDelegate OnRemoveShowable;

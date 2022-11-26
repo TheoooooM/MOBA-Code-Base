@@ -64,6 +64,7 @@ MonoBehaviour:
   viewAngle: 0
   canView: 0
   meshFilterFoV: {fileID: 0}
+  fogOfWarStartDetection: {fileID: 0}
   caster: {fileID: 0}
   damage: 0
   dir: {x: 0, y: 0, z: 0}

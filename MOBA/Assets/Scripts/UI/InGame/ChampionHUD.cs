@@ -69,7 +69,7 @@ public class ChampionHUD : MonoBehaviour
 
         healthBar.fillAmount = lifeable.GetCurrentHpPercent();
         resourceBar.fillAmount = resourceable.GetCurrentResourcePercent();
-        
+        LinkToEvents();
         UpdateIcons(champion);
     }
 
@@ -124,14 +124,12 @@ public class ChampionHUD : MonoBehaviour
             spellIcon = spellUltimate,
             spellCooldown = spellUltimateCooldown
         };
-        Debug.Log(so.activeCapacitiesIndexes[0]);
-        Debug.Log(so.activeCapacitiesIndexes[1]);
-        Debug.Log(so.ultimateAbilityIndex);
         spellHolderDict.Add(so.activeCapacitiesIndexes[0], spellOneHolder);
         spellHolderDict.Add(so.activeCapacitiesIndexes[1], spellTwoHolder);
         if(!spellHolderDict.ContainsKey(so.ultimateAbilityIndex))spellHolderDict.Add(so.ultimateAbilityIndex, ultimateHolder);
         else Debug.Log("A FIXE, CA BUG ");
         
+        if(so.passiveCapacities.Length != 0)
         passiveHolder.Setup(so.passiveCapacities[0].icon);
         spellOneHolder.Setup(so.activeCapacities[0].icon);
         spellTwoHolder.Setup(so.activeCapacities[1].icon);
@@ -150,7 +148,7 @@ public class ChampionHUD : MonoBehaviour
     
     private void UpdateFillPercentHealth(float value)
     {
-        healthBar.fillAmount = lifeable.GetCurrentHpPercent();
+        healthBar.fillAmount = value/lifeable.GetMaxHp();
     }
     
     private void UpdateFillPercentByPercentResource(float value)

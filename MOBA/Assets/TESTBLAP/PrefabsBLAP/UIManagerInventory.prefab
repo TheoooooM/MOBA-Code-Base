@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e2557b85405f624f9804eec7d8f08b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarPrefab: {fileID: 8706198591103583553, guid: 420738969e4e1c84ebd9c03da8134be2, type: 3}
+  healthBarPrefab: {fileID: 4247979780393186614, guid: 420738969e4e1c84ebd9c03da8134be2, type: 3}
   championOverlays:
   - {fileID: 2804220503543094489, guid: c85f7637b9a73904dba674eeedc60fbe, type: 3}
   inventoriesPanel:
@@ -443,7 +443,7 @@ MonoBehaviour:
     slotButton: {fileID: 5940086018044920530}
   InventoryCanvas: {fileID: 7498691665753908636}
   ShopCanvas: {fileID: 7498691667280078573}
-  resourceBarPrefab: {fileID: 5630961168596188745, guid: 005e9dc584e3abd4db884d636a71c910, type: 3}
+  resourceBarPrefab: {fileID: 7673529661679636681, guid: 005e9dc584e3abd4db884d636a71c910, type: 3}
 --- !u!114 &6738515277711622255
 MonoBehaviour:
   m_ObjectHideFlags: 0
