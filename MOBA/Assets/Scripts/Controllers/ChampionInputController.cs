@@ -103,7 +103,6 @@ namespace Controllers.Inputs
             { 
                 selectedEntity[0] = ent.entityIndex;
                 cursorWorldPos[0] = ent.transform.position;
-                Debug.Log(ent.name);
             }
 
             if(isActivebuttonPress)

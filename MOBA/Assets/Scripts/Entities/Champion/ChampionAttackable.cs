@@ -7,6 +7,8 @@ namespace Entities.Champion
     public partial class Champion : IAttackable
     {
         public byte attackAbilityIndex;
+        private ActiveCapacity lastCapacity;
+        private ActiveCapacitySO lastCapacitySO;
         public bool canAttack;
         public float attackDamage;
 
@@ -57,7 +59,6 @@ namespace Entities.Champion
         public void RequestAttack(byte capacityIndex, int[] targetedEntities, Vector3[] targetedPositions)
         {
             Debug.Log("Request Attack");
-            Debug.Log($"Capacity Index {capacityIndex}");
             photonView.RPC("AttackRPC",RpcTarget.MasterClient,capacityIndex,targetedEntities,targetedPositions);
         }
 
@@ -68,34 +69,46 @@ namespace Entities.Champion
             lastTargetedEntities = targetedEntities;
             lastTargetedPositions = targetedPositions;
             
-            Debug.Log($"Capacity Index {capacityIndex}");
-            var attackCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
-            var attackCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
+            
+            lastCapacity = CapacitySOCollectionManager.CreateActiveCapacity(capacityIndex,this);
+            lastCapacitySO = CapacitySOCollectionManager.GetActiveCapacitySOByIndex(capacityIndex);
             var targetEntity = EntityCollectionManager.GetEntityByIndex(targetedEntities[0]);
 
-            if (attackCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
+            if (lastCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
             {
-                if (!attackCapacity.TryCast(entityIndex, targetedEntities, targetedPositions))
+                if (lastCapacitySO.shootType != Enums.CapacityShootType.Skillshot)
                 {
-                    Debug.Log("Not in range");
-                    SendFollowEntity(targetedEntities[0], attackCapacitySO.maxRange);
+                    bool isTargetEntity = lastCapacitySO.shootType == Enums.CapacityShootType.targetEntity;
+                    Vector3 position = isTargetEntity
+                        ? EntityCollectionManager.GetEntityByIndex(targetedEntities[0]).transform.position
+                        : targetedPositions[0];
+
+                    if (!lastCapacity.isInRange(entityIndex, position))
+                    {
+                        Debug.Log("Not in range");
+                        if (isTargetEntity) SendFollowEntity(targetedEntities[0], lastCapacitySO.maxRange);
+                        else agent.SetDestination(position);
+                    }
+                    else
+                    {
+                        Debug.Log("Attack in Range");
+                        agent.SetDestination(transform.position);
+                        OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
+                        photonView.RPC("SyncAttackRPC", RpcTarget.All, capacityIndex, targetedEntities,
+                            targetedPositions);
+
+                    }
                 }
                 else
                 {
-                    Debug.Log("Attack in Range");
                     agent.SetDestination(transform.position);
-                    OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
-                    photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
-                    
+                    OnAttack?.Invoke(capacityIndex, targetedEntities, targetedPositions);
+                    photonView.RPC("SyncAttackRPC", RpcTarget.All, capacityIndex, targetedEntities, targetedPositions);
                 }
             }
             else
             {
-                Debug.Log("SkillShot");
-
-                agent.SetDestination(transform.position);
-                OnAttack?.Invoke(capacityIndex,targetedEntities,targetedPositions);
-                photonView.RPC("SyncAttackRPC",RpcTarget.All,capacityIndex,targetedEntities,targetedPositions);
+                //Cant Attack FeedBack
             }
         }
 
