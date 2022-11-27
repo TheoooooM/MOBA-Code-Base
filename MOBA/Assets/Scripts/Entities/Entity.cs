@@ -51,7 +51,10 @@ namespace Entities
         /// <summary>
         /// Replaces the Start() method.
         /// </summary>
-        protected virtual void OnStart() { }
+        protected virtual void OnStart()
+        {
+            FogOfWarManager.Instance.AddFOWViewable(this);
+        }
 
         private void Update()
         {
@@ -80,7 +83,8 @@ namespace Entities
 
         public virtual void OnInstantiated()
         {
-            FogOfWarManager.Instance.AddFOWViewable(this);
+            Debug.Log(photonView.IsMine +"this" +gameObject.name);
+     
         }
 
         [PunRPC]
@@ -146,7 +150,6 @@ namespace Entities
         public void AddPassiveCapacityRPC(byte index)
         {
             if (!canAddPassiveCapacity) return;
-            Debug.Log($"Trying to add capacity at index {index}");
             photonView.RPC("SyncAddPassiveCapacityRPC",RpcTarget.All, index);
         }
         /// <summary>

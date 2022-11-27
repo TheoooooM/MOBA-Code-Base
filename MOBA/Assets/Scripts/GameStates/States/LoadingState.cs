@@ -23,6 +23,7 @@ namespace GameStates.States
 
         public override void OnAllPlayerReady()
         {
+          
             sm.SwitchState(2);
         }
     }

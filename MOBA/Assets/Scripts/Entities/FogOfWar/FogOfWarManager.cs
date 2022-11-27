@@ -76,6 +76,8 @@ namespace Entities.FogOfWar
         {
             allViewables.Add(viewable);
             currentViewablesWithEntitiesShowables.Add(viewable, new List<Entity>());
+            Debug.Log(viewable.name);
+            viewable.meshFilterFoV.gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -86,6 +88,7 @@ namespace Entities.FogOfWar
         {
             allViewables.Remove(viewable);
             currentViewablesWithEntitiesShowables.Remove(viewable);
+            viewable.meshFilterFoV.gameObject.SetActive(false);
         }
 
 
@@ -229,10 +232,11 @@ namespace Entities.FogOfWar
         {
             Vector3 dir = DirFromAngle(globalAngle, true, entity);
             RaycastHit hit;
-            if (Physics.Raycast(entity.transform.position, dir, out hit, entity.viewRange, layerTargetFogOfWar))
+            if (Physics.Raycast(entity.fogOfWarStartDetection.position, dir, out hit, entity.viewRange, layerTargetFogOfWar))
             {
-                Debug.DrawRay(entity.transform.position, dir * entity.viewRange, Color.green, Time.deltaTime);
+     //           Debug.DrawRay(entity.transform.position, dir * entity.viewRange, Color.green, 1);
                 Entity candidateEntity = hit.collider.gameObject.GetComponent<Entity>();
+       //         Debug.Log(hit.collider.gameObject.name);
                 if (candidateEntity != null)
                 {
                     entity.AddShowable(candidateEntity);

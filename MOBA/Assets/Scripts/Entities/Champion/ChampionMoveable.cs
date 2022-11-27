@@ -203,9 +203,14 @@ namespace Entities.Champion
         private void CheckMoveDistance()
         {
             if (isBattlerite || agent == null) return;
+          
             if (Vector3.Distance(transform.position, movePosition) < 0.5f)
             {
                 agent.SetDestination(transform.position);
+            }
+            else
+            {
+                rotateParent.forward = agent.velocity.normalized;
             }
         }
 

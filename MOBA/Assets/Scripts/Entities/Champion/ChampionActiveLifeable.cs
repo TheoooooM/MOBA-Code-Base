@@ -31,6 +31,7 @@ namespace Entities.Champion
         public void SyncSetMaxHpRPC(float value)
         {
             maxHp = value;
+            currentHp = value;
             OnSetMaxHpFeedback?.Invoke(value);
         }
 
@@ -38,6 +39,7 @@ namespace Entities.Champion
         public void SetMaxHpRPC(float value)
         {
             maxHp = value;
+            currentHp = value;
             OnSetMaxHp?.Invoke(value);
             photonView.RPC("SyncSetMaxHpRPC", RpcTarget.All, maxHp);
         }
@@ -54,6 +56,7 @@ namespace Entities.Champion
         public void SyncIncreaseMaxHpRPC(float amount)
         {
             maxHp = amount;
+            currentHp = amount;
             OnIncreaseMaxHpFeedback?.Invoke(amount);
         }
 
@@ -61,6 +64,9 @@ namespace Entities.Champion
         public void IncreaseMaxHpRPC(float amount)
         {
             maxHp += amount;
+            currentHp = amount;
+            if (maxHp < currentHp)
+                currentHp = maxHp;
             OnIncreaseMaxHp?.Invoke(amount);
             photonView.RPC("SyncIncreaseMaxHpRPC", RpcTarget.All, maxHp);
         }
@@ -70,6 +76,7 @@ namespace Entities.Champion
 
         public void RequestDecreaseMaxHp(float amount)
         {
+            
             photonView.RPC("DecreaseMaxHpRPC", RpcTarget.MasterClient, amount);
         }
 
@@ -77,6 +84,8 @@ namespace Entities.Champion
         public void SyncDecreaseMaxHpRPC(float amount)
         {
             maxHp = amount;
+          
+            currentHp = amount;
             OnDecreaseMaxHpFeedback?.Invoke(amount);
         }
 
@@ -84,6 +93,8 @@ namespace Entities.Champion
         public void DecreaseMaxHpRPC(float amount)
         {
             maxHp -= amount;
+            if(maxHp<amount)
+            currentHp = amount;
             OnDecreaseMaxHp?.Invoke(amount);
             photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.All, maxHp);
         }
@@ -153,6 +164,8 @@ namespace Entities.Champion
         public void IncreaseCurrentHpRPC(float amount)
         {
             currentHp += amount;
+            if (currentHp > maxHp)
+                currentHp = maxHp;
             OnIncreaseCurrentHp?.Invoke(amount);
             photonView.RPC("SyncIncreaseCurrentHpRPC",RpcTarget.All,currentHp);
         }

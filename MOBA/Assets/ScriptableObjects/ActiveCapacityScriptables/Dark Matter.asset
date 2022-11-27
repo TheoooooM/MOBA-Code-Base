@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   referenceName: DarkMatterSO
   descriptionName: Dark Matter
+  icon: {fileID: 21300000, guid: 6d880134e66232c4492a3070abb2f03d, type: 3}
   description: 
   cooldown: 2
   isTargeting: 0
   maxRange: 22.16
   types: 
+  shootType: 0
   indexInCollection: 1
   feedbackDuration: 0
   feedbackPrefab: {fileID: 0}

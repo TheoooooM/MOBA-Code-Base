@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3480681341152264625}
+  - component: {fileID: 5698148310340446966}
   m_Layer: 29
   m_Name: RotatePoint(Mesh Parent)
   m_TagString: Untagged
@@ -30,6 +31,22 @@ Transform:
   m_Father: {fileID: 3480681341667345171}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5698148310340446966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480681341152264626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 0
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &3480681341397647662
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,6 +165,7 @@ Transform:
   - {fileID: 3480681341152264625}
   - {fileID: 3480681341397647659}
   - {fileID: 3480681342087303708}
+  - {fileID: 1225001110951397080}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -176,7 +194,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 0
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -205,6 +223,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8091990961712310653}
+  - {fileID: 5698148310340446966}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -221,14 +240,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityIndex: 0
-  canAddPassiveCapacity: 0
-  canRemovePassiveCapacity: 0
-  uiTransform: {fileID: 0}
+  canAddPassiveCapacity: 1
+  canRemovePassiveCapacity: 1
+  uiTransform: {fileID: 3480681342087303708}
   offset: {x: 0, y: 2, z: 0}
   canShow: 0
   canHide: 0
-  elementsToShow:
-  - {fileID: 0}
+  elementsToShow: []
   canChangeTeam: 0
   team: 0
   baseViewRange: 5
@@ -236,6 +254,7 @@ MonoBehaviour:
   viewAngle: 360
   canView: 1
   meshFilterFoV: {fileID: 3480681341397647661}
+  fogOfWarStartDetection: {fileID: 1225001110951397080}
   championSo: {fileID: 0}
   rotateParent: {fileID: 3480681341152264625}
   championMesh: {fileID: 0}
@@ -257,7 +276,7 @@ MonoBehaviour:
   isBattlerite: 0
   referenceMoveSpeed: 10
   currentMoveSpeed: 10
-  currentRotateSpeed: 0
+  currentRotateSpeed: 10
   canMove: 0
   maxResource: 0
   currentResource: 0
@@ -273,7 +292,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.45
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -291,7 +310,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 3
 --- !u!114 &8091990961712310653
 MonoBehaviour:
@@ -306,7 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
+  m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
 --- !u!1 &3480681342087303709
@@ -333,9 +352,39 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3480681342087303709}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.899, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3480681341667345171}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6629365598223191964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1225001110951397080}
+  m_Layer: 29
+  m_Name: FogOfWarStartDetection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1225001110951397080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6629365598223191964}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3480681341667345171}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

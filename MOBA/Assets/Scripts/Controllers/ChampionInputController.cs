@@ -148,6 +148,9 @@ namespace Controllers.Inputs
             moveInput = ctx.ReadValue<Vector2>();
             moveVector = new Vector3(moveInput.x, 0, moveInput.y);
             champion.SetMoveDirection(moveVector);
+            NavMeshAgent agent;
+      
+
         }
         
 
@@ -171,6 +174,7 @@ namespace Controllers.Inputs
                 inputs.Movement.Move.performed += OnMoveChange; 
                 inputs.Movement.Move.canceled += OnMoveChange;
                 champion.GetComponent<NavMeshAgent>().enabled = false;
+                champion.rb.isKinematic = false;
             }
             else
             {
@@ -178,6 +182,7 @@ namespace Controllers.Inputs
                 inputs.MoveMouse.ActiveButton.performed += OnMouseClick;
                 inputs.MoveMouse.ActiveButton.started += context => isActivebuttonPress = true;
                 inputs.MoveMouse.ActiveButton.canceled += context => isActivebuttonPress = false;
+                champion.rb.isKinematic = true;
             }
 
             inputs.MoveMouse.MousePos.performed += OnMouseMove;

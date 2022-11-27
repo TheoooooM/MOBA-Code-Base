@@ -394,6 +394,7 @@ namespace GameStates
         {
             PhotonNetwork.IsMessageQueueRunning = false;
             PhotonNetwork.LoadLevel(gameSceneName);
+              
         }
 
         /// <summary>
