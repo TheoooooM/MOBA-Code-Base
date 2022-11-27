@@ -22,6 +22,7 @@ namespace Entities.Champion
         public Camera camera;
         public Rigidbody rb;
 
+        public CollisionBlocker blocker;
         protected override void OnStart()
         {
             base.OnStart();
@@ -30,29 +31,40 @@ namespace Entities.Champion
             uiManager = UIManager.Instance;
             camera = Camera.main;
             uiManager = UIManager.Instance;
+            agent = GetComponent<NavMeshAgent>();
+            NavMeshObstacle obstacle = GetComponent<NavMeshObstacle>();
             if (isBattlerite)
             {
-                rb.isKinematic = false;
+                obstacle.enabled = false;
+                blocker.characterColliderBlocker.enabled = true;
+                blocker.SetUpBlocker();
                 agent.enabled = false;
             }
             else
             {
+                blocker.characterColliderBlocker.enabled = false;
+                obstacle.enabled = true;
                 rb.isKinematic = true;
                 agent.enabled = true;
             }
+          
         }
 
         protected override void OnUpdate()
         {
+            if(isBattlerite && GameStateMachine.Instance.GetPlayerChampion() == this)
             RotateMath();
+            else
+            {
             if (isFollowing) FollowEntity(); // Lol
             if (!photonView.IsMine) return;
             CheckMoveDistance();
+            }
         }
 
         protected override void OnFixedUpdate()
         {
-            if (!isBattlerite) return;
+            if (!isBattlerite || GameStateMachine.Instance.GetPlayerChampion() != this) return;
             Move();
             Rotate();
         }
@@ -131,7 +143,9 @@ namespace Entities.Champion
 
             respawnPos = transform.position = pos.position;
             if (!isBattlerite)
+            {
                 SetupNavMesh();
+            }
             championMesh.GetComponent<ChampionMeshLinker>().LinkTeamColor(this.team);
             elementsToShow.Add(championMesh);
 
@@ -148,7 +162,7 @@ namespace Entities.Champion
             {
                 AddPassiveCapacityRPC(so.passiveCapacitiesIndexes[i]);
             }
-
+            rb.velocity = Vector3.zero;
             RequestSetCanDie(true);
         }
     }
