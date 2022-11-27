@@ -83,7 +83,7 @@ namespace Entities
 
         public virtual void OnInstantiated()
         {
-            Debug.Log(photonView.IsMine +"this" +gameObject.name);
+            
      
         }
 

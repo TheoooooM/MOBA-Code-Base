@@ -22,4 +22,4 @@ MonoBehaviour:
   activeCapacities: []
   activeCapacitiesIndexes: 
   indexInCollection: 0
-  healthMod: 420
+  healthMod: 10

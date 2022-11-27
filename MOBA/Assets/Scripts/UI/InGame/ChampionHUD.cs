@@ -143,12 +143,12 @@ public class ChampionHUD : MonoBehaviour
     
     private void UpdateFillPercentByPercentHealth(float value)
     {
-        healthBar.fillAmount = value;
+        healthBar.fillAmount = lifeable.GetCurrentHp()/lifeable.GetMaxHp();
     }
     
     private void UpdateFillPercentHealth(float value)
     {
-        healthBar.fillAmount = value/lifeable.GetMaxHp();
+        healthBar.fillAmount = lifeable.GetCurrentHp()/lifeable.GetMaxHp();
     }
     
     private void UpdateFillPercentByPercentResource(float value)
