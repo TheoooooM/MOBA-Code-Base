@@ -47,20 +47,22 @@ namespace Entities.Capacities
             float maxHP = activeLifeable.GetMaxHp();
             float modAmount = maxHP * passiveCapacitySo.percentage;
             activeLifeable.IncreaseCurrentHpRPC(modAmount);
-            Debug.Log("ActiveHealEffect");
+ 
           //  PoolLocalManager.Instance.PoolInstantiate(((PassivePerseveranceSO)AssociatedPassiveCapacitySO()).healEffectPrefab, entity.transform.position, Quaternion.identity,
             //    entity.transform);
         }
 
         private void IncreasePerTick()
         {
-            timeSinceLastAttack += GameStateMachine.Instance.tickRate;
-            timeSinceLastHeal += GameStateMachine.Instance.tickRate;
-            Debug.Log("IncreasePerTick");
+
+            timeSinceLastAttack += GameStateMachine.Instance.tickRate/60;
+            timeSinceLastHeal += GameStateMachine.Instance.tickRate/60;
+
             if (timeSinceLastAttack > passiveCapacitySo.timeBeforeHeal)
             {
                 if (timeSinceLastHeal >= 5)
                 {
+              
                     ActiveHealEffect();
                     timeSinceLastHeal = 0;
                 }
@@ -69,6 +71,7 @@ namespace Entities.Capacities
 
         private void ResetTimeSinceLastAttack(float f)
         {
+   
             timeSinceLastAttack = 0;
         }
     }

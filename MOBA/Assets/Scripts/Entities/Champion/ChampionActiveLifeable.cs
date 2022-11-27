@@ -84,8 +84,8 @@ namespace Entities.Champion
         public void SyncDecreaseMaxHpRPC(float amount)
         {
             maxHp = amount;
-          
-            currentHp = amount;
+            if(maxHp<currentHp)
+                currentHp = amount;
             OnDecreaseMaxHpFeedback?.Invoke(amount);
         }
 
@@ -93,7 +93,7 @@ namespace Entities.Champion
         public void DecreaseMaxHpRPC(float amount)
         {
             maxHp -= amount;
-            if(maxHp<amount)
+            if(maxHp<currentHp)
             currentHp = amount;
             OnDecreaseMaxHp?.Invoke(amount);
             photonView.RPC("SyncDecreaseMaxHpRPC", RpcTarget.All, maxHp);

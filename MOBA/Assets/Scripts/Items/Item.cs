@@ -28,9 +28,6 @@ namespace Entities.Inventory
             entityOfInventory = entity;
             inventory = entityOfInventory.GetComponent<IInventoryable>();
             OnItemAddedEffects(entity);
-            Debug.Log("added");
-            Debug.Log("AssociatedItemSO().passiveCapacitiesIndexes" +
-                      ""+ AssociatedItemSO().passiveCapacitiesIndexes.Length);
             foreach (var index in AssociatedItemSO().passiveCapacitiesIndexes)
             {
                 entityOfInventory.AddPassiveCapacityRPC(index);

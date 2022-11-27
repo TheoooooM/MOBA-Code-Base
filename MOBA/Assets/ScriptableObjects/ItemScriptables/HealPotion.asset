@@ -23,4 +23,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cf4b0ca6bc7bc7a4d9477d556903c9ac, type: 2}
   activeCapacitiesIndexes: 
   indexInCollection: 0
-  healthMod: 25
+  healthMod: 0
