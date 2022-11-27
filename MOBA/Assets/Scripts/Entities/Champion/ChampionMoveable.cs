@@ -135,13 +135,14 @@ namespace Entities.Champion
 
         private void Move()
         {
+       
             rb.velocity = moveDirection * currentMoveSpeed;
         }
 
         private void RotateMath()
         {
             if (!photonView.IsMine) return;
-            if (!isBattlerite) return;
+    
             var ray = camera.ScreenPointToRay(Input.mousePosition);
 
             if (!Physics.Raycast(ray, out var hit, float.PositiveInfinity)) return;
@@ -152,6 +153,7 @@ namespace Entities.Champion
 
         private void Rotate()
         {
+    
             rotateParent.transform.rotation = Quaternion.Lerp(rotateParent.transform.rotation,
                 Quaternion.LookRotation(rotateDirection),
                 Time.deltaTime * currentRotateSpeed);
@@ -204,11 +206,11 @@ namespace Entities.Champion
         {
             if (isBattlerite || agent == null) return;
           
-            if (Vector3.Distance(transform.position, movePosition) < 0.5f)
+            if (Vector3.Distance(transform.position, movePosition) < 0.5 )
             {
                 agent.SetDestination(transform.position);
             }
-            else
+            else if(agent.velocity != Vector3.zero)
             {
                 rotateParent.forward = agent.velocity.normalized;
             }
