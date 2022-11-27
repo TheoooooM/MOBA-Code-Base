@@ -163,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   cameraSpeed: 2
-  isBattlerite: 0
+  isBattlerite: 1
   offset: {x: 0, y: 15, z: -5}
   lerpSpeed: 15
   rotationY: 0
